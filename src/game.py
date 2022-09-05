@@ -1,17 +1,19 @@
 import pygame
 
+
 pygame.init()
 
 # display size
 WIDTH, HEIGHT = 800, 600
 pygame.display.set_mode((WIDTH, HEIGHT))
 
-# add caption
-pygame.display.set_caption('*** Bianka\'s Adventure ***')
-
 # add icon
-# programIcon = pygame.image.load('../icons/snakes.png')
-# pygame.display.set_icon(programIcon)
+programIcon = pygame.image.load('assets/images/title_icon/girl.png')
+pygame.display.set_icon(programIcon)
+
+# add caption
+pygame.display.set_caption('*** Bianka\'s Adventure ***', 'default_icon')
+
 
 # clock frames
 clock = pygame.time.Clock()
