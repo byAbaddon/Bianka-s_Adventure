@@ -1,4 +1,5 @@
 import pygame
+from sys import exit
 
 
 pygame.init()
@@ -20,13 +21,12 @@ clock = pygame.time.Clock()
 
 
 # Starting Game
-run_game = True
-while run_game:
+
+while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            run_game = False
+            pygame.quit()
+            exit()
 
-
-pygame.quit()
 
 
