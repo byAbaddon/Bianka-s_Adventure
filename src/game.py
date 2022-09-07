@@ -2,6 +2,8 @@ import pygame
 from sys import exit
 
 pygame.init()
+pygame.mixer.init()
+pygame.mixer.pre_init(44100, -16, 2, 2048)
 
 # display size
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
@@ -20,6 +22,11 @@ CLOCK = pygame.time.Clock()
 
 
 # ========================================================================= global methods
+# create music and sounds
+def play_sound(sound_file, volume=0.2, loops=0):
+    play = pygame.mixer.Sound(sound_file)
+    play.set_volume(volume)
+    play.play(loops)
 
 
 # draw background
@@ -56,9 +63,12 @@ class GameState():
         self.state = 'intro'
 
     def intro(self):
-        background_image('../src/assets/images/backgrounds/bg_game_over_1000_800.jpeg')
-        text_creator(26, 'Copyright - 2022', (0, 160, 255), 80, SCREEN_HEIGHT - 20)
-        text_creator(26, 'By Abaddon', (0, 160, 255), SCREEN_WIDTH - 60, SCREEN_HEIGHT - 20)
+        background_image('../src/assets/images/backgrounds/bg.png')
+        text_creator(26, 'Copyright - 2022', (0, 0, 0), 80, SCREEN_HEIGHT - 20)
+        text_creator(26, 'By Abaddon', (0, 0, 0), SCREEN_WIDTH - 60, SCREEN_HEIGHT - 20)
+        text_creator(36, 'Start Game: SpaceBar', (0, 0, 0), SCREEN_WIDTH // 2, SCREEN_HEIGHT - 50)
+        text_creator(36, 'MENU: Return', (0, 0, 0), SCREEN_WIDTH // 2, SCREEN_HEIGHT - 20)
+        play_sound('../src/assets/sounds/game_musics/intro_music.wav', 0.2, -1)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RETURN]:
@@ -67,18 +77,26 @@ class GameState():
             self.state = 'start_game'
 
     def menu(self):
-        background_image('../src/assets/images/backgrounds/bg_controls_2.png')
+        background_image('../src/assets/images/backgrounds/bg_controls.png')
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
             self.state = 'intro'
         if keys[pygame.K_LEFT]:
             self.state = 'legend'
         if keys[pygame.K_RIGHT]:
-            self.state = 'scores'
+            self.state = 'score'
 
     def legend(self):
-        pass
-        # background_image('../src/assets/images/backgrounds/bg_controls.png')
+        background_image('../src/assets/images/backgrounds/bg_legend.png')
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_RIGHT]:
+            self.state = 'intro'
+
+    def score(self):
+        background_image('../src/assets/images/backgrounds/bg_legend.png')
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            self.state = 'intro'
 
     def state_manager(self):
         if self.state == 'intro':
@@ -87,7 +105,8 @@ class GameState():
             self.menu()
         if self.state == 'legend':
             self.legend()
-
+        if self.state == 'score':
+            self.score()
 
 #  ========================================================================== create new GameState
 game_state = GameState()
