@@ -1,9 +1,8 @@
 import pygame
 from sys import exit
+from classes import sound, player
 
 pygame.init()
-pygame.mixer.init()
-pygame.mixer.pre_init(44100, -16, 2, 2048)
 
 # display size
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
@@ -25,13 +24,6 @@ level = 1
 
 
 # ========================================================================= global methods
-# create music and sounds
-def play_sound(sound_file, volume=0.2, loops=0):
-    pygame.mixer.stop()  # if eny music play stop it
-    play = pygame.mixer.Sound(sound_file)  # load music file
-    play.set_volume(volume)  # set volume
-    play.play(loops)  # start play
-
 
 # draw background
 def background_image(image, x=0, y=0):
@@ -57,21 +49,26 @@ def exit_game():
             exit()
 
 
-# ======================================================================== Classes
-
-class Player(pygame.sprite.Sprite):
-    pass
-
-
-# =========================================================================
+# ======================================================================= initialize  Classes
+play_sound = sound.Sound()
+player = player.Player()
 
 
+# ======================================================================== create Sprite groups
+player_group = pygame.sprite.GroupSingle()
+
+# add to group
+player_group.add(player)
+
+
+
+# =======================================================================
 # Game State
-class GameState():
-
+class GameState:
     def __init__(self):
         self.state = 'intro'
-        play_sound('../src/assets/sounds/game_musics/intro_1.mp3', 0.2, -1)
+        self.current_music = play_sound.intro_music()
+        self.is_music_play = False
 
     def intro(self):
         background_image('../src/assets/images/backgrounds/bg.png')
@@ -83,19 +80,23 @@ class GameState():
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RETURN]:
             self.state = 'menu'
+            play_sound.btn_click()
         if keys[pygame.K_SPACE]:
             self.state = 'start_game'
-            play_sound('../src/assets/sounds/game_musics/forest_1.mp3', 0.6, -1)
+            play_sound.stop_all_sounds()  # if eny music play stop it
 
     def menu(self):
         background_image('../src/assets/images/backgrounds/bg_controls.png')
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
             self.state = 'intro'
+            play_sound.btn_click()
         if keys[pygame.K_LEFT]:
             self.state = 'legend'
+            play_sound.btn_click()
         if keys[pygame.K_RIGHT]:
             self.state = 'score'
+            play_sound.btn_click()
 
     def legend(self):
         background_image('../src/assets/images/backgrounds/bg_legend.png')
@@ -103,17 +104,23 @@ class GameState():
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
             self.state = 'intro'
+            play_sound.btn_click()
 
     def score(self):
         background_image('../src/assets/images/backgrounds/bg_legend.png')
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.state = 'intro'
+            play_sound.btn_click()
 
     def start_game(self):
         if level == 1:
+            if not self.is_music_play:
+                self.current_music = play_sound.forest_music_level_one()
+                self.is_music_play = True
             background_image('../src/assets/images/backgrounds/bg_forest.jpg', 0, 100)
-            background_image('../src/assets/images/ground/1.png', 0, SCREEN_HEIGHT - 150, )
+            background_image('../src/assets/images/ground/gr_1.png', 0, SCREEN_HEIGHT - 78)
+            player_group.draw(SCREEN)
 
     def state_manager(self):
         if self.state == 'intro':
