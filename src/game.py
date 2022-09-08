@@ -20,20 +20,24 @@ pygame.display.set_caption('*** Bianka\'s Adventure ***', 'default_icon')
 # clock frames
 CLOCK = pygame.time.Clock()
 
+# ========================================================================== variables
+level = 1
+
 
 # ========================================================================= global methods
 # create music and sounds
 def play_sound(sound_file, volume=0.2, loops=0):
-    play = pygame.mixer.Sound(sound_file)
-    play.set_volume(volume)
-    play.play(loops)
+    pygame.mixer.stop()  # if eny music play stop it
+    play = pygame.mixer.Sound(sound_file)  # load music file
+    play.set_volume(volume)  # set volume
+    play.play(loops)  # start play
 
 
 # draw background
-def background_image(image):
+def background_image(image, x=0, y=0):
     bg_image = pygame.image.load(image).convert()
     block_rect = bg_image.get_rect()
-    SCREEN.blit(bg_image, (block_rect.x, block_rect.y))
+    SCREEN.blit(bg_image, (block_rect.x + x, block_rect.y + y))
 
 
 # create text
@@ -53,6 +57,12 @@ def exit_game():
             exit()
 
 
+# ======================================================================== Classes
+
+class Player(pygame.sprite.Sprite):
+    pass
+
+
 # =========================================================================
 
 
@@ -61,20 +71,21 @@ class GameState():
 
     def __init__(self):
         self.state = 'intro'
+        play_sound('../src/assets/sounds/game_musics/intro_1.mp3', 0.2, -1)
 
     def intro(self):
         background_image('../src/assets/images/backgrounds/bg.png')
-        text_creator(26, 'Copyright - 2022', (0, 0, 0), 80, SCREEN_HEIGHT - 20)
-        text_creator(26, 'By Abaddon', (0, 0, 0), SCREEN_WIDTH - 60, SCREEN_HEIGHT - 20)
-        text_creator(36, 'Start Game: SpaceBar', (0, 0, 0), SCREEN_WIDTH // 2, SCREEN_HEIGHT - 50)
-        text_creator(36, 'MENU: Return', (0, 0, 0), SCREEN_WIDTH // 2, SCREEN_HEIGHT - 20)
-        play_sound('../src/assets/sounds/game_musics/intro_music.wav', 0.2, -1)
+        text_creator(26, 'Copyright - 2022', (211, 0, 0), 80, SCREEN_HEIGHT - 20)
+        text_creator(26, 'By Abaddon', (211, 0, 0), SCREEN_WIDTH - 60, SCREEN_HEIGHT - 20)
+        text_creator(36, 'Start Game: SpaceBar', (255, 255, 200), SCREEN_WIDTH // 2, SCREEN_HEIGHT - 60)
+        text_creator(36, 'MENU: Return', (255, 255, 200), SCREEN_WIDTH // 2, SCREEN_HEIGHT - 20)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RETURN]:
             self.state = 'menu'
         if keys[pygame.K_SPACE]:
             self.state = 'start_game'
+            play_sound('../src/assets/sounds/game_musics/forest_1.mp3', 0.6, -1)
 
     def menu(self):
         background_image('../src/assets/images/backgrounds/bg_controls.png')
@@ -88,6 +99,7 @@ class GameState():
 
     def legend(self):
         background_image('../src/assets/images/backgrounds/bg_legend.png')
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
             self.state = 'intro'
@@ -98,6 +110,11 @@ class GameState():
         if keys[pygame.K_LEFT]:
             self.state = 'intro'
 
+    def start_game(self):
+        if level == 1:
+            background_image('../src/assets/images/backgrounds/bg_forest.jpg', 0, 100)
+            background_image('../src/assets/images/ground/1.png', 0, SCREEN_HEIGHT - 150, )
+
     def state_manager(self):
         if self.state == 'intro':
             self.intro()
@@ -107,6 +124,9 @@ class GameState():
             self.legend()
         if self.state == 'score':
             self.score()
+        if self.state == 'start_game':
+            self.start_game()
+
 
 #  ========================================================================== create new GameState
 game_state = GameState()
