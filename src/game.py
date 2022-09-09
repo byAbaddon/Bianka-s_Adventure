@@ -61,7 +61,6 @@ player_group = pygame.sprite.GroupSingle()
 player_group.add(player)
 
 
-
 # =======================================================================
 # Game State
 class GameState:
@@ -121,6 +120,7 @@ class GameState:
             background_image('../src/assets/images/backgrounds/bg_forest.jpg', 0, 100)
             background_image('../src/assets/images/ground/gr_1.png', 0, SCREEN_HEIGHT - 78)
             player_group.draw(SCREEN)
+            player_group.update()
 
     def state_manager(self):
         if self.state == 'intro':
