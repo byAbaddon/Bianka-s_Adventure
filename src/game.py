@@ -1,6 +1,6 @@
 import pygame
 from sys import exit
-from classes import sound, player
+from classes import sound, player, bullet
 
 pygame.init()
 
@@ -52,13 +52,15 @@ def exit_game():
 # ======================================================================= initialize  Classes
 play_sound = sound.Sound()
 player = player.Player()
-
+bullet = bullet.Bullet(player.shooting_bullet_position())
 
 # ======================================================================== create Sprite groups
 player_group = pygame.sprite.GroupSingle()
+bullets_group = pygame.sprite.Group()
 
 # add to group
 player_group.add(player)
+bullets_group.add(bullet)
 
 
 # =======================================================================
@@ -119,8 +121,14 @@ class GameState:
                 self.is_music_play = True
             background_image('../src/assets/images/backgrounds/bg_forest.jpg', 0, 100)
             background_image('../src/assets/images/ground/gr_1.png', 0, SCREEN_HEIGHT - 78)
+
+            # draw sprite group
             player_group.draw(SCREEN)
+            bullets_group.draw(SCREEN)
+
+            #  update sprite group
             player_group.update()
+            bullets_group.update()
 
     def state_manager(self):
         if self.state == 'intro':
