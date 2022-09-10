@@ -8,9 +8,10 @@ class Player(pygame.sprite.Sprite):
     SPRITE_ANIMATION_SPEED = 0.2
     PLAYER_SPEED = 4
     JUMP_SPEED = 0.2
+    GRAVITY = 5
 
     # def __init__(self, pos=(SCREEN_WIDTH - 700, SCREEN_HEIGHT - 80)):
-    def __init__(self, x=100, y=470):
+    def __init__(self, x=100, y=170):  # 470
         pygame.sprite.Sprite.__init__(self)
         self.sprites = [pygame.image.load(f'../src/assets/images/player/walking/{x}.png') for x in range(1, 7)]
         self.current_sprite = 0
@@ -21,9 +22,11 @@ class Player(pygame.sprite.Sprite):
     #   self.position = SCREEN_WIDTH - 700  # player start position
         self.direction = 1  # go right ; -1 go left
         self.is_jump = False
-        self.vel_y = 0
 
     def movie_plyer(self):
+        # fail gravity
+        self.rect.y += self.GRAVITY
+
         key = pygame.key.get_pressed()
         if key[pygame.K_RIGHT]:
             self.direction = 1
@@ -33,7 +36,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.x -= self.PLAYER_SPEED
         # jump
         if key[pygame.K_UP] and not self.is_jump:
-            self.j()
+            pass
 
         if key[pygame.K_DOWN]:
             self.is_jump = False
@@ -44,14 +47,6 @@ class Player(pygame.sprite.Sprite):
 
         if key[pygame.K_RIGHT] or key[pygame.K_LEFT]:
             self.isAnimating = True
-
-    def j(self): #TODO
-        self.vel_y = self.rect.y
-        if self.vel_y - 10 < self.rect.y:
-            self.rect.y -= 3
-        else:
-            self.vel_y = self.rect.y
-
 
     def sprite_frames(self):
         if self.isAnimating:
@@ -74,7 +69,7 @@ class Player(pygame.sprite.Sprite):
         self.sprite_frames()
         self.flip_image()
         self.movie_plyer()
-        self.j()
+
 
 
 

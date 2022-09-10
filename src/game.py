@@ -72,7 +72,7 @@ class GameState:
         self.is_music_play = False
 
     def intro(self):
-        background_image('../src/assets/images/backgrounds/bg.png')
+        background_image('../src/assets/images/backgrounds/bg_intro.png')
         text_creator(26, 'Copyright - 2022', (211, 0, 0), 80, SCREEN_HEIGHT - 20)
         text_creator(26, 'By Abaddon', (211, 0, 0), SCREEN_WIDTH - 60, SCREEN_HEIGHT - 20)
         text_creator(36, 'Start Game: SpaceBar', (255, 255, 200), SCREEN_WIDTH // 2, SCREEN_HEIGHT - 60)
