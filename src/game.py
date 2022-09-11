@@ -1,29 +1,17 @@
 import pygame
 from sys import exit
-from classes import sound, player, bullet
+from settings import *
+from classes import class_sound, class_ground, class_player, class_bullet
 
 pygame.init()
-
-# display size
-SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
-SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
-# add icon
-programIcon = pygame.image.load('assets/images/title_icon/girl.png')
-pygame.display.set_icon(programIcon)
-
-# add caption
-pygame.display.set_caption('*** Bianka\'s Adventure ***', 'default_icon')
-
-# ========================================================================== global const
-# clock frames
-CLOCK = pygame.time.Clock()
 
 # ========================================================================== variables
 level = 1
 
+# print(dir(class_player))
 
 # ========================================================================= global methods
+
 
 # draw background
 def background_image(image, x=0, y=0):
@@ -50,16 +38,20 @@ def exit_game():
 
 
 # ======================================================================= initialize  Classes
-play_sound = sound.Sound()
-player = player.Player()
-bullet = bullet.Bullet(player.shooting_bullet_position())
+play_sound = class_sound.Sound()
+player = class_player.Player()
+ground = class_ground.Ground()
+ground2 = class_ground.Ground('../src/assets/images/ground/2.png', 200, SCREEN_HEIGHT - 280)
+bullet = class_bullet.Bullet(player.shooting_bullet_position())
 
 # ======================================================================== create Sprite groups
 player_group = pygame.sprite.GroupSingle()
+ground_group = pygame.sprite.Group()
 bullets_group = pygame.sprite.Group()
 
 # add to group
 player_group.add(player)
+ground_group.add(ground, ground2)
 bullets_group.add(bullet)
 
 
@@ -115,18 +107,27 @@ class GameState:
             play_sound.btn_click()
 
     def start_game(self):
+        # ground and player collide
+        hits = pygame.sprite.spritecollide(player, ground_group, False)
+        if hits:
+            player.rect.y = hits[0].rect.top - player.PLAYER_HEIGHT_SIZE
+            player.gravity = 0
+        else:
+            player.gravity = 5
+
         if level == 1:
             if not self.is_music_play:
                 self.current_music = play_sound.forest_music_level_one()
                 self.is_music_play = True
             background_image('../src/assets/images/backgrounds/bg_forest.jpg', 0, 100)
-            background_image('../src/assets/images/ground/gr_1.png', 0, SCREEN_HEIGHT - 78)
 
             # draw sprite group
+            ground_group.draw(SCREEN)
             player_group.draw(SCREEN)
             bullets_group.draw(SCREEN)
 
-            #  update sprite group
+            # update sprite group
+            ground_group.update()
             player_group.update()
             bullets_group.update()
 
