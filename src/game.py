@@ -1,8 +1,9 @@
 from settings import *
 from src.classes.class_sound import Sound
 from state_classes import Intro, Menu, Legend, Score
-
-from sprite_classes import Player, Ground, Bullet
+from classes.class_player import Player
+from classes.class_ground import Ground
+from classes.class_bullet import Bullet
 
 
 # ================================================================= TEST imported classes
@@ -11,18 +12,20 @@ from sprite_classes import Player, Ground, Bullet
 # ========================================================================== variables
 level = 1
 
-
-# ======================================================================= initialize  Classes
-
-player = Player()
-ground = Ground()
-ground2 = Ground('../src/assets/images/ground/2.png', 200, SCREEN_HEIGHT - 280)
-bullet = Bullet(player.shooting_bullet_position())
-
 # ======================================================================== create Sprite groups
 player_group = pygame.sprite.GroupSingle()
 ground_group = pygame.sprite.Group()
 bullets_group = pygame.sprite.Group()
+
+# add to all_sprite_groups
+all_spite_groups_dict = {'player': player_group, 'ground': ground_group}
+# ======================================================================= initialize  Classes
+
+player = Player(all_spite_groups_dict)
+ground = Ground()
+ground2 = Ground('../src/assets/images/ground/2.png', 200, SCREEN_HEIGHT - 280)
+bullet = Bullet(player.shooting_bullet_position())
+
 
 # add to group
 player_group.add(player)
@@ -55,17 +58,7 @@ class GameState(Sound):
         Score()
         Score().event(self)
 
-    def start_game(self):
-        # ground and player collide
-        # hits = pygame.sprite.spritecollide(player, ground_group, False)
-        # if hits:
-        #     player.rect.y = hits[0].rect.top - player.PLAYER_HEIGHT_SIZE
-        #     player.gravity = 0
-        #     player.direction = 0
-        #
-        # else:
-        #     player.gravity = 5
-        #     player.is_ground = False
+    def start_game(self,):
         if level == 1:
             if not self.is_music_play:
                 self.current_music = Sound.forest_music_level_one(self)
@@ -105,4 +98,5 @@ while True:
     SCREEN.fill(pygame.Color('black'))
     game_state.state_manager()
     pygame.display.update()
-    CLOCK.tick(60)
+    CLOCK.tick(FPS)
+

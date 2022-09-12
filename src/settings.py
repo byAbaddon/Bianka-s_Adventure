@@ -4,6 +4,8 @@ from sys import exit
 pygame.init()
 # pygame.mixer.init()
 
+# hide mouse from game window
+# pygame.mouse.set_visible(False)
 # ========================================================================== display size
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -18,7 +20,6 @@ pygame.display.set_caption('*** Bianka\'s Adventure ***', 'default_icon')
 # clock frames
 CLOCK = pygame.time.Clock()
 FPS = 60
-
 
 # draw background
 def background_image(image, x=0, y=0):
