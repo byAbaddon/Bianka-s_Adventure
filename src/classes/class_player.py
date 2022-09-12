@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
         self.player_height_size = self.image.get_height()
         self.rect = self.image.get_bounding_rect(min_alpha=1)
         self.rect.center = (SCREEN_WIDTH - 700, SCREEN_HEIGHT - self.player_height_size - 50)
-        self.direction = 1  # stay 0; go right 1; -1 go left
+        self.direction = vec(0, 0) # stay 0; go right 1; -1 go left
         self.gravity = 0.3
         self.is_jump = False
         self.is_fail = False
@@ -35,17 +35,18 @@ class Player(pygame.sprite.Sprite):
 
     def movie_plyer(self):
         self.acceleration = vec(0, self.gravity)  # fail gravity
+        self.direction = vec(0, 1)
 
         key = pygame.key.get_pressed()
         if key[pygame.K_RIGHT]:
-            self.direction = 1
+            self.direction = vec(1, 0)
             self.acceleration.x = self.PLAYER_SPEED
         if key[pygame.K_LEFT]:
-            self.direction = -1
+            self.direction = vec(-1, 0)
             self.acceleration.x = -self.PLAYER_SPEED
         # jump
         if key[pygame.K_UP]:
-
+            self.direction.y = -1
             # self.is_jump = True
             # jump if player in the ground
             self.rect.y += 1
@@ -86,7 +87,7 @@ class Player(pygame.sprite.Sprite):
             self.image = self.sprites[int(self.current_sprite)]
 
     def flip_image(self):
-        if self.direction == -1 and self.isAnimating:  # go to left
+        if self.direction.x == -1 and self.isAnimating:  # go to left
             self.image = pygame.transform.flip(self.image, True, False)
         self.isAnimating = False
 
@@ -102,9 +103,18 @@ class Player(pygame.sprite.Sprite):
             # check_ground_border
             hits_ground = hits[0]
             if not (hits_ground.rect.left > self.pos.x or self.pos.x > hits_ground.rect.right):
+                # ground collide
                 if hits[0].rect.top:
-                    self.pos.y = hits[0].rect.top + buffer  # +3 buffer after collide for removing player trembling
+                    self.pos.y = hits[0].rect.top + buffer  # buffer after collide for removing player trembling
                     self.velocity.y = 0
+                    self.direction.y = 0
+                    # head in bottom ground collide
+        print(self.direction)
+            # if self.rect.y + buffer >= hits_ground.rect.bottom and self.velocity.y <= 0.0:
+            #     print(self.velocity.y, 'velo')
+            #     self.rect.y = 110
+            #     print(self.rect.centery >= hits_ground.rect.top)
+            #     pygame.time.delay(1000)
 
     def update(self):
         pygame.mask.from_surface(self.image)  # create mask image
