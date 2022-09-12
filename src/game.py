@@ -57,16 +57,15 @@ class GameState(Sound):
 
     def start_game(self):
         # ground and player collide
-        hits = pygame.sprite.spritecollide(player, ground_group, False)
-        if hits:
-            player.rect.y = hits[0].rect.top - player.PLAYER_HEIGHT_SIZE
-            player.gravity = 0
-            player.direction = 0
-
-        else:
-            player.gravity = 5
-            player.is_ground = False
-
+        # hits = pygame.sprite.spritecollide(player, ground_group, False)
+        # if hits:
+        #     player.rect.y = hits[0].rect.top - player.PLAYER_HEIGHT_SIZE
+        #     player.gravity = 0
+        #     player.direction = 0
+        #
+        # else:
+        #     player.gravity = 5
+        #     player.is_ground = False
         if level == 1:
             if not self.is_music_play:
                 self.current_music = Sound.forest_music_level_one(self)

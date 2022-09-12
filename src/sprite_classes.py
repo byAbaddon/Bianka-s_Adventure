@@ -1,6 +1,7 @@
 import pygame
-
 from settings import SCREEN_HEIGHT, SCREEN_WIDTH
+vec = pygame.math.Vector2
+# from src.game import ground_group
 
 
 # ============================================= class Player===============================================
@@ -10,9 +11,9 @@ class Player(pygame.sprite.Sprite):
     counter = 0
     SPRITE_ANIMATION_SPEED = 0.2
     PLAYER_HEIGHT_SIZE = 134 - 4
-    PLAYER_SPEED = 4
-    ACCELERATION = 6
     JUMP_HEIGHT = 20
+    PLAYER_SPEED = 0.5
+    PLAYER_FRICTION = -0.12
 
     def __init__(self, x=SCREEN_WIDTH - 700, y=SCREEN_HEIGHT - 330):
         pygame.sprite.Sprite.__init__(self)
@@ -24,23 +25,43 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = (x, y)
         self.rect.midbottom = self.rect.center
         self.direction = 1  # stay 0; go right 1; -1 go left
-        self.gravity = 5
+        self.gravity = 0
         self.is_jump = False
+        self.pos = vec(x, y)
+        self.velocity = vec(0, 0)
+        self.acceleration = vec(0, 0)
 
     def movie_plyer(self):
-        key = pygame.key.get_pressed()
+        self.acceleration = vec(0, 0)
+
         # fail gravity
         self.rect.y += self.gravity
         if self.gravity == 0:
             self.is_jump = False
 
+        # # ground and player collide
+        # hits = pygame.sprite.spritecollide(self, ground_group, False)
+        # if hits:
+        #     self.rect.y = hits[0].rect.top - self.PLAYER_HEIGHT_SIZE
+        #     self.gravity = 0
+        #     self.direction = 0
+        # else:
+        #     self.gravity = 5
+
+        key = pygame.key.get_pressed()
         if not self.is_jump:
             if key[pygame.K_RIGHT]:
                 self.direction = 1
-                self.rect.x += self.PLAYER_SPEED
+                self.acceleration.x = self.PLAYER_SPEED
             if key[pygame.K_LEFT]:
                 self.direction = -1
-                self.rect.x -= self.PLAYER_SPEED
+                self.acceleration.x = -self.PLAYER_SPEED
+            # apply friction
+            self.acceleration += self.velocity * self.PLAYER_FRICTION
+            # equations of motion
+            self.velocity += self.acceleration
+            self.pos += self.velocity + self.acceleration * 0.5
+            self.rect.center = self.pos
 
             if key[pygame.K_RIGHT] or key[pygame.K_LEFT]:
                 self.isAnimating = True
@@ -51,10 +72,10 @@ class Player(pygame.sprite.Sprite):
 
             self.current_sprite += 0.1
             if self.direction == 1:
-                self.rect.x += self.ACCELERATION
+                # self.rect.x += self.acceleration
                 self.image = pygame.image.load(f'assets/images/player/jump/2.png')
             if self.direction == -1:
-                self.rect.x -= self.ACCELERATION
+                # self.rect.x -= self.acceleration
                 self.image = pygame.transform.flip(pygame.image
                                                    .load(f'assets/images/player/jump/2.png'), True, False)
             if self.direction == 0:
@@ -89,7 +110,7 @@ class Player(pygame.sprite.Sprite):
 
 # ============================================= class Ground=============================================
 class Ground(pygame.sprite.Sprite):
-    def __init__(self, picture='../src/assets/images/ground/gr_1.png',  x=0, y=SCREEN_HEIGHT - 78):
+    def __init__(self, picture='../src/assets/images/ground/gr_1.png', x=0, y=SCREEN_HEIGHT - 78):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(picture).convert()
         self.rect = self.image.get_bounding_rect(min_alpha=1)
@@ -116,4 +137,3 @@ class Bullet(pygame.sprite.Sprite):
 
         if self.rect.x < 0 or self.rect.x > SCREEN_WIDTH or self.rect.y > SCREEN_HEIGHT:
             self.kill()  # remove old shot from bullets_group
-
