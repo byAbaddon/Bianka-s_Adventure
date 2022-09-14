@@ -60,7 +60,7 @@ class Player(pygame.sprite.Sprite):
         self.acceleration.x += self.velocity.x * self.PLAYER_FRICTION
         # equations of motion
         self.velocity += self.acceleration
-        self.pos += self.velocity + self.acceleration * 0.5
+        self.pos += self.velocity + self.acceleration * self.PLAYER_SPEED
         self.rect.midbottom = self.pos
 
         # shooting
@@ -68,22 +68,26 @@ class Player(pygame.sprite.Sprite):
             self.shooting_bullet_position()
 
     def sprite_frames(self):
-        self.current_sprite += self.SPRITE_ANIMATION_SPEED
-        if self.direction.y == 1 and pygame.key.get_pressed():
-            if self.current_sprite >= len(self.sprites):
-                self.current_sprite = 1
-            self.image = self.sprites[int(self.current_sprite)]
+        key = pygame.key.get_pressed()
+        if key[pygame.K_LEFT] or key[pygame.K_RIGHT]:
+            self.current_sprite += self.SPRITE_ANIMATION_SPEED
+            if self.direction.y == 1:
+                if self.current_sprite >= len(self.sprites):
+                    self.current_sprite = 1
+                self.image = self.sprites[int(self.current_sprite)]
         # if self.direction.y == 1 and self.direction.x == 1:
         #     self.image = pygame.image.load('../src/assets/images/player/jump/3.png')
         # if self.direction.y == 0:
         #     self.image = pygame.image.load('../src/assets/images/player/jump/1.png')
 
     def flip_image(self):
-        if self.direction.x == -1 and self.direction.y == 1:  # go to left
-            self.image = pygame.transform.flip(self.image, True, False)
-        # if self.direction.x == -1:
-        #     self.image = pygame.transform.flip(pygame.image
-        #                                        .load('../src/assets/images/player/jump/2.png'), True, False)
+        key = pygame.key.get_pressed()
+        if key[pygame.K_LEFT]:
+            if self.direction.x == -1 and self.direction.y == 1:  # go to left
+                self.image = pygame.transform.flip(self.image, True, False)
+            # if self.direction.x == -1:
+            #     self.image = pygame.transform.flip(pygame.image
+            #                                        .load('../src/assets/images/player/jump/2.png'), True, False)
 
     #  shooting bullets
     def shooting_bullet_position(self):
