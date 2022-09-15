@@ -9,89 +9,99 @@ class Player(pygame.sprite.Sprite):
     energy_power = 100
     player_dead = False
     counter = 0
-    COOLDOWN = 300  # milliseconds
-    GRAVITY = 0.3
-    SPRITE_ANIMATION_SPEED = 0.2
-    JUMP_HEIGHT = -8
+    COOLDOWN = 1200  # milliseconds
+    GRAVITY = 0.2
+    SPRITE_ANIMATION_SPEED = 0.3
+    JUMP_HEIGHT = -6
     PLAYER_SPEED = 0.5
     PLAYER_FRICTION = -0.12
 
     def __init__(self, all_sprite_groups_dict={}):
         pygame.sprite.Sprite.__init__(self)
         self.all_sprite_groups_dict = all_sprite_groups_dict
-        self.image = self.image = pygame.image.load('../src/assets/images/player/stay/1_right.png')
-        self.sprites = [pygame.image.load(f'../src/assets/images/player/walking/{x}.png') for x in range(1, 7)]
+        self.image = self.image = pygame.image.load('../src/assets/images/player/stay/1.png')
+        self.sprites_walking = [pygame.image.load(f'../src/assets/images/player/walking/{x}.png') for x in range(1, 7)]
         self.current_sprite = 0
-        self.isAnimating = False
         self.player_height_size = self.image.get_height()
         self.rect = self.image.get_bounding_rect(min_alpha=1)
         self.rect.center = (SCREEN_WIDTH - 700, SCREEN_HEIGHT - self.player_height_size - 50)
+        self.isAnimating = False
         self.is_jump = False
         self.is_fail = False
         self.direction = vec(0, 0)  # stay 0; -1 go left; right 1; down 1 ; up -1
         self.pos = vec(self.rect.x, self.rect.y)
         self.velocity = vec(0, 0)
         self.acceleration = vec(0, 0)
-        self.last_timer = pygame.time.get_ticks()
-        self.time_now = 0
+        self.last_time = pygame.time.get_ticks()
+        self.cooldown_time = 1500
 
     def movie_plyer(self):
         self.acceleration = vec(0, self.GRAVITY)  # fail gravity
         self.direction = vec(self.direction.x, self.direction.y)
 
         key = pygame.key.get_pressed()
-        if key[pygame.K_RIGHT] and self.direction.y == 1:
+
+        # jump up
+        if key[pygame.K_UP] and self.direction.y == 1 and self.direction.x != 0:
+            self.is_jump = True
+            self.direction.y = -1
+            self.velocity.y = self.JUMP_HEIGHT
+            if self.direction.x == 1:
+                self.image = pygame.image.load('../src/assets/images/player/jump/2.png')
+            else:
+                self.image = pygame.transform.flip(
+                    pygame.image.load('../src/assets/images/player/jump/2.png'), True, False)
+
+        if key[pygame.K_UP] and key[pygame.K_RIGHT]:
+            if not self.is_jump:
+                self.velocity.y = self.JUMP_HEIGHT
             self.direction = vec(1, 0)
             self.acceleration.x = self.PLAYER_SPEED
-        if key[pygame.K_LEFT] and self.direction.y == 1:
+            self.is_jump = True
+            self.image = pygame.image.load('../src/assets/images/player/walking/5.png')
+
+        if key[pygame.K_UP] and key[pygame.K_LEFT]:
+            if not self.is_jump:
+                self.velocity.y = self.JUMP_HEIGHT
             self.direction = vec(-1, 0)
             self.acceleration.x = -self.PLAYER_SPEED
-        # jump
-        if key[pygame.K_UP] and self.direction.y == 1:
-            # jump if player in the ground
-            # self.rect.y += 1
-            hits_ground = pygame.sprite.spritecollide(self, self.all_sprite_groups_dict['ground'], False)
-            # self.rect.y -= 1
-            if hits_ground:
-                self.direction.y = -1
-                self.velocity.y = self.JUMP_HEIGHT
+            self.is_jump = True
+            self.image = pygame.transform.flip(
+                pygame.image.load('../src/assets/images/player/walking/5.png'), True, False)
 
+        if key[pygame.K_RIGHT] and self.direction.y == 1:
+            self.direction.x = 1
+            self.acceleration.x = self.PLAYER_SPEED
+
+        if key[pygame.K_LEFT] and self.direction.y == 1:
+            self.direction.x = -1
+            self.acceleration.x = -self.PLAYER_SPEED
+            self.image = pygame.transform.flip(self.image, True, False)
+
+        # =============================================================== MOVEMENT !!!
         # apply friction
         self.acceleration.x += self.velocity.x * self.PLAYER_FRICTION
         # equations of motion
         self.velocity += self.acceleration
+        # set velocity in zero if player no movement
+        if abs(self.velocity.x) < 0.1:
+            self.velocity.x = 0
+        # player running
         self.pos += self.velocity + self.acceleration * self.PLAYER_SPEED
         self.rect.midbottom = self.pos
-
+        # ============================================================================
         # shooting
         if key[pygame.K_SPACE]:
             self.shooting_bullet_position()
 
     def sprite_frames(self):
         key = pygame.key.get_pressed()
-        if key[pygame.K_LEFT] or key[pygame.K_RIGHT]:
+        # left and right animation
+        if self.direction.y == 1 and (key[pygame.K_LEFT] or key[pygame.K_RIGHT]):
             self.current_sprite += self.SPRITE_ANIMATION_SPEED
-            if self.direction.y == 1:
-                if self.current_sprite >= len(self.sprites):
-                    self.current_sprite = 1
-                self.image = self.sprites[int(self.current_sprite)]
-        # if self.direction.y == 1 and self.direction.x == 1:
-        #     self.image = pygame.image.load('../src/assets/images/player/jump/3.png')
-        # if self.direction.y == 0:
-        #     self.image = pygame.image.load('../src/assets/images/player/jump/1.png')
-
-    def flip_image(self):
-        key = pygame.key.get_pressed()
-        if key[pygame.K_LEFT]:
-            if self.direction.x == -1 and self.direction.y == 1:  # go to left
-                self.image = pygame.transform.flip(self.image, True, False)
-            # if self.direction.x == -1:
-            #     self.image = pygame.transform.flip(pygame.image
-            #                                        .load('../src/assets/images/player/jump/2.png'), True, False)
-
-    #  shooting bullets
-    def shooting_bullet_position(self):
-        return self.rect.center
+            if self.current_sprite >= len(self.sprites_walking):
+                self.current_sprite = 1
+            self.image = self.sprites_walking[int(self.current_sprite)]
 
     def check_ground_collide(self):
         buffer = 5  # buffer image to improve collide
@@ -101,16 +111,28 @@ class Player(pygame.sprite.Sprite):
             # check_ground_border
             hits_ground = hits[0]
             if not (hits_ground.rect.left > self.pos.x or self.pos.x > hits_ground.rect.right):
-                # ground collide
+                # check is player head hits in bottom platform
                 if self.pos.y < hits[0].rect.bottom:
+                    # ground collide
                     self.pos.y = hits[0].rect.top + buffer  # buffer after collide for removing player trembling
                     self.velocity.y = 0
                     self.direction.y = 1
 
+                    # change image after jump
+                    if self.is_jump:
+                        if self.direction.x == 1:
+                            self.image = pygame.image.load('../src/assets/images/player/stay/1.png')
+                        else:
+                            self.image = pygame.transform.flip(
+                                pygame.image.load('../src/assets/images/player/stay/1.png'), True, False)
+                        self.is_jump = False
+
+    #  shooting bullets
+    def shooting_bullet_position(self):
+        return self.rect.center
+
     def update(self):
         pygame.mask.from_surface(self.image)  # create mask image
         self.sprite_frames()
-        self.flip_image()
         self.movie_plyer()
         self.check_ground_collide()
-        self.time_now = pygame.time.get_ticks()

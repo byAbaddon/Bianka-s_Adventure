@@ -23,7 +23,8 @@ all_spite_groups_dict = {'player': player_group, 'ground': ground_group}
 
 player = Player(all_spite_groups_dict)
 ground = Ground()
-ground2 = Ground('../src/assets/images/ground/2.png', 200, SCREEN_HEIGHT - 330)
+ground2 = Ground('../src/assets/images/ground/2.png', 100, SCREEN_HEIGHT - 150)
+# ground3 = Ground('../src/assets/images/ground/2.png', 400, SCREEN_HEIGHT - 170)
 bullet = Bullet(player.shooting_bullet_position())
 
 
@@ -59,10 +60,14 @@ class GameState(Sound):
         Score().event(self)
 
     def start_game(self,):
-        text_creator(26, f'Position: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 120, 10)
+        text_creator(26, f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 10)
+        text_creator(26, f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 80, 30)
+        text_creator(26, f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50)
+        text_creator(26, f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70)
+
         if level == 1:
             if not self.is_music_play:
-                self.current_music = Sound.forest_music_level_one(self)
+                # self.current_music = Sound.forest_music_level_one(self)
                 self.is_music_play = True
             background_image('../src/assets/images/backgrounds/bg_forest.jpg', 0, 100)
 
