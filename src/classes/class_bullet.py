@@ -7,9 +7,9 @@ class Bullet(pygame.sprite.Sprite):
 
     def __init__(self, x, y, direction):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('assets/images/bullets/spear_90.png')
+        self.image = pygame.image.load('assets/images/bullets/spear_right.png')
         self.rect = self.image.get_rect()
-        self.pos = vec(self.rect.x, self.rect.y)
+        self.rect.center = [x, y]
         self.direction = direction
 
     def direction_shooting(self):
@@ -20,7 +20,7 @@ class Bullet(pygame.sprite.Sprite):
         if self.direction.x == 1:
             self.rect.x += self.BULLED_SPEED
         elif self.direction.x == -1:
-            self.image = pygame.transform.flip(self.image, True, False)
+            self.image = pygame.image.load('assets/images/bullets/spear_left.png')
             self.rect.x -= self.BULLED_SPEED
 
     def update(self):

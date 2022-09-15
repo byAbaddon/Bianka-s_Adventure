@@ -76,16 +76,19 @@ class Player(pygame.sprite.Sprite):
             self.image = pygame.transform.flip(self.image, True, False)
         # shooting
         time_now = pygame.time.get_ticks()  # get time now
-        if key[pygame.K_SPACE] and time_now - self.last_time > self.COOLDOWN:
+        if key[pygame.K_SPACE] and self.direction.x != 0 and \
+                abs(self.velocity.x) <= 1.5 and time_now - self.last_time > self.COOLDOWN:
             self.last_time = time_now
+
+            self.shot_position = self.rect.midright
+            y = self.shot_position[1] - 26
+
             if self.direction.x == 1:
+                x = self.shot_position[0] + 30
                 self.image = pygame.image.load('../src/assets/images/player/angry/1.png')
             else:
                 self.image = pygame.image.load('../src/assets/images/player/angry/2.png')
-
-            self.shot_position = self.rect.midright
-            x = self.shot_position[0] + 30
-            y = self.shot_position[1] - 30
+                x = self.shot_position[0] - 104
 
             Bullet = self.class_bullet(x, y, self.direction)
             self.all_sprite_groups_dict['bullets'].add(Bullet)
