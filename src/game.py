@@ -18,20 +18,20 @@ ground_group = pygame.sprite.Group()
 bullets_group = pygame.sprite.Group()
 
 # add to all_sprite_groups
-all_spite_groups_dict = {'player': player_group, 'ground': ground_group}
+all_spite_groups_dict = {'player': player_group, 'ground': ground_group, 'bullets': bullets_group}
 # ======================================================================= initialize  Classes
 
-player = Player(all_spite_groups_dict)
+player = Player(Bullet, all_spite_groups_dict)
+# bullet = Bullet(player.shot_position, player.direction)
 ground = Ground()
 ground2 = Ground('../src/assets/images/ground/2.png', 100, SCREEN_HEIGHT - 150)
 # ground3 = Ground('../src/assets/images/ground/2.png', 400, SCREEN_HEIGHT - 170)
-bullet = Bullet(player.shooting_bullet_position())
 
 
 # add to group
 player_group.add(player)
 ground_group.add(ground, ground2)
-bullets_group.add(bullet)
+# bullets_group.add(bullet)
 
 
 # =======================================================================
