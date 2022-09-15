@@ -4,6 +4,7 @@ from src.settings import SCREEN_WIDTH, vec
 
 class Bullet(pygame.sprite.Sprite):
     BULLED_SPEED = 6
+    BULLED_SCALE = 1
 
     def __init__(self, x, y, direction):
         pygame.sprite.Sprite.__init__(self)
@@ -15,8 +16,7 @@ class Bullet(pygame.sprite.Sprite):
     def direction_shooting(self):
         # print(self.position)
         pygame.mask.from_surface(self.image)  # create mask image
-        # self.position += self.direction  # Update the position vector.
-        # self.rect.center = self.position  # Update the position rect.
+        self.rect.y += self.BULLED_SCALE
         if self.direction.x == 1:
             self.rect.x += self.BULLED_SPEED
         elif self.direction.x == -1:

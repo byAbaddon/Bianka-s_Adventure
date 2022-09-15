@@ -76,6 +76,7 @@ class Player(pygame.sprite.Sprite):
             self.image = pygame.transform.flip(self.image, True, False)
         # shooting
         time_now = pygame.time.get_ticks()  # get time now
+        # velocity is equal shooting window time
         if key[pygame.K_SPACE] and self.direction.x != 0 and \
                 abs(self.velocity.x) <= 1.5 and time_now - self.last_time > self.COOLDOWN:
             self.last_time = time_now
