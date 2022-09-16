@@ -1,5 +1,5 @@
 import pygame
-from src.settings import SCREEN_HEIGHT
+from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH
 
 
 class Ground(pygame.sprite.Sprite):
@@ -9,3 +9,8 @@ class Ground(pygame.sprite.Sprite):
         self.rect = self.image.get_bounding_rect(min_alpha=1)
         self.rect.x = x
         self.rect.y = y
+
+    def update(self):
+        pass
+
+

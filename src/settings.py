@@ -24,11 +24,25 @@ pygame.display.set_caption('*** Bianka\'s Adventure ***', 'default_icon')
 CLOCK = pygame.time.Clock()
 FPS = 60
 
+# ==================================================================== local variables
+bg_counter = 0
+
+
 # draw background
-def background_image(image, x=0, y=0):
-    bg_image = pygame.image.load(image).convert()
-    block_rect = bg_image.get_rect()
-    SCREEN.blit(bg_image, (block_rect.x + x, block_rect.y + y))
+def background_image(image, x=0, y=0, loop=False, speed=1):
+    global  bg_counter
+    bg_image = pygame.image.load(image).convert()  # convert make image fast
+    if not loop:
+        block_rect = bg_image.get_rect()
+        SCREEN.blit(bg_image, (block_rect.x + x, block_rect.y + y))
+    else:
+        # draw bg screen loop animation
+        rel_x = bg_counter % SCREEN_WIDTH
+        SCREEN.blit(bg_image, (rel_x - SCREEN_WIDTH, 102))
+        if rel_x < SCREEN_WIDTH:
+            SCREEN.blit(bg_image, (rel_x, 102))
+        bg_counter -= speed
+
 
 
 # create text

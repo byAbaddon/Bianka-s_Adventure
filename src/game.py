@@ -1,3 +1,5 @@
+import pygame
+
 from settings import *
 from src.classes.class_sound import Sound
 from state_classes import Intro, Menu, Legend, Score
@@ -22,15 +24,17 @@ all_spite_groups_dict = {'player': player_group, 'ground': ground_group, 'bullet
 # ======================================================================= initialize  Classes
 
 player = Player(Bullet, all_spite_groups_dict)
+# for test before create classes group
 # bullet = Bullet(player.shot_position, player.direction)
 ground = Ground()
-ground2 = Ground('../src/assets/images/ground/2.png', 100, SCREEN_HEIGHT - 150)
+# ground2 = Ground('../src/assets/images/ground/2.png', 100, SCREEN_HEIGHT - 150)
 # ground3 = Ground('../src/assets/images/ground/2.png', 400, SCREEN_HEIGHT - 170)
 
 
 # add to group
 player_group.add(player)
-ground_group.add(ground, ground2)
+ground_group.add(ground)
+# for test before create classes group
 # bullets_group.add(bullet)
 
 
@@ -60,6 +64,7 @@ class GameState(Sound):
         Score().event(self)
 
     def start_game(self,):
+        # developer utils
         text_creator(26, f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 10)
         text_creator(26, f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 80, 30)
         text_creator(26, f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50)
@@ -69,7 +74,9 @@ class GameState(Sound):
             if not self.is_music_play:
                 # self.current_music = Sound.forest_music_level_one(self)
                 self.is_music_play = True
-            background_image('../src/assets/images/backgrounds/bg_forest.jpg', 0, 100)
+
+            # draw bg loop animation
+            background_image('../src/assets/images/backgrounds/bg_forest_2.png', 0, 102., True)
 
             # draw sprite group
             ground_group.draw(SCREEN)
