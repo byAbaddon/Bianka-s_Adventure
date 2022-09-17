@@ -31,7 +31,7 @@ bg_counter = 0
 
 # draw background
 def background_image(image, x=0, y=0, loop=False, speed=1):
-    global  bg_counter
+    global bg_counter
     bg_image = pygame.image.load(image).convert()  # convert make image fast
     if not loop:
         block_rect = bg_image.get_rect()

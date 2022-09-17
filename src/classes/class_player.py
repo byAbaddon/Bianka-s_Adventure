@@ -8,8 +8,8 @@ class Player(pygame.sprite.Sprite):
     GRAVITY = 0.2
     SPRITE_ANIMATION_SPEED = 0.3
     JUMP_HEIGHT = -5.5
-    PLAYER_SPEED = 0.4
     PLAYER_FRICTION = -0.12
+    PLAYER_SPEED = 0.4
     energy_power = 100
     player_dead = False
     counter = 0
@@ -102,6 +102,7 @@ class Player(pygame.sprite.Sprite):
             Bullet = self.class_bullet(x, y, self.direction)
             self.all_sprite_groups_dict['bullets'].add(Bullet)
 
+
         # =============================================================== MOVEMENT !!!
         # apply friction
         self.acceleration.x += self.velocity.x * self.PLAYER_FRICTION
@@ -149,16 +150,13 @@ class Player(pygame.sprite.Sprite):
                         self.is_jump = False
 
     # movie background
-    def movie_background(self):
-        if self.direction.x == 1:
-            pass
 
     def update(self):
         pygame.mask.from_surface(self.image)  # create mask image
         self.sprite_frames()
         self.movie_plyer()
         self.check_ground_collide()
-        # self.movie_background()
+
 
 
 

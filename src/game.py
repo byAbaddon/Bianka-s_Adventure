@@ -22,12 +22,13 @@ bullets_group = pygame.sprite.Group()
 mushroom_group = pygame.sprite.Group()
 
 # add to all_sprite_groups
-all_spite_groups_dict = {'player': player_group, 'ground': ground_group, 'bullets': bullets_group}
+all_spite_groups_dict = {'player': player_group, 'ground': ground_group, 'bullets': bullets_group,
+                         'mushroom': mushroom_group}
 # ======================================================================= initialize  Classes
 
 player = Player(Bullet, all_spite_groups_dict)
 # for test before create classes group
-# bullet = Bullet(player.shot_position, player.direction)
+# bullet = Bullet(x, y, player.direction)
 ground = Ground()
 # ground2 = Ground('../src/assets/images/ground/2.png', 100, SCREEN_HEIGHT - 150)
 # ground3 = Ground('../src/assets/images/ground/2.png', 400, SCREEN_HEIGHT - 170)
@@ -41,6 +42,8 @@ ground_group.add(ground)
 mushroom_group.add(mushroom)
 
 # =======================================================================
+
+
 # Game State
 class GameState(Sound):
     def __init__(self):
@@ -106,6 +109,13 @@ class GameState(Sound):
         if self.state == 'start_game':
             self.start_game()
 
+    # check and prevent fload, all sprite groups
+    @staticmethod
+    def sprite_cleaner():
+        for k, v in all_spite_groups_dict.items():
+            if len(v) >= 20:
+                all_spite_groups_dict[k].empty()
+
 
 #  ========================================================================== create new GameState
 game_state = GameState()
@@ -115,6 +125,7 @@ while True:
     exit_game()
     SCREEN.fill(pygame.Color('black'))
     game_state.state_manager()
+    game_state.sprite_cleaner()
     pygame.display.update()
     CLOCK.tick(FPS)
 
