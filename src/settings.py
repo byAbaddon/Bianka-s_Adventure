@@ -25,6 +25,7 @@ CLOCK = pygame.time.Clock()
 FPS = 60
 
 # ==================================================================== local variables
+GROUND_HEIGHT_SIZE = 78
 bg_counter = 0
 
 
@@ -42,7 +43,6 @@ def background_image(image, x=0, y=0, loop=False, speed=1):
         if rel_x < SCREEN_WIDTH:
             SCREEN.blit(bg_image, (rel_x, 102))
         bg_counter -= speed
-
 
 
 # create text
