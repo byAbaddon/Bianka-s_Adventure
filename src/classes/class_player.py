@@ -51,7 +51,7 @@ class Player(pygame.sprite.Sprite):
                 self.image = pygame.transform.flip(
                     pygame.image.load('../src/assets/images/player/jump/2.png'), True, False)
         # jump up right
-        if key[pygame.K_UP] and key[pygame.K_RIGHT]:
+        if key[pygame.K_UP] and key[pygame.K_RIGHT] and self.pos.x < SCREEN_WIDTH - 60:
             if not self.is_jump:
                 self.velocity.y = self.JUMP_HEIGHT
             self.direction = vec(1, 0)
@@ -79,7 +79,7 @@ class Player(pygame.sprite.Sprite):
             self.acceleration.x = -self.PLAYER_SPEED
             self.image = pygame.transform.flip(self.image, True, False)
         # go right
-        if key[pygame.K_RIGHT] and self.direction.y == 1:
+        if key[pygame.K_RIGHT] and self.direction.y == 1 and self.pos.x < SCREEN_WIDTH - 60:
             self.direction.x = 1
             self.acceleration.x = self.PLAYER_SPEED
         # shooting

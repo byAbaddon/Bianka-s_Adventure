@@ -62,7 +62,8 @@ class GameState(Sound):
                 self.is_music_play = True
 
             # draw bg loop animation
-            background_image('../src/assets/images/backgrounds/bg_forest.png', 0, GROUND_HEIGHT_SIZE, True)
+            background_image('../src/assets/images/backgrounds/bg_forest.png', 0, GROUND_HEIGHT_SIZE,
+                             True, player.velocity.x)
 
             # draw sprite group
             ground_group.draw(SCREEN)
