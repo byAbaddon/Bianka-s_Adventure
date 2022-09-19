@@ -29,13 +29,16 @@ all_spite_groups_dict = {'player': player_group, 'ground': ground_group, 'bullet
 player = Player(Bullet, all_spite_groups_dict)
 # for test before create classes group
 # bullet = Bullet(x, y, player.direction)
+
 ground = Ground()
+
 # ground2 = Ground('../src/assets/images/ground/2.png', 100, SCREEN_HEIGHT - 150)
 # ground3 = Ground('../src/assets/images/ground/2.png', 400, SCREEN_HEIGHT - 170)
 mushroom = Mushroom()
 
 # add to group
 player_group.add(player)
+
 ground_group.add(ground)
 # for test before create classes group
 # bullets_group.add(bullet)
@@ -54,6 +57,7 @@ class GameState(Sound):
 
     def start_game(self,):
         # developer utils
+
         text_creator(26, f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 10)
         text_creator(26, f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 80, 30)
         text_creator(26, f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50)
@@ -64,12 +68,14 @@ class GameState(Sound):
                 # self.current_music = Sound.forest_music_level_one(self)
                 self.is_music_play = True
 
-            # draw bg loop animation
-            background_image('../src/assets/images/backgrounds/bg_forest.png', 0, GROUND_HEIGHT_SIZE,
-                             True, player.velocity.x)
+            # resize image
+            scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_1.png', 800, 510)
+
+            # draw bg loop animation /send data: pic,x,y,loop, speed,start border, scaled
+            background_image(scaled_img, 0, 90, True, player.velocity.x, player.direction.y, True)
 
             # draw sprite group
-            ground_group.draw(SCREEN)
+            # ground_group.draw(SCREEN)  # hide under bg
             player_group.draw(SCREEN)
             bullets_group.draw(SCREEN)
             mushroom_group.draw(SCREEN)
@@ -128,4 +134,3 @@ while True:
     game_state.sprite_cleaner()
     pygame.display.update()
     CLOCK.tick(FPS)
-

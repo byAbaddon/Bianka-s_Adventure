@@ -32,7 +32,8 @@ class Player(pygame.sprite.Sprite):
         self.acceleration = vec(0, 0)
         self.last_time = pygame.time.get_ticks()
         self.shot_position = self.pos
-        self.LEFT_SCREEN_BUFFER = self.player_width_size - 14
+        self.WALK_LEFT_SCREEN_BORDER = self.player_width_size - 14
+        self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH // 3
 
     def movie_plyer(self):
         self.acceleration = vec(0, self.GRAVITY)  # fail gravity
@@ -50,17 +51,22 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.image = pygame.transform.flip(
                     pygame.image.load('../src/assets/images/player/jump/2.png'), True, False)
+            # change image if player jump in Right Boreder
+            if self.pos.x >= self.WALK_LEFT_SCREEN_BORDER and key[pygame.K_RIGHT]:
+                self.image = pygame.image.load('../src/assets/images/player/walking/5.png')
+
         # jump up right
-        if key[pygame.K_UP] and key[pygame.K_RIGHT] and self.pos.x < SCREEN_WIDTH - 60:
+        if key[pygame.K_UP] and key[pygame.K_RIGHT] and self.pos.x < self.WALK_RIGHT_SCREEN_BORDER:
             if not self.is_jump:
                 self.velocity.y = self.JUMP_HEIGHT
             self.direction = vec(1, 0)
             self.acceleration.x = self.PLAYER_SPEED
             self.is_jump = True
             self.image = pygame.image.load('../src/assets/images/player/walking/5.png')
+
         # jump up left
-        if key[pygame.K_UP] and key[pygame.K_LEFT] and self.pos.x >= self.LEFT_SCREEN_BUFFER:
-            if self.pos.x <= 70:
+        if key[pygame.K_UP] and key[pygame.K_LEFT] and self.pos.x >= self.WALK_LEFT_SCREEN_BORDER:
+            if self.pos.x <= 80:
                 self.direction.x = 1
             else:
                 self.direction.x = -1
@@ -70,23 +76,34 @@ class Player(pygame.sprite.Sprite):
             self.is_jump = True
             self.image = pygame.transform.flip(
                 pygame.image.load('../src/assets/images/player/walking/5.png'), True, False)
+
         # go left
-        if key[pygame.K_LEFT] and self.direction.y == 1 and self.pos.x >= self.LEFT_SCREEN_BUFFER:
-            if self.pos.x <= 70:
+        if key[pygame.K_LEFT] and self.direction.y == 1 and self.pos.x >= self.WALK_LEFT_SCREEN_BORDER:
+            if self.pos.x <= 80:
                 self.direction.x = 1
             else:
                 self.direction.x = -1
             self.acceleration.x = -self.PLAYER_SPEED
             self.image = pygame.transform.flip(self.image, True, False)
+
         # go right
-        if key[pygame.K_RIGHT] and self.direction.y == 1 and self.pos.x < SCREEN_WIDTH - 60:
+        if key[pygame.K_RIGHT] and self.direction.y == 1 and self.pos.x <= self.WALK_RIGHT_SCREEN_BORDER:
             self.direction.x = 1
             self.acceleration.x = self.PLAYER_SPEED
+
+        # running
+        # if key[pygame.K_a] and self.pos.x > self.WALK_LEFT_SCREEN_BORDER:
+        #     if not self.direction.y == -1 and not self.direction.y == 0:
+        #         if self.direction.x == 1:
+        #             self.velocity.x += 0.5
+        #         elif self.direction.x == -1:
+        #             self.velocity.x -= 0.5
+
         # shooting
         time_now = pygame.time.get_ticks()  # get time now
         # velocity is equal shooting window time
-        if key[pygame.K_SPACE] and self.direction.x != 0\
-                and abs(self.velocity.x) <= 1.5 and time_now - self.last_time > self.COOLDOWN:
+        if key[pygame.K_s] and self.direction.x != 0 \
+                and abs(self.velocity.x) <= 3.0 and time_now - self.last_time > self.COOLDOWN:
             self.last_time = time_now
 
             self.shot_position = self.rect.midright
@@ -99,9 +116,8 @@ class Player(pygame.sprite.Sprite):
                 self.image = pygame.image.load('../src/assets/images/player/angry/2.png')
                 x = self.shot_position[0] - 104
 
-            Bullet = self.class_bullet(x, y, self.direction)
-            self.all_sprite_groups_dict['bullets'].add(Bullet)
-
+            bullet = self.class_bullet(x, y, self.direction)
+            self.all_sprite_groups_dict['bullets'].add(bullet)
 
         # =============================================================== MOVEMENT !!!
         # apply friction
@@ -109,8 +125,8 @@ class Player(pygame.sprite.Sprite):
         # equations of motion
         self.velocity += self.acceleration
         # set velocity in zero if player no movement
-        if abs(self.velocity.x) < 0.1:
-            self.velocity.x = 0
+        # if abs(self.velocity.x) < 0.1:
+        #     self.velocity.x = 0
         # player running
         self.pos += self.velocity + self.acceleration * self.PLAYER_SPEED
         self.rect.midbottom = self.pos
@@ -119,7 +135,8 @@ class Player(pygame.sprite.Sprite):
     def sprite_frames(self):
         key = pygame.key.get_pressed()
         # left and right animation
-        if self.direction.y == 1 and (key[pygame.K_LEFT] or key[pygame.K_RIGHT]):
+        if self.direction.y == 1 and (key[pygame.K_LEFT] or (key[pygame.K_RIGHT]) or
+                                      (self.pos.x >= self.WALK_RIGHT_SCREEN_BORDER) and key[pygame.K_RIGHT]):
             self.current_sprite += self.SPRITE_ANIMATION_SPEED
             if self.current_sprite >= len(self.sprites_walking):
                 self.current_sprite = 1
@@ -149,14 +166,8 @@ class Player(pygame.sprite.Sprite):
                                 pygame.image.load('../src/assets/images/player/stay/1.png'), True, False)
                         self.is_jump = False
 
-    # movie background
-
     def update(self):
         pygame.mask.from_surface(self.image)  # create mask image
         self.sprite_frames()
         self.movie_plyer()
         self.check_ground_collide()
-
-
-
-

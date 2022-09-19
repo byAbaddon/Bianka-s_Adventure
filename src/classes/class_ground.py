@@ -3,7 +3,7 @@ from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT_SIZE
 
 
 class Ground(pygame.sprite.Sprite):
-    def __init__(self, picture='../src/assets/images/ground/gr_1.png', x=0, y=SCREEN_HEIGHT - GROUND_HEIGHT_SIZE):
+    def __init__(self, picture='../src/assets/images/ground/gr_1.png', x=0, y=SCREEN_HEIGHT - GROUND_HEIGHT_SIZE + 10):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(picture).convert_alpha()
         self.rect = self.image.get_bounding_rect(min_alpha=1)
