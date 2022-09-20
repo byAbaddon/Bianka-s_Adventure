@@ -31,11 +31,12 @@ BG_SPEED = 5
 BG_LOOP_SPEED_INCREASE = 3
 WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH // 3
 bg_counter = 0
+bg_current_speed = 0
 
 
 # draw background :Player data:  speed=1, p_pos_x=100, start_border_run=0,
 def background_image(image, x=0, y=0, loop=False, speed=1, p_direction_y=1, is_image_scaled=False):
-    global bg_counter
+    global bg_counter, bg_current_speed
     if not is_image_scaled:
         bg_image = pygame.image.load(image).convert()  # convert make image fast
     else:
@@ -63,6 +64,7 @@ def background_image(image, x=0, y=0, loop=False, speed=1, p_direction_y=1, is_i
         if key_pressed(pygame.K_RIGHT) and key_pressed(pygame.K_a) and key_pressed(pygame.K_UP):
             speed = BG_SPEED + BG_LOOP_SPEED_INCREASE
         bg_counter -= speed
+        bg_current_speed = speed
 
 
 # create text

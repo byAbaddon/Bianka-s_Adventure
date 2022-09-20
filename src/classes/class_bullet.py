@@ -1,7 +1,6 @@
 import pygame
 
 
-
 class Bullet(pygame.sprite.Sprite):
     BULLED_SPEED = 6
     BULLED_SCALE = 1

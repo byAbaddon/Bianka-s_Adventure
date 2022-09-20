@@ -17,7 +17,6 @@ class Mushroom(pygame.sprite.Sprite):
         # if self.rect.x < 0:
         #     self.rect.x -= 1
 
-
     def update(self):
         pygame.mask.from_surface(self.image)
-        self.movie_mushroom()
+        # self.movie_mushroom()

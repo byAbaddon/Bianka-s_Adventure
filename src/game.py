@@ -7,6 +7,7 @@ from classes.class_player import Player
 from classes.class_ground import Ground
 from classes.class_bullet import Bullet
 from classes.class_mushroom import Mushroom
+from classes.class_background import Background
 
 
 # ================================================================= TEST imported classes
@@ -16,6 +17,7 @@ from classes.class_mushroom import Mushroom
 level = 1
 
 # ======================================================================== create Sprite groups
+background_group = pygame.sprite.Group()
 player_group = pygame.sprite.GroupSingle()
 ground_group = pygame.sprite.Group()
 bullets_group = pygame.sprite.Group()
@@ -48,12 +50,14 @@ mushroom_group.add(mushroom)
 
 
 # Game State
-class GameState(Sound):
+class GameState(Sound, Background):
     def __init__(self):
         super().__init__()
         self.state = 'intro'
         self.current_music = Sound.intro_music(self)
         self.is_music_play = False
+        self.background = None
+        self.is_bg_created = False
 
     def start_game(self,):
         # developer utils
@@ -67,12 +71,17 @@ class GameState(Sound):
             if not self.is_music_play:
                 # self.current_music = Sound.forest_music_level_one(self)
                 self.is_music_play = True
+            if not self.is_bg_created:
+                # resize image
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_1.png', 800, 510)
 
-            # resize image
-            scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_1.png', 800, 510)
+                # draw bg loop animation /send data: pic,x,y,loop, speed,start border, scaled
+                # background_image(scaled_img, 0, 90, True, player.velocity.x, True)
+                self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
+                self.is_bg_created = True
 
-            # draw bg loop animation /send data: pic,x,y,loop, speed,start border, scaled
-            background_image(scaled_img, 0, 90, True, player.velocity.x, player.direction.y, True)
+            # update BG
+            self.background.update()
 
             # draw sprite group
             # ground_group.draw(SCREEN)  # hide under bg
