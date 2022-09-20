@@ -7,7 +7,7 @@ class Player(pygame.sprite.Sprite):
     COOLDOWN = 1000  # milliseconds
     GRAVITY = 0.2
     SPRITE_ANIMATION_SPEED = 0.3
-    JUMP_HEIGHT = -5.5
+    JUMP_HEIGHT = -6
     PLAYER_FRICTION = -0.12
     PLAYER_SPEED = 0.4
     energy_power = 100

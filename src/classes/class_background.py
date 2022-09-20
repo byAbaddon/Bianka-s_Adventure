@@ -7,7 +7,7 @@ class Background:
     WALK_LEFT_SCREEN_BORDER = 80
     BG_SPEED = 3.33
     BG_SPEED_INCREASE = 2.67
-    bg_current_mt = 0
+    distance_mt = 0
     bg_counter = 0
 
     def __init__(self, image=None, x=0, y=0, is_loop=False, speed=1, is_image_scaled=False):
@@ -48,9 +48,11 @@ class Background:
                 self.speed += self.BG_SPEED_INCREASE
 
         self.bg_counter -= self.speed
+        self.distance_mt += self.speed / 10
 
     def draw_label(self):
         text_creator(26, f'BG_speed: {self.speed:.2f}', 'white', 290, 10)
+        text_creator(26, f'BG_distance: {int(self.distance_mt)}', 'white', 290, 30)
 
     def update(self):
         self.create_bg()

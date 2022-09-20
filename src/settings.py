@@ -27,8 +27,8 @@ FPS = 60
 
 # ==================================================================== local variables
 GROUND_HEIGHT_SIZE = 78
-BG_SPEED = 5
-BG_LOOP_SPEED_INCREASE = 3
+BG_SPEED = 3.33
+BG_LOOP_SPEED_INCREASE = 2.27
 WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH // 3
 bg_counter = 0
 bg_current_speed = 0

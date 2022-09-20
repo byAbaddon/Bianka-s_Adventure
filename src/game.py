@@ -36,7 +36,6 @@ ground = Ground()
 
 # ground2 = Ground('../src/assets/images/ground/2.png', 100, SCREEN_HEIGHT - 150)
 # ground3 = Ground('../src/assets/images/ground/2.png', 400, SCREEN_HEIGHT - 170)
-mushroom = Mushroom()
 
 # add to group
 player_group.add(player)
@@ -44,24 +43,26 @@ player_group.add(player)
 ground_group.add(ground)
 # for test before create classes group
 # bullets_group.add(bullet)
-mushroom_group.add(mushroom)
+
 
 # =======================================================================
 
 
 # Game State
-class GameState(Sound, Background):
-    def __init__(self):
+class GameState(pygame.sprite.Sprite, Sound, Background):
+    START_TIMER = pygame.time.get_ticks()
+
+    def __init__(self,):
         super().__init__()
         self.state = 'intro'
         self.current_music = Sound.intro_music(self)
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
+        self.is_mushroom_created = False
 
     def start_game(self,):
         # developer utils
-
         text_creator(26, f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 10)
         text_creator(26, f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 80, 30)
         text_creator(26, f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50)
@@ -80,16 +81,34 @@ class GameState(Sound, Background):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 self.is_bg_created = True
 
+            # ============== create level items, enemy, and more
+            speed = self.background.speed
+            mt = int(self.background.distance_mt)
+            # ---------create mushrooms
+            time_now = pygame.time.get_ticks()
+            if mt == 36 or mt == 160 or mt == 190:
+                if time_now - self.START_TIMER > 300:
+                    self.START_TIMER = time_now
+                    self.background.distance_mt += 1
+                    mushroom = Mushroom('../src/assets/images/stones/3.png')
+                    mushroom_group.add(mushroom)
+            print('mt ', len(mushroom_group))
+
+
+
+
+            # print(len(all_spite_groups_dict['mushroom']) , end=' ')
+            # =================================================== UPDATE LEVEL
             # update BG
             self.background.update()
 
-            # draw sprite group
+            # --------------------------- draw sprite group
             # ground_group.draw(SCREEN)  # hide under bg
             player_group.draw(SCREEN)
             bullets_group.draw(SCREEN)
             mushroom_group.draw(SCREEN)
 
-            # update sprite group
+            # --------------------------- update sprite group
             ground_group.update()
             player_group.update()
             bullets_group.update()
