@@ -2,7 +2,6 @@ import pygame
 from sys import exit
 from pygame.math import Vector2
 
-
 vec = Vector2
 # ========================================================================== initialize
 pygame.init()

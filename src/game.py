@@ -6,8 +6,10 @@ from state_classes import Intro, Menu, Legend, Score
 from classes.class_player import Player
 from classes.class_ground import Ground
 from classes.class_bullet import Bullet
-from classes.class_mushroom import Mushroom
 from classes.class_background import Background
+from classes.class_mushroom import Mushroom
+from classes.class_stone import Stone
+
 
 
 # ================================================================= TEST imported classes
@@ -22,10 +24,11 @@ player_group = pygame.sprite.GroupSingle()
 ground_group = pygame.sprite.Group()
 bullets_group = pygame.sprite.Group()
 mushroom_group = pygame.sprite.Group()
+stone_group = pygame.sprite.Group()
 
 # add to all_sprite_groups
 all_spite_groups_dict = {'player': player_group, 'ground': ground_group, 'bullets': bullets_group,
-                         'mushroom': mushroom_group}
+                         'mushroom': mushroom_group, 'stone': stone_group}
 # ======================================================================= initialize  Classes
 
 player = Player(Bullet, all_spite_groups_dict)
@@ -68,6 +71,18 @@ class GameState(pygame.sprite.Sprite, Sound, Background):
         text_creator(26, f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50)
         text_creator(26, f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70)
 
+        # function sprite creator
+        def sprite_creator(dictionary={}, input_class=None, group_class=None):
+            time_now = pygame.time.get_ticks()
+            # ---------create
+            for k, v in dictionary.items():  # t: 'item pic'
+                if k == int(self.background.distance_mt):
+                    if time_now - self.START_TIMER > 300:
+                        self.START_TIMER = time_now
+                        new_class = input_class(f'../src/assets/images/{v}')
+                        group_class.add(new_class)
+                        self.background.distance_mt += 1  # prevent create double sp if player stay in same position
+
         if level == 1:
             if not self.is_music_play:
                 # self.current_music = Sound.forest_music_level_one(self)
@@ -75,29 +90,16 @@ class GameState(pygame.sprite.Sprite, Sound, Background):
             if not self.is_bg_created:
                 # resize image
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_1.png', 800, 510)
-
-                # draw bg loop animation /send data: pic,x,y,loop, speed,start border, scaled
-                # background_image(scaled_img, 0, 90, True, player.velocity.x, True)
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 self.is_bg_created = True
 
             # ============== create level items, enemy, and more
-            speed = self.background.speed
-            mt = int(self.background.distance_mt)
-            # ---------create mushrooms
-            time_now = pygame.time.get_ticks()
-            if mt == 36 or mt == 160 or mt == 190:
-                if time_now - self.START_TIMER > 300:
-                    self.START_TIMER = time_now
-                    self.background.distance_mt += 1
-                    mushroom = Mushroom('../src/assets/images/stones/3.png')
-                    mushroom_group.add(mushroom)
-            print('mt ', len(mushroom_group))
+            # create stones
+            stone_dict = {40: 'stones/3.png', 90: 'stones/3.png', 110: 'stones/3.png'}
 
+            sprite_creator(stone_dict, Stone, stone_group)
+            print('mt ', len(stone_group))
 
-
-
-            # print(len(all_spite_groups_dict['mushroom']) , end=' ')
             # =================================================== UPDATE LEVEL
             # update BG
             self.background.update()
@@ -107,12 +109,14 @@ class GameState(pygame.sprite.Sprite, Sound, Background):
             player_group.draw(SCREEN)
             bullets_group.draw(SCREEN)
             mushroom_group.draw(SCREEN)
+            stone_group.draw(SCREEN)
 
             # --------------------------- update sprite group
             ground_group.update()
             player_group.update()
             bullets_group.update()
             mushroom_group.update()
+            stone_group.update()
 
     def intro(self):
         Intro()

@@ -7,7 +7,7 @@ class Stone(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self,)
         self.image = pygame.image.load(pic).convert_alpha()
         self.rect = self.image.get_bounding_rect(min_alpha=1)
-        self.rect.center = (x, y)
+        self.rect.center = (x, y - 10)
 
     def movie(self):
         if key_pressed(pygame.K_RIGHT):
