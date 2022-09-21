@@ -2,13 +2,13 @@ import pygame
 from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT_SIZE, key_pressed, BG_SPEED, BG_LOOP_SPEED_INCREASE
 
 
-class Mushroom(pygame.sprite.Sprite):
-    def __init__(self, pic='../src/assets/images/mushroom/red.png', x=SCREEN_WIDTH, y=SCREEN_HEIGHT - GROUND_HEIGHT_SIZE):
+class Item(pygame.sprite.Sprite):
+    def __init__(self, pic='../src/assets/images/signs/1.png', x=SCREEN_WIDTH, y=SCREEN_HEIGHT - GROUND_HEIGHT_SIZE):
         pygame.sprite.Sprite.__init__(self,)
-        self.name = pic.split('/')[-1][:-4]
         self.image = pygame.image.load(pic).convert_alpha()
+        self.image_height_size = self.image.get_height()
         self.rect = self.image.get_bounding_rect(min_alpha=1)
-        self.rect.center = (x, y - 4)
+        self.rect.midtop = (x, y - self.image_height_size + 13)
 
     def movie(self):
         if key_pressed(pygame.K_RIGHT):

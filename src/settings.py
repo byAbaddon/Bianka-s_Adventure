@@ -39,7 +39,7 @@ def background_image(image, x=0, y=0, loop=False, speed=1, p_direction_y=1, is_i
     if not is_image_scaled:
         bg_image = pygame.image.load(image).convert()  # convert make image fast
     else:
-        bg_image = image
+        bg_image = image.convert()  # convert make image fast
     if not loop:
         block_rect = bg_image.get_rect()
         SCREEN.blit(bg_image, (block_rect.x + x, block_rect.y + y))

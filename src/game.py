@@ -9,6 +9,7 @@ from classes.class_bullet import Bullet
 from classes.class_background import Background
 from classes.class_mushroom import Mushroom
 from classes.class_stone import Stone
+from classes.class_item import Item
 
 
 
@@ -25,10 +26,11 @@ ground_group = pygame.sprite.Group()
 bullets_group = pygame.sprite.Group()
 mushroom_group = pygame.sprite.Group()
 stone_group = pygame.sprite.Group()
+item_group = pygame.sprite.Group()
 
 # add to all_sprite_groups
-all_spite_groups_dict = {'player': player_group, 'ground': ground_group, 'bullets': bullets_group,
-                         'mushroom': mushroom_group, 'stone': stone_group}
+all_spite_groups_dict = {'player': player_group, 'bullets': bullets_group, 'ground': ground_group,
+                         'item': item_group, 'mushroom': mushroom_group, 'stone': stone_group}
 # ======================================================================= initialize  Classes
 
 player = Player(Bullet, all_spite_groups_dict)
@@ -42,7 +44,6 @@ ground = Ground()
 
 # add to group
 player_group.add(player)
-
 ground_group.add(ground)
 # for test before create classes group
 # bullets_group.add(bullet)
@@ -65,11 +66,13 @@ class GameState(pygame.sprite.Sprite, Sound, Background):
         self.is_mushroom_created = False
 
     def start_game(self,):
+        # top display frames
+        background_image('../src/assets/images/top_frames/4.png', 0, -5, False)
         # developer utils
-        text_creator(26, f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 10)
-        text_creator(26, f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 80, 30)
-        text_creator(26, f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50)
-        text_creator(26, f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70)
+        text_creator(22, f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15)
+        text_creator(22, f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33)
+        text_creator(22, f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50)
+        text_creator(22, f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70)
 
         # function sprite creator
         def sprite_creator(dictionary={}, input_class=None, group_class=None):
@@ -85,7 +88,7 @@ class GameState(pygame.sprite.Sprite, Sound, Background):
 
         if level == 1:
             if not self.is_music_play:
-                # self.current_music = Sound.forest_music_level_one(self)
+                self.current_music = Sound.forest_music_level_one(self)
                 self.is_music_play = True
             if not self.is_bg_created:
                 # resize image
@@ -94,11 +97,28 @@ class GameState(pygame.sprite.Sprite, Sound, Background):
                 self.is_bg_created = True
 
             # ============== create level items, enemy, and more
-            # create stones
-            stone_dict = {40: 'stones/3.png', 90: 'stones/3.png', 110: 'stones/3.png'}
+            # create signs
+            signs_dict = {0: 'signs/1.png', 500: 'signs/2.png', 1000: 'signs/3.png'}
+            sprite_creator(signs_dict, Item, item_group)
 
-            sprite_creator(stone_dict, Stone, stone_group)
-            print('mt ', len(stone_group))
+            # create mushroom
+            mushroom_dict = {30: 'mushroom/grey.png', 50: 'mushroom/grey.png', 90: 'mushroom/grey.png',
+                             140: 'mushroom/orange.png', 190: 'mushroom/orange.png',
+                             220: 'mushroom/red.png',
+                             330: 'mushroom/red.png', 350: 'mushroom/purple.png',
+                             460: 'mushroom/grey.png', }
+            sprite_creator(mushroom_dict, Mushroom, mushroom_group)
+
+            # create stones
+            stones_dict = {110: 'stones/3.png',
+                           200: 'stones/3.png', 290: 'stones/3.png',
+                           310: 'stones/3.png',
+                           420: 'stones/3.png'}
+            sprite_creator(stones_dict, Stone, stone_group)
+
+
+
+            # print('mt ', len(stone_group))
 
             # =================================================== UPDATE LEVEL
             # update BG
@@ -106,17 +126,19 @@ class GameState(pygame.sprite.Sprite, Sound, Background):
 
             # --------------------------- draw sprite group
             # ground_group.draw(SCREEN)  # hide under bg
-            player_group.draw(SCREEN)
             bullets_group.draw(SCREEN)
+            item_group.draw(SCREEN)
             mushroom_group.draw(SCREEN)
             stone_group.draw(SCREEN)
+            player_group.draw(SCREEN)
 
             # --------------------------- update sprite group
             ground_group.update()
-            player_group.update()
+            item_group.update()
             bullets_group.update()
             mushroom_group.update()
             stone_group.update()
+            player_group.update()
 
     def intro(self):
         Intro()

@@ -1,9 +1,10 @@
 import pygame
 from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH, vec
+from src.classes.class_sound import Sound
 
 
 # ============================================= class Player===============================================
-class Player(pygame.sprite.Sprite):
+class Player(pygame.sprite.Sprite, Sound):
     COOLDOWN = 1000  # milliseconds
     GRAVITY = 0.2
     SPRITE_ANIMATION_SPEED = 0.3
@@ -166,8 +167,18 @@ class Player(pygame.sprite.Sprite):
                                 pygame.image.load('../src/assets/images/player/stay/1.png'), True, False)
                         self.is_jump = False
 
+    def check_mushroom_collide(self):
+        for sprite in pygame.sprite.spritecollide(self, self.all_sprite_groups_dict['mushroom'], True):
+            print(sprite.name)
+            if sprite.name == 'purple':
+                Sound.play_sound('../src/assets/sounds/player/fart.mp3')
+            else:
+                Sound.play_sound('../src/assets/sounds/player/grab.wav')
+
+
     def update(self):
         pygame.mask.from_surface(self.image)  # create mask image
         self.sprite_frames()
         self.movie_plyer()
         self.check_ground_collide()
+        self.check_mushroom_collide()
