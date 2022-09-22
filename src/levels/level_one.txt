@@ -1,4 +1,17 @@
-new
-ali baba
-haha
-[90 : 'mushroom.png']
+#AREA - 1  #Level - 1   READ FROM ROW 1
+{0: 'signs/start', 50: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/big', 140: 'mushroom/orange', 160: 'stones/big', 200: 'mushroom/grey', 230: 'stones/big', 260: 'stones/big', 290: 'mushroom/grey',320: 'stones/big', 350: 'stones/big', 400: 'stones/big', 440: 'mushroom/orange', 460: 'mushroom/red', 500: 'signs/distance',   550: 'mushroom/grey', 560: 'mushroom/grey', 570: 'mushroom/grey', 600: 'stones/big', 640: 'mushroom/grey', 700 : 'stones/big', 740  : 'mushroom/purple', 800: 'stones/big', 840: 'mushroom/grey', 840: 'mushroom/grey', 860: 'mushroom/grey', 870: 'mushroom/grey', 900: 'stones/big',  960: 'stones/big', 980: 'mushroom/red', 1000: 'signs/goal'}
+
+
+
+          : 'signs/goal'
+          : 'mushroom/grey',
+          : 'stones/big',
+
+
+      {0: 'signs/start', 50: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/big', 140: 'mushroom/orange',
+ 160: 'stones/big' 200: 'mushroom/grey', 230: 'stones/big', 260: 'stones/big', 290: 'mushroom/grey',
+ 320: 'stones/big', 350: 'stones/big', 400: 'stones/big', 440: 'mushroom/orange', 460: 'mushroom/red',
+ 500: signs/distance,   550: 'mushroom/grey', 560: 'mushroom/grey', 570: 'mushroom/grey', 600: 'stones/big',
+ 640: 'mushroom/grey', 700 : 'stones/big', 740  : 'mushroom/purple', 800: 'stones/big', 840: 'mushroom/grey',
+ 840: 'mushroom/grey', 860: 'mushroom/grey', 870: 'mushroom/grey', 900: 'stones/big',  960: 'stones/big',
+ 980 : 'mushroom/red', 100: 'signs/goal'}

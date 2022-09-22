@@ -3,9 +3,10 @@ from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT_SIZE, key_pr
 
 
 class Item(pygame.sprite.Sprite):
-    def __init__(self, pic='../src/assets/images/signs/1.png', x=SCREEN_WIDTH, y=SCREEN_HEIGHT - GROUND_HEIGHT_SIZE):
+    def __init__(self, pic='../src/assets/images/signs/start.png', x=SCREEN_WIDTH, y=SCREEN_HEIGHT - GROUND_HEIGHT_SIZE):
         pygame.sprite.Sprite.__init__(self,)
-        self.name = pic.split('/')[-1][:-4]
+        self.group_name = pic.split('/')[-2]
+        self.item_name = pic.split('/')[-1][:-4]
         self.image = pygame.image.load(pic).convert_alpha()
         self.image_height_size = self.image.get_height()
         self.rect = self.image.get_bounding_rect(min_alpha=1)

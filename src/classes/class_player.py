@@ -12,6 +12,9 @@ class Player(pygame.sprite.Sprite, Sound):
     PLAYER_FRICTION = -0.12
     PLAYER_SPEED = 0.4
     energy_power = 100
+    points = 0
+    statistics = {}
+    score = points
     player_dead = False
     counter = 0
 
@@ -48,7 +51,7 @@ class Player(pygame.sprite.Sprite, Sound):
             self.direction.y = -1
             self.velocity.y = self.JUMP_HEIGHT
             if self.direction.x == 1:
-                self.image = pygame.image.load('../src/assets/images/player/jump/2.png')
+                self.image = pygame.image.load('../src/assets/images/player/jump/1.png')
             else:
                 self.image = pygame.transform.flip(
                     pygame.image.load('../src/assets/images/player/jump/2.png'), True, False)
@@ -164,20 +167,31 @@ class Player(pygame.sprite.Sprite, Sound):
                             self.image = pygame.image.load('../src/assets/images/player/stay/1.png')
                         else:
                             self.image = pygame.transform.flip(
-                                pygame.image.load('../src/assets/images/player/stay/1.png'), True, False)
+                                pygame.image.load('../src/assets/images/player/stay/2.png'), True, False)
                         self.is_jump = False
 
-    def check_mushroom_collide(self):
-        for sprite in pygame.sprite.spritecollide(self, self.all_sprite_groups_dict['mushroom'], True):
-            print(sprite.name)
-            if sprite.name == 'purple':
-                Sound.play_sound('../src/assets/sounds/player/fart.mp3')
-            else:
-                Sound.play_sound('../src/assets/sounds/player/grab.wav')
+    def check_item_collide(self):
+        for sprite in pygame.sprite.spritecollide(self, self.all_sprite_groups_dict['items'], False,
+                                                  pygame.sprite.collide_mask):
+            if sprite.group_name not in self.statistics:
+                self.statistics[sprite.group_name] = {sprite.item_name: 0 }
+            match sprite.group_name:
+                case 'mushroom':
+                    sprite.kill()
+                    Sound.play_sound('../src/assets/sounds/player/grab.wav')
+                    if sprite.item_name == 'grey':
+                        self.points += 100
+                    if sprite.item_name == 'purple':
+                        Sound.play_sound('../src/assets/sounds/player/fart.mp3')
+                    if sprite.item_name not in self.statistics[sprite.group_name]:
+                        self.statistics[sprite.group_name][sprite.item_name] = 0
+                    self.statistics[sprite.group_name][sprite.item_name] += 1
+
+            print(self.statistics)
 
     def update(self):
         pygame.mask.from_surface(self.image)  # create mask image
         self.sprite_frames()
         self.movie_plyer()
         self.check_ground_collide()
-        self.check_mushroom_collide()
+        self.check_item_collide()

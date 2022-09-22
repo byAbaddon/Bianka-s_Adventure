@@ -21,7 +21,7 @@ level = 1
 
 # ======================================================================== create Sprite groups
 background_group = pygame.sprite.Group()
-player_group = pygame.sprite.GroupSingle()
+player_group = pygame.sprite.Group()
 ground_group = pygame.sprite.Group()
 bullets_group = pygame.sprite.Group()
 mushroom_group = pygame.sprite.Group()
@@ -30,7 +30,7 @@ item_group = pygame.sprite.Group()
 
 # add to all_sprite_groups
 all_spite_groups_dict = {'player': player_group, 'bullets': bullets_group, 'ground': ground_group,
-                         'item': item_group, 'mushroom': mushroom_group, 'stone': stone_group}
+                         'items': item_group, 'mushroom': mushroom_group, 'stone': stone_group}
 # ======================================================================= initialize  Classes
 
 player = Player(Bullet, all_spite_groups_dict)
@@ -39,8 +39,8 @@ player = Player(Bullet, all_spite_groups_dict)
 
 ground = Ground()
 
-# ground2 = Ground('../src/assets/images/ground/2.png', 100, SCREEN_HEIGHT - 150)
-# ground3 = Ground('../src/assets/images/ground/2.png', 400, SCREEN_HEIGHT - 170)
+# ground2 = Ground('../src/assets/images/ground/distance.png', 100, SCREEN_HEIGHT - 150)
+# ground3 = Ground('../src/assets/images/ground/distance.png', 400, SCREEN_HEIGHT - 170)
 
 # add to group
 player_group.add(player)
@@ -97,24 +97,26 @@ class GameState(pygame.sprite.Sprite, Sound, Background):
                 self.is_bg_created = True
 
             # ============== create level items, enemy, and more
+            str_dict = eval(file_operation('../src/levels/level_one.txt', 'r', 1))
+            sprite_creator(str_dict, Item, item_group)
             # create signs
-            signs_dict = {0: 'signs/1.png', 500: 'signs/2.png', 1000: 'signs/3.png'}
-            sprite_creator(signs_dict, Item, item_group)
+            # signs_dict = {0: 'signs/start.png', 500: 'signs/distance.png', 1000: 'signs/goal.png'}
+            # sprite_creator(signs_dict, Item, item_group)
 
             # create mushroom
-            mushroom_dict = {30: 'mushroom/grey.png', 50: 'mushroom/grey.png', 90: 'mushroom/grey.png',
-                             140: 'mushroom/orange.png', 190: 'mushroom/orange.png',
-                             220: 'mushroom/red.png',
-                             330: 'mushroom/red.png', 350: 'mushroom/purple.png',
-                             460: 'mushroom/grey.png', }
-            sprite_creator(mushroom_dict, Mushroom, mushroom_group)
+            # mushroom_dict = {30: 'mushroom/grey.png', 50: 'mushroom/grey.png', 90: 'mushroom/grey.png',
+            #                  140: 'mushroom/orange.png', 190: 'mushroom/orange.png',
+            #                  220: 'mushroom/red.png',
+            #                  330: 'mushroom/red.png', 350: 'mushroom/purple.png',
+            #                  460: 'mushroom/grey.png', }
+            # sprite_creator(mushroom_dict, Mushroom, mushroom_group)
 
-            # create stones
-            stones_dict = {110: 'stones/3.png',
-                           200: 'stones/3.png', 290: 'stones/3.png',
-                           310: 'stones/3.png',
-                           420: 'stones/3.png'}
-            sprite_creator(stones_dict, Stone, stone_group)
+            # # create stones
+            # stones_dict = {110: 'stones/goal.png',
+            #                200: 'stones/goal.png', 290: 'stones/goal.png',
+            #                310: 'stones/goal.png',
+            #                420: 'stones/goal.png'}
+            # sprite_creator(stones_dict, Stone, stone_group)
 
 
 

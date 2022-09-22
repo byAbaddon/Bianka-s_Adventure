@@ -97,6 +97,8 @@ def file_operation(file_path, option="['r' or 'w' or 'a']", row_number_to_read=i
         if option == 'w':
             return file.write(text_to_write + '\n')
 
+# print(file_operation('../src/levels/level_one.txt', 'r', 1,  'new'))
+
 
 # keyboard events for exit
 def exit_game():
