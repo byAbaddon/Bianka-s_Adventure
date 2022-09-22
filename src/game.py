@@ -82,13 +82,13 @@ class GameState(pygame.sprite.Sprite, Sound, Background):
                 if k == int(self.background.distance_mt):
                     if time_now - self.START_TIMER > 300:
                         self.START_TIMER = time_now
-                        new_class = input_class(f'../src/assets/images/{v}')
+                        new_class = input_class(f'../src/assets/images/{v}.png')
                         group_class.add(new_class)
                         self.background.distance_mt += 1  # prevent create double sp if player stay in same position
 
         if level == 1:
             if not self.is_music_play:
-                self.current_music = Sound.forest_music_level_one(self)
+                # self.current_music = Sound.forest_music_level_one(self)
                 self.is_music_play = True
             if not self.is_bg_created:
                 # resize image
@@ -128,16 +128,16 @@ class GameState(pygame.sprite.Sprite, Sound, Background):
             # ground_group.draw(SCREEN)  # hide under bg
             bullets_group.draw(SCREEN)
             item_group.draw(SCREEN)
-            mushroom_group.draw(SCREEN)
-            stone_group.draw(SCREEN)
+            # mushroom_group.draw(SCREEN)
+            # stone_group.draw(SCREEN)
             player_group.draw(SCREEN)
 
             # --------------------------- update sprite group
             ground_group.update()
             item_group.update()
             bullets_group.update()
-            mushroom_group.update()
-            stone_group.update()
+            # mushroom_group.update()
+            # stone_group.update()
             player_group.update()
 
     def intro(self):

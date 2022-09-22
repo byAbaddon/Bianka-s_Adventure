@@ -89,6 +89,15 @@ def key_pressed(input_key=None):
     return False
 
 
+#  file  read and write
+def file_operation(file_path, option="['r' or 'w' or 'a']", row_number_to_read=int,  text_to_write='empty row'):
+    with open(file_path, option) as file:
+        if option == 'r':
+            return file.readlines()[row_number_to_read]
+        if option == 'w':
+            return file.write(text_to_write + '\n')
+
+
 # keyboard events for exit
 def exit_game():
     for event in pygame.event.get():

@@ -1,0 +1,4 @@
+new
+ali baba
+haha
+[90 : 'mushroom.png']

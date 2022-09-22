@@ -175,7 +175,6 @@ class Player(pygame.sprite.Sprite, Sound):
             else:
                 Sound.play_sound('../src/assets/sounds/player/grab.wav')
 
-
     def update(self):
         pygame.mask.from_surface(self.image)  # create mask image
         self.sprite_frames()
