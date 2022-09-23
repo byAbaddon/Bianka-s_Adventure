@@ -20,8 +20,37 @@ class Sound:
     def intro_music(self):
         self.play_sound('../src/assets/sounds/game_musics/intro_1.mp3')
 
+    def game_over_music(self):
+        self.play_sound('..src/assets/sounds/game_musics/game_over.mp3', 0.2, -1)
+
     def forest_music_level_one(self):
         self.play_sound('../src/assets/sounds/game_musics/forest_1.mp3', 0.6, -1)
 
-    def game_over_music(self):
-        self.play_sound('..src/assets/sounds/game_musics/game_over.mp3', 0.2, -1)
+    def add_point(self):
+        self.play_sound('../src/assets/sounds/point/point.wav')
+
+    def player_jump(self):
+        self.play_sound('../src/assets/sounds/player/jump.wav')
+
+    def player_stone_hit(self):
+        self.play_sound('../src/assets/sounds/player/stone_hit.wav')
+
+    def player_shoot(self):
+        self.play_sound('../src/assets/sounds/player/jump_shoot.wav', 1)
+
+    def sign_go(self):
+        self.play_sound('../src/assets/sounds/sign/go.wav', 1)
+
+    def sign_middle(self):
+        self.play_sound('../src/assets/sounds/sign/middle.wav')
+
+    def sign_finish(self):
+        self.play_sound('../src/assets/sounds/sign/finish.wav')
+
+    def grab_mushroom(self):
+        self.play_sound('../src/assets/sounds/player/grab.wav')
+
+    def grab_poison_mushroom(self):
+        self.play_sound('../src/assets/sounds/player/fart.mp3')
+
+

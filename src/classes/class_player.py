@@ -4,7 +4,7 @@ from src.classes.class_sound import Sound
 
 
 # ============================================= class Player===============================================
-class Player(pygame.sprite.Sprite, Sound):
+class Player(pygame.sprite.Sprite, Sound,):
     COOLDOWN = 1000  # milliseconds
     GRAVITY = 0.2
     SPRITE_ANIMATION_SPEED = 0.3
@@ -47,6 +47,7 @@ class Player(pygame.sprite.Sprite, Sound):
 
         # jump up
         if key[pygame.K_UP] and self.direction.y == 1 and self.direction.x != 0:
+            Sound.player_jump(self)
             self.is_jump = True
             self.direction.y = -1
             self.velocity.y = self.JUMP_HEIGHT
@@ -108,6 +109,7 @@ class Player(pygame.sprite.Sprite, Sound):
         # velocity is equal shooting window time
         if key[pygame.K_s] and self.direction.x != 0 \
                 and abs(self.velocity.x) <= 3.0 and time_now - self.last_time > self.COOLDOWN:
+            Sound.player_shoot(self)
             self.last_time = time_now
 
             self.shot_position = self.rect.midright
@@ -174,20 +176,34 @@ class Player(pygame.sprite.Sprite, Sound):
         for sprite in pygame.sprite.spritecollide(self, self.all_sprite_groups_dict['items'], False,
                                                   pygame.sprite.collide_mask):
             if sprite.group_name not in self.statistics:
-                self.statistics[sprite.group_name] = {sprite.item_name: 0 }
+                self.statistics[sprite.group_name] = {sprite.item_name: 0}
             match sprite.group_name:
                 case 'mushroom':
-                    sprite.kill()
-                    Sound.play_sound('../src/assets/sounds/player/grab.wav')
+                    Sound.add_point(self)
                     if sprite.item_name == 'grey':
                         self.points += 100
+                    if sprite.item_name == 'orange':
+                        self.points += 150
+                    if sprite.item_name == 'orange':
+                        self.points += 250
                     if sprite.item_name == 'purple':
-                        Sound.play_sound('../src/assets/sounds/player/fart.mp3')
-                    if sprite.item_name not in self.statistics[sprite.group_name]:
-                        self.statistics[sprite.group_name][sprite.item_name] = 0
-                    self.statistics[sprite.group_name][sprite.item_name] += 1
+                        self.points += 500
+                        Sound.grab_poison_mushroom(self)
+                    sprite.kill()
+                    Sound.grab_mushroom(self)
+                case 'stones':
+                    if sprite.item_name == 'big' or 'medium' or 'small':
+                        Sound.player_stone_hit(self)
+                        self.image = pygame.image.load('../src/assets/images/player/fail/fail_right.png')
+                        sprite.rect.x -= 10
+                        self.energy_power -= 10
+                        break
 
-            print(self.statistics)
+            if sprite.item_name not in self.statistics[sprite.group_name]:
+                self.statistics[sprite.group_name][sprite.item_name] = 0
+            self.statistics[sprite.group_name][sprite.item_name] += 1
+
+            # print(self.statistics)
 
     def update(self):
         pygame.mask.from_surface(self.image)  # create mask image

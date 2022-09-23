@@ -7,8 +7,6 @@ from classes.class_player import Player
 from classes.class_ground import Ground
 from classes.class_bullet import Bullet
 from classes.class_background import Background
-from classes.class_mushroom import Mushroom
-from classes.class_stone import Stone
 from classes.class_item import Item
 
 
@@ -17,7 +15,7 @@ from classes.class_item import Item
 # print(dir(Menu))
 
 # ========================================================================== variables
-level = 1
+
 
 # ======================================================================== create Sprite groups
 background_group = pygame.sprite.Group()
@@ -53,7 +51,7 @@ ground_group.add(ground)
 
 
 # Game State
-class GameState(pygame.sprite.Sprite, Sound, Background):
+class GameState(pygame.sprite.Sprite, Sound,):
     START_TIMER = pygame.time.get_ticks()
 
     def __init__(self,):
@@ -64,6 +62,8 @@ class GameState(pygame.sprite.Sprite, Sound, Background):
         self.background = None
         self.is_bg_created = False
         self.is_mushroom_created = False
+        self.area = 1
+        self.level = 1
 
     def start_game(self,):
         # top display frames
@@ -86,43 +86,44 @@ class GameState(pygame.sprite.Sprite, Sound, Background):
                         group_class.add(new_class)
                         self.background.distance_mt += 1  # prevent create double sp if player stay in same position
 
-        if level == 1:
+        def distance_counter(*args):
+            dist_mt = int(self.background.distance_mt)
+            if dist_mt == 20:
+                Sound.sign_go(self)
+                self.background.distance_mt += 1  # prevent play double sound if player stay in same position
+                # background_transition_animation()
+            elif dist_mt == 550:
+                Sound.sign_middle(self)
+                self.background.distance_mt += 1  # prevent ...
+            elif dist_mt >= 1050:    # Finished level
+                Sound.sign_finish(self)
+                self.background.distance_mt = 0  # prevent ...
+
+
+        if self.level > 4:
+            self.level = 1
+            self.area += 1
+
+        # ========================================== START GAME  with Area 1; Level 1
+        if self.area == 1:
             if not self.is_music_play:
-                # self.current_music = Sound.forest_music_level_one(self)
+                self.current_music = Sound.forest_music_level_one(self)
                 self.is_music_play = True
+
             if not self.is_bg_created:
                 # resize image
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_1.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 self.is_bg_created = True
 
-            # ============== create level items, enemy, and more
-            str_dict = eval(file_operation('../src/levels/level_one.txt', 'r', 1))
-            sprite_creator(str_dict, Item, item_group)
-            # create signs
-            # signs_dict = {0: 'signs/start.png', 500: 'signs/distance.png', 1000: 'signs/goal.png'}
-            # sprite_creator(signs_dict, Item, item_group)
+            # ============== create level: items, enemy, and more
+            items_dict = eval(file_operation('../src/levels/level_one.txt', 'r', self.level))
+            sprite_creator(items_dict, Item, item_group)
 
-            # create mushroom
-            # mushroom_dict = {30: 'mushroom/grey.png', 50: 'mushroom/grey.png', 90: 'mushroom/grey.png',
-            #                  140: 'mushroom/orange.png', 190: 'mushroom/orange.png',
-            #                  220: 'mushroom/red.png',
-            #                  330: 'mushroom/red.png', 350: 'mushroom/purple.png',
-            #                  460: 'mushroom/grey.png', }
-            # sprite_creator(mushroom_dict, Mushroom, mushroom_group)
+            # ============= level counter
+            distance_counter(item_group)
 
-            # # create stones
-            # stones_dict = {110: 'stones/goal.png',
-            #                200: 'stones/goal.png', 290: 'stones/goal.png',
-            #                310: 'stones/goal.png',
-            #                420: 'stones/goal.png'}
-            # sprite_creator(stones_dict, Stone, stone_group)
-
-
-
-            # print('mt ', len(stone_group))
-
-            # =================================================== UPDATE LEVEL
+            # =================================================== UPDATE
             # update BG
             self.background.update()
 
@@ -130,17 +131,15 @@ class GameState(pygame.sprite.Sprite, Sound, Background):
             # ground_group.draw(SCREEN)  # hide under bg
             bullets_group.draw(SCREEN)
             item_group.draw(SCREEN)
-            # mushroom_group.draw(SCREEN)
-            # stone_group.draw(SCREEN)
             player_group.draw(SCREEN)
 
             # --------------------------- update sprite group
             ground_group.update()
             item_group.update()
             bullets_group.update()
-            # mushroom_group.update()
-            # stone_group.update()
             player_group.update()
+        if self.area == 2:
+            pass
 
     def intro(self):
         Intro()
@@ -175,7 +174,7 @@ class GameState(pygame.sprite.Sprite, Sound, Background):
     @staticmethod
     def sprite_cleaner():
         for k, v in all_spite_groups_dict.items():
-            if len(v) >= 20:
+            if len(v) >= 50:
                 all_spite_groups_dict[k].empty()
 
 
