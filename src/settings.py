@@ -66,11 +66,6 @@ def background_image(image, x=0, y=0, loop=False, speed=1, p_direction_y=1, is_i
         bg_current_speed = speed
 
 
-# draw background transform screen after game level Done
-def background_transition_animation():
-    background_image(None, 0, 100, False)
-
-
 # create text
 def text_creator(font_size=26, text='No Text', rgb_color=(255, 255, 255),
                  x_pos=SCREEN_WIDTH // 2, y_pos=SCREEN_HEIGHT // 2, background=None):
@@ -95,7 +90,7 @@ def key_pressed(input_key=None):
 
 
 #  file read and write
-def file_operation(file_path, option="['r' or 'w' or 'a']", row_number_to_read=int,  text_to_write='empty row'):
+def file_operation(file_path, option="['r' or 'w' or 'a']", row_number_to_read=int, text_to_write='empty row'):
     with open(file_path, option) as file:
         if option == 'r':
             return file.readlines()[row_number_to_read]

@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite, Sound,):
         pygame.sprite.Sprite.__init__(self)
         self.class_bullet = class_bullet
         self.all_sprite_groups_dict = all_sprite_groups_dict
-        self.image = self.image = pygame.image.load('../src/assets/images/player/stay/1.png')
+        self.image = pygame.image.load('../src/assets/images/player/stay/1.png')
         self.sprites_walking = [pygame.image.load(f'../src/assets/images/player/walking/{x}.png') for x in range(1, 7)]
         self.current_sprite = 0
         self.player_height_size = self.image.get_height()
@@ -83,7 +83,8 @@ class Player(pygame.sprite.Sprite, Sound,):
                 pygame.image.load('../src/assets/images/player/walking/5.png'), True, False)
 
         # go left
-        if key[pygame.K_LEFT] and self.direction.y == 1 and self.pos.x >= self.WALK_LEFT_SCREEN_BORDER:
+        if key[pygame.K_LEFT] and self.direction.y == 1 and self.pos.x >= self.WALK_LEFT_SCREEN_BORDER\
+                and not key[pygame.K_RIGHT]:
             if self.pos.x <= 80:
                 self.direction.x = 1
             else:
@@ -92,7 +93,8 @@ class Player(pygame.sprite.Sprite, Sound,):
             self.image = pygame.transform.flip(self.image, True, False)
 
         # go right
-        if key[pygame.K_RIGHT] and self.direction.y == 1 and self.pos.x <= self.WALK_RIGHT_SCREEN_BORDER:
+        if key[pygame.K_RIGHT] and self.direction.y == 1 and self.pos.x <= self.WALK_RIGHT_SCREEN_BORDER\
+                and not key[pygame.K_LEFT]:
             self.direction.x = 1
             self.acceleration.x = self.PLAYER_SPEED
 

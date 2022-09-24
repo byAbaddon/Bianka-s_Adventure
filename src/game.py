@@ -1,21 +1,20 @@
 import pygame
 
 from settings import *
+from classes.class_background import Background
 from src.classes.class_sound import Sound
-from state_classes import Intro, Menu, Legend, Score
+from state_classes import Intro, Menu, Legend, Score, LevelStatistic
 from classes.class_player import Player
 from classes.class_ground import Ground
 from classes.class_bullet import Bullet
-from classes.class_background import Background
 from classes.class_item import Item
-
-
+from classes.class_screen_animation import ScreenAnimation
 
 # ================================================================= TEST imported classes
 # print(dir(Menu))
 
 # ========================================================================== variables
-
+screen_animation = ScreenAnimation()
 
 # ======================================================================== create Sprite groups
 background_group = pygame.sprite.Group()
@@ -43,6 +42,8 @@ ground = Ground()
 # add to group
 player_group.add(player)
 ground_group.add(ground)
+
+
 # for test before create classes group
 # bullets_group.add(bullet)
 
@@ -51,10 +52,10 @@ ground_group.add(ground)
 
 
 # Game State
-class GameState(pygame.sprite.Sprite, Sound,):
+class GameState(pygame.sprite.Sprite, Sound, ):
     START_TIMER = pygame.time.get_ticks()
 
-    def __init__(self,):
+    def __init__(self, ):
         super().__init__()
         self.state = 'intro'
         self.current_music = Sound.intro_music(self)
@@ -65,7 +66,7 @@ class GameState(pygame.sprite.Sprite, Sound,):
         self.area = 1
         self.level = 1
 
-    def start_game(self,):
+    def start_game(self, ):
         # top display frames
         background_image('../src/assets/images/top_frames/4.png', 0, -5, False)
         # developer utils
@@ -75,7 +76,7 @@ class GameState(pygame.sprite.Sprite, Sound,):
         text_creator(22, f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70)
 
         # function sprite creator
-        def sprite_creator(dictionary={}, input_class=None, group_class=None):
+        def sprite_creator(dictionary, input_class=None, group_class=None):
             time_now = pygame.time.get_ticks()
             # ---------create
             for k, v in dictionary.items():  # t: 'item pic'
@@ -87,22 +88,20 @@ class GameState(pygame.sprite.Sprite, Sound,):
                         self.background.distance_mt += 1  # prevent create double sp if player stay in same position
 
         def distance_counter(*args):
-            dist_mt = int(self.background.distance_mt)
-            if dist_mt == 20:
-                Sound.sign_go(self)
-                self.background.distance_mt += 1  # prevent play double sound if player stay in same position
-                # background_transition_animation()
-            elif dist_mt == 550:
-                Sound.sign_middle(self)
-                self.background.distance_mt += 1  # prevent ...
-            elif dist_mt >= 1050:    # Finished level
-                Sound.sign_finish(self)
-                self.background.distance_mt = 0  # prevent ...
+            match int(self.background.distance_mt):
+                case 25:
+                    # self.state = 'level_statistic'
+                    Sound.sign_go(self)
+                    self.background.distance_mt += 1  # prevent play double sound if player stay in same position
+                case 550:
+                    Sound.sign_middle(self)
+                    self.background.distance_mt += 1  # prevent ...
+                case 1060:  # Finished level
+                    Sound.sign_finish(self)
+                    self.background.distance_mt = 0  # prevent ...
+                    self.level += 1
 
-
-        if self.level > 4:
-            self.level = 1
-            self.area += 1
+                    # self.state = 'level_statistic'
 
         # ========================================== START GAME  with Area 1; Level 1
         if self.area == 1:
@@ -123,10 +122,12 @@ class GameState(pygame.sprite.Sprite, Sound,):
             # ============= level counter
             distance_counter(item_group)
 
+            if self.level > 4:
+                self.level = 1
+                self.area += 1
             # =================================================== UPDATE
             # update BG
             self.background.update()
-
             # --------------------------- draw sprite group
             # ground_group.draw(SCREEN)  # hide under bg
             bullets_group.draw(SCREEN)
@@ -138,8 +139,11 @@ class GameState(pygame.sprite.Sprite, Sound,):
             item_group.update()
             bullets_group.update()
             player_group.update()
+
+            screen_animation.update()
+
         if self.area == 2:
-            pass
+            print('AREA 2 ; Level 1')
 
     def intro(self):
         Intro()
@@ -157,6 +161,11 @@ class GameState(pygame.sprite.Sprite, Sound,):
         Score()
         Score().event(self)
 
+    def level_statistic(self):
+        LevelStatistic().update()
+        LevelStatistic().event(self)
+
+    # ========================================= state manager
     def state_manager(self):
         # print(self.state)
         if self.state == 'intro':
@@ -165,10 +174,10 @@ class GameState(pygame.sprite.Sprite, Sound,):
             self.menu()
         if self.state == 'legend':
             self.legend()
-        if self.state == 'score':
-            self.score()
         if self.state == 'start_game':
             self.start_game()
+        if self.state == 'level_statistic':
+            self.level_statistic()
 
     # check and prevent fload, all sprite groups
     @staticmethod
