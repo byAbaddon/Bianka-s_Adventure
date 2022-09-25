@@ -9,10 +9,10 @@ class Intro(Sound):
     def __init__(self):
         super().__init__()
         background_image('../src/assets/images/backgrounds/bg_intro.png')
-        text_creator(26, 'Copyright - 2022', (211, 0, 0), 80, SCREEN_HEIGHT - 20)
-        text_creator(26, 'By Abaddon', (211, 0, 0), SCREEN_WIDTH - 60, SCREEN_HEIGHT - 20)
-        text_creator(36, 'Start Game: SpaceBar', (255, 255, 200), SCREEN_WIDTH // 2, SCREEN_HEIGHT - 60)
-        text_creator(36, 'MENU: Return', (255, 255, 200), SCREEN_WIDTH // 2, SCREEN_HEIGHT - 20)
+        text_creator('Copyright - 2022', (211, 0, 0), 80, SCREEN_HEIGHT - 20,)
+        text_creator('By Abaddon', (211, 0, 0), SCREEN_WIDTH - 60, SCREEN_HEIGHT - 20,)
+        text_creator('Start Game: SpaceBar', (255, 255, 200), SCREEN_WIDTH // 2, SCREEN_HEIGHT - 60, 36)
+        text_creator('MENU: Return', (255, 255, 200), SCREEN_WIDTH // 2, SCREEN_HEIGHT - 20, 36)
         self.state = ''
 
     def event(self):
@@ -75,30 +75,18 @@ class Score(Sound):
 
 # =========================================== LevelStatistic class
 class LevelStatistic(Sound):
-    def __init__(self, pic='../src/assets/images/level_statistic/bg_statistic.png'):
+    def __init__(self,):
         super().__init__()
         self.state = ''
-        self.x = SCREEN_WIDTH
-        self.y = 0
-        self.image = pygame.image.load(pic)
-        self.rect = self.image.get_rect()
-        self.is_fill = False
-
-        Sound.stop_all_sounds()
-        if not self.is_fill:
-            SCREEN.fill('red', [self.x - 200, self.y, SCREEN_WIDTH, SCREEN_HEIGHT])
-            self.is_fill = True
+        self.stop_all_sounds()
 
     def screen_animation(self):
-
-        if self.x > 0:
-            self.x -= 10
-        else:
-            SCREEN.blit(self.image, (0, 0))
+        text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 15)
+        # add music
+        text_creator("CONGRATULATIONS", 'red', SCREEN_WIDTH // 2, 130, 55, None, None, True)
 
     def update(self):
         self.screen_animation()
-        print(self.x)
 
     @staticmethod
     def event(self):

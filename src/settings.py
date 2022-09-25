@@ -31,6 +31,18 @@ BG_LOOP_SPEED_INCREASE = 2.27
 WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH // 3
 bg_counter = 0
 bg_current_speed = 0
+transition_counter = -SCREEN_HEIGHT
+
+
+# screen transition animation
+def screen_transition_animation(pic='../src/assets/images/frames/bg_statistic.png'):
+    global transition_counter
+    image = pygame.image.load(pic)
+    SCREEN.blit(image, [0, transition_counter, SCREEN_WIDTH, SCREEN_HEIGHT])
+    if transition_counter < 0:
+        print(transition_counter)
+        transition_counter += 10
+    return transition_counter
 
 
 # draw background :Player data:  speed=1, p_pos_x=100, start_border_run=0,
@@ -67,9 +79,11 @@ def background_image(image, x=0, y=0, loop=False, speed=1, p_direction_y=1, is_i
 
 
 # create text
-def text_creator(font_size=26, text='No Text', rgb_color=(255, 255, 255),
-                 x_pos=SCREEN_WIDTH // 2, y_pos=SCREEN_HEIGHT // 2, background=None):
-    font = pygame.font.Font(None, font_size)
+def text_creator(text='No Text', rgb_color=(255, 255, 255), x_pos=SCREEN_WIDTH // 2,
+                 y_pos=SCREEN_HEIGHT // 2, font_size=25, background=None, font_type=None, under_line=False):
+    font = pygame.font.Font(font_type, font_size)
+    if under_line:
+        pygame.font.Font.set_underline(font, True)
     input_text = font.render(text, True, rgb_color, background)
     text_position = input_text.get_rect(center=(x_pos, y_pos))
     SCREEN.blit(input_text, text_position)
