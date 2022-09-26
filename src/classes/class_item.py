@@ -30,14 +30,14 @@ class Item(pygame.sprite.Sprite, Sound):
             if key_pressed(pygame.K_RIGHT) and key_pressed(pygame.K_a):  # developer hack speed
                 self.rect.x -= BG_SPEED + BG_LOOP_SPEED_INCREASE
         else:
-            if self.rect.x > -100:  # prevent animation if out of screen
+            if self.rect.x > -200:  # prevent animation if out of screen
                 if self.item_name == 'monkey':
                     self.enemy_current_pos(speed=3, y_pos=90)
                     if not self.is_sound_played:
                         Sound.monkey_sound(self)
                         self.is_sound_played = True
                 if self.item_name == 'hedgehog':
-                    self.enemy_current_pos(speed=0.1, y_pos=486)
+                    self.enemy_current_pos(speed=1, y_pos=486)
 
     def update(self):
         pygame.mask.from_surface(self.image)

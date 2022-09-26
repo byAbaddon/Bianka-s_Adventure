@@ -85,18 +85,25 @@ class GameState(pygame.sprite.Sprite, Sound,):
                     Sound.sign_middle(self)
                     self.background.distance_mt += 1  # prevent ...
                 case 1100:  # Finished level
-                    self.sprite_cleaner(True)
                     Sound.sign_finish(self)
-                    self.background.distance_mt = 0  # prevent ...
                     self.level += 1  # increase level
-                    # self.state = 'level_statistic'
+                    self.background.distance_mt = 0  # prevent ...
+                    self.sprite_cleaner(True)  # clear all game sprites group
+                    Sound.stop_all_sounds()
+                    Sound.statistic_music(self)
+                    self.state = 'level_statistic'  # switch to statistic state
 
-        def area_label():
+        def area_label():  # Info Table label when Start new Area/Level
             if self.background.distance_mt < 10:
                 image = pygame.image.load('../src/assets/images/frames/level_frame.png')
                 SCREEN.blit(image, [SCREEN_WIDTH // 2 - 80, SCREEN_HEIGHT // 2 - 32])
                 text_creator(f'Area {self.area} - {self.level}', 'white', SCREEN_WIDTH // 2,
                              SCREEN_HEIGHT // 2, 36)
+
+        # ============== level manipulator
+        if self.level > 4:
+            self.level = 1
+            self.area += 1
 
         # ========================================== START GAME  with Area 1; Level 1
         if self.area == 1:
@@ -117,10 +124,6 @@ class GameState(pygame.sprite.Sprite, Sound,):
             # ============= level counter
             distance_counter(item_group)
 
-            # ============== level manipulator
-            if self.level > 4:
-                self.level = 1
-                self.area += 1
             # =================================================== UPDATE
             # update BG
             self.background.update()
@@ -181,11 +184,10 @@ class GameState(pygame.sprite.Sprite, Sound,):
     @staticmethod
     def sprite_cleaner(clear_all=False):
         for k, v in all_spite_groups_dict.items():
-            if len(v) >= 20:
+            if len(v) >= 30:
                 all_spite_groups_dict[k].empty()
         if clear_all:  # clear all groups after leval complete
-            [v.empty() for v in all_spite_groups_dict.values()]
-            clear_all = False
+            [v.empty() for v in all_spite_groups_dict.values() if len(v) > 1]
 
 
 #  ========================================================================== create new GameState

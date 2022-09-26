@@ -54,7 +54,6 @@ class Background:
         text_creator(f'BG_speed: {self.speed:.2f}', 'white', 290, 20)
         text_creator(f'BG_distance: {int(self.distance_mt)}', 'white', 290, 40)
 
-
     def update(self):
         self.create_bg()
         self.draw_label()

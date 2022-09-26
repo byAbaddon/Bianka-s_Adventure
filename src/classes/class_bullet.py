@@ -23,7 +23,7 @@ class Bullet(pygame.sprite.Sprite):
             self.image = pygame.image.load('assets/images/bullets/spear_left.png')
             self.rect.x -= self.BULLED_SPEED
 
-    def prevent_overflow_bullet_group(self):  # remove old shot from bullets_group
+    def prevent_overflow_bullet_group(self):  # remove old shot from bullets_group if shoot out of screen
         if self.rect.x < -30 or self.rect.x > SCREEN_WIDTH:
             self.kill()
 

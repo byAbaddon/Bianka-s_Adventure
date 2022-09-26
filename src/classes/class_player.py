@@ -173,6 +173,9 @@ class Player(pygame.sprite.Sprite, Sound,):
                             self.image = pygame.transform.flip(
                                 pygame.image.load('../src/assets/images/player/stay/2.png'), True, False)
                         self.is_jump = False
+                if self.player_dead:
+                    self.image = pygame.image.load('../src/assets/images/player/dead/dead.png')
+                    self.pos.y = SCREEN_HEIGHT
 
     def check_item_collide(self):
         group_items = self.all_sprite_groups_dict['items']
@@ -184,6 +187,10 @@ class Player(pygame.sprite.Sprite, Sound,):
                 case 'enemies':
                     if sprite.item_name == 'monkey':
                         pass
+                    if sprite.item_name == 'hedgehog':
+                        self.player_dead = True
+                        Sound.player_dead(self)
+                        # sprite.kill()
                 case 'mushroom':
                     Sound.add_point(self)
                     if sprite.item_name == 'grey':
@@ -232,7 +239,10 @@ class Player(pygame.sprite.Sprite, Sound,):
                 case 'stones':
                     Sound.bullet_ricochet(self)
                     bullet.kill()
-
+                case 'bonus':
+                    if item[0].item_name == 'statuette':
+                        Sound.bullet_statuette_hit(self)
+                        item[0].kill()
 
     def update(self):
         pygame.mask.from_surface(self.image)  # create mask image

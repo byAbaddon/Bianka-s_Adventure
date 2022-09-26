@@ -80,6 +80,7 @@ class LevelStatistic(Sound):
     def __init__(self,):
         super().__init__()
         self.state = ''
+        self.is_music = False
 
     def info_statistic(self):
         text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 15)

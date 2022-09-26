@@ -41,6 +41,9 @@ class Sound:
     def player_shoot(self):
         self.play_sound('../src/assets/sounds/player/jump_shoot.wav', 1)
 
+    def player_dead(self):
+        self.play_sound('../src/assets/sounds/player/dead.wav', 1)
+
     def sign_go(self):
         self.play_sound('../src/assets/sounds/sign/go.wav', 1)
 
@@ -60,13 +63,16 @@ class Sound:
         self.play_sound('../src/assets/sounds/player/grab_coin.wav')
 
     def grab_statuette(self):
-        self.play_sound('../src/assets/sounds/player/grab_statuette.wav')
+        self.play_sound('../src/assets/sounds/player/grab_statuette.wav', 1)
 
     def monkey_sound(self):
         self.play_sound('../src/assets/sounds/enemies/monkey.wav', 1)
 
     def bullet_ricochet(self):
-        self.play_sound('../src/assets/sounds/bullet/ricochet.wav', 1)
+        self.play_sound('../src/assets/sounds/bullet/ricochet.wav')
 
     def bullet_hit(self):
-        self.play_sound('../src/assets/sounds/bullet/hit_item.wav', 1)
+        self.play_sound('../src/assets/sounds/bullet/hit_item.wav')
+
+    def bullet_statuette_hit(self):
+        self.play_sound('../src/assets/sounds/bullet/hit_statuette.wav', 1)
