@@ -56,7 +56,7 @@ class Player(pygame.sprite.Sprite, Sound,):
             else:
                 self.image = pygame.transform.flip(
                     pygame.image.load('../src/assets/images/player/jump/2.png'), True, False)
-            # change image if player jump in Right Boreder
+            # change image if player jump in Right Border
             if self.pos.x >= self.WALK_LEFT_SCREEN_BORDER and key[pygame.K_RIGHT]:
                 self.image = pygame.image.load('../src/assets/images/player/walking/5.png')
 
@@ -109,7 +109,7 @@ class Player(pygame.sprite.Sprite, Sound,):
         # shooting
         time_now = pygame.time.get_ticks()  # get time now
         # velocity is equal shooting window time
-        if key[pygame.K_s] and self.direction.x != 0 \
+        if key[pygame.K_SPACE] and self.direction.x != 0 \
                 and abs(self.velocity.x) <= 3.0 and time_now - self.last_time > self.COOLDOWN:
             Sound.player_shoot(self)
             self.last_time = time_now
@@ -175,11 +175,15 @@ class Player(pygame.sprite.Sprite, Sound,):
                         self.is_jump = False
 
     def check_item_collide(self):
-        for sprite in pygame.sprite.spritecollide(self, self.all_sprite_groups_dict['items'], False,
-                                                  pygame.sprite.collide_mask):
-            if sprite.group_name not in self.statistics:
+        group_items = self.all_sprite_groups_dict['items']
+        for sprite in pygame.sprite.spritecollide(self, group_items, False, pygame.sprite.collide_mask):
+
+            if sprite.group_name not in self.statistics:  # add item to statistics dict if not have key
                 self.statistics[sprite.group_name] = {sprite.item_name: 0}
             match sprite.group_name:
+                case 'enemies':
+                    if sprite.item_name == 'monkey':
+                        pass
                 case 'mushroom':
                     Sound.add_point(self)
                     if sprite.item_name == 'grey':
@@ -193,6 +197,13 @@ class Player(pygame.sprite.Sprite, Sound,):
                         Sound.grab_poison_mushroom(self)
                     sprite.kill()
                     Sound.grab_mushroom(self)
+                case 'bonus':
+                    if sprite.item_name == 'coin':
+                        self.points += 1000
+                        Sound.grab_coin(self)
+                    if sprite.item_name == 'statuette':
+                        Sound.grab_statuette(self)
+                    sprite.kill()
                 case 'stones':
                     if sprite.item_name == 'big' or 'medium' or 'small':
                         Sound.player_stone_hit(self)
@@ -207,9 +218,26 @@ class Player(pygame.sprite.Sprite, Sound,):
 
             # print(self.statistics)
 
+    def check_bullets_collide(self):
+        bullets_group = self.all_sprite_groups_dict['bullets']
+        items_group = self.all_sprite_groups_dict['items']
+        sprite = pygame.sprite.groupcollide(bullets_group, items_group, False, False, pygame.sprite.collide_mask)
+
+        for bullet, item in sprite.items():
+            match item[0].group_name:
+                case 'mushroom':
+                    Sound.bullet_hit(self)
+                    bullet.kill()
+                    item[0].kill()
+                case 'stones':
+                    Sound.bullet_ricochet(self)
+                    bullet.kill()
+
+
     def update(self):
         pygame.mask.from_surface(self.image)  # create mask image
         self.sprite_frames()
         self.movie_plyer()
         self.check_ground_collide()
         self.check_item_collide()
+        self.check_bullets_collide()

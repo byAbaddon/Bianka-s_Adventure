@@ -1,4 +1,3 @@
-import pygame
 
 from settings import *
 from classes.class_background import Background
@@ -20,19 +19,14 @@ background_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 ground_group = pygame.sprite.Group()
 bullets_group = pygame.sprite.Group()
-mushroom_group = pygame.sprite.Group()
-stone_group = pygame.sprite.Group()
 item_group = pygame.sprite.Group()
 
 # add to all_sprite_groups
 all_spite_groups_dict = {'player': player_group, 'bullets': bullets_group, 'ground': ground_group,
-                         'items': item_group, 'mushroom': mushroom_group, 'stone': stone_group}
+                         'items': item_group}
+
 # ======================================================================= initialize  Classes
-
 player = Player(Bullet, all_spite_groups_dict)
-# for test before create classes group
-# bullet = Bullet(x, y, player.direction)
-
 ground = Ground()
 
 # ground2 = Ground('../src/assets/images/ground/distance.png', 100, SCREEN_HEIGHT - 150)
@@ -41,12 +35,6 @@ ground = Ground()
 # add to group
 player_group.add(player)
 ground_group.add(ground)
-
-
-# for test before create classes group
-# bullets_group.add(bullet)
-
-
 # =======================================================================
 
 
@@ -89,22 +77,24 @@ class GameState(pygame.sprite.Sprite, Sound,):
         def distance_counter(*args):
             match int(self.background.distance_mt):
                 case 25:
-                    self.state = 'level_statistic'
+
                     Sound.sign_go(self)
+                    # self.state = 'level_statistic'
                     self.background.distance_mt += 1  # prevent play double sound if player stay in same position
                 case 550:
                     Sound.sign_middle(self)
                     self.background.distance_mt += 1  # prevent ...
-                case 1080:  # Finished level
+                case 1100:  # Finished level
+                    self.sprite_cleaner(True)
                     Sound.sign_finish(self)
                     self.background.distance_mt = 0  # prevent ...
-                    self.level += 1
+                    self.level += 1  # increase level
                     # self.state = 'level_statistic'
 
         def area_label():
             if self.background.distance_mt < 10:
                 image = pygame.image.load('../src/assets/images/frames/level_frame.png')
-                SCREEN.blit(image,[SCREEN_WIDTH // 2 - 80, SCREEN_HEIGHT // 2 - 32])
+                SCREEN.blit(image, [SCREEN_WIDTH // 2 - 80, SCREEN_HEIGHT // 2 - 32])
                 text_creator(f'Area {self.area} - {self.level}', 'white', SCREEN_WIDTH // 2,
                              SCREEN_HEIGHT // 2, 36)
 
@@ -189,10 +179,13 @@ class GameState(pygame.sprite.Sprite, Sound,):
 
     # check and prevent fload, all sprite groups
     @staticmethod
-    def sprite_cleaner():
+    def sprite_cleaner(clear_all=False):
         for k, v in all_spite_groups_dict.items():
-            if len(v) >= 50:
+            if len(v) >= 20:
                 all_spite_groups_dict[k].empty()
+        if clear_all:  # clear all groups after leval complete
+            [v.empty() for v in all_spite_groups_dict.values()]
+            clear_all = False
 
 
 #  ========================================================================== create new GameState
@@ -206,4 +199,3 @@ while True:
     pygame.display.update()
     CLOCK.tick(FPS)
     exit_game()
-

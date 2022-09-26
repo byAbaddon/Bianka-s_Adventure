@@ -1,4 +1,5 @@
 import pygame
+from src.settings import SCREEN_WIDTH
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -21,13 +22,14 @@ class Bullet(pygame.sprite.Sprite):
         elif self.direction.x == -1:
             self.image = pygame.image.load('assets/images/bullets/spear_left.png')
             self.rect.x -= self.BULLED_SPEED
-        # remove old shot from bullets_group
-        # if self.rect.x < -30 or self.rect.x > SCREEN_WIDTH:
-        #     self.all_spite_groups_dict['mushroom'].empty()
 
+    def prevent_overflow_bullet_group(self):  # remove old shot from bullets_group
+        if self.rect.x < -30 or self.rect.x > SCREEN_WIDTH:
+            self.kill()
 
     def update(self):
         self.direction_shooting()
+        self.prevent_overflow_bullet_group()
 
 
 

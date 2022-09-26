@@ -1,11 +1,13 @@
-#AREA - 1  #Level - 1   READ FROM ROW 1
-{0: 'signs/start', 30: 'mushroom/grey', 70: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 200: 'mushroom/grey', 230: 'stones/medium', 260: 'stones/medium', 290: 'mushroom/grey',320: 'stones/small', 350: 'stones/medium', 380: 'stones/big', 430: 'stones/small', 460: 'mushroom/grey', 500: 'signs/distance', 560: 'mushroom/grey', 570: 'mushroom/grey', 600: 'stones/medium', 640: 'mushroom/grey', 700 : 'stones/medium', 740  : 'mushroom/purple', 800: 'stones/medium', 840: 'mushroom/grey', 860: 'mushroom/grey', 870: 'mushroom/grey', 900: 'stones/medium',  960: 'stones/medium', 980: 'mushroom/red', 1020: 'signs/goal'}
-{0: 'signs/start', 30: 'signs/start', 70: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 200: 'mushroom/grey', 230: 'stones/medium', 260: 'stones/medium', 290: 'mushroom/grey',320: 'stones/small', 350: 'stones/medium', 380: 'stones/big', 430: 'stones/small', 460: 'mushroom/grey', 500: 'signs/distance', 560: 'mushroom/grey', 570: 'mushroom/grey', 600: 'stones/medium', 640: 'mushroom/grey', 700 : 'stones/medium', 740  : 'mushroom/purple', 800: 'stones/medium', 840: 'mushroom/grey', 860: 'mushroom/grey', 870: 'mushroom/grey', 900: 'stones/medium',  960: 'stones/medium', 980: 'mushroom/red', 1020: 'signs/goal'}
-
+#AREA - 1  #Level - 1   READ FROM ROW 1 ,2, 3, 4
+{0: 'signs/start',  40: 'enemies/hedgehog',   60: 'mushroom/grey', 70: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 200: 'mushroom/grey', 230: 'stones/medium', 260: 'stones/medium', 290: 'mushroom/grey',320: 'stones/small', 350: 'stones/medium', 372: 'mushroom/red',  380: 'stones/big', 430: 'stones/small', 460: 'mushroom/grey', 500: 'signs/distance', 560: 'mushroom/grey', 570: 'mushroom/grey', 600: 'stones/medium', 640: 'mushroom/grey', 700 : 'stones/medium', 740  : 'mushroom/purple', 800: 'stones/medium', 840: 'mushroom/grey', 860: 'mushroom/grey', 870: 'mushroom/grey', 900: 'stones/medium', 940: 'bonus/statuette',  960: 'stones/big', 980: 'mushroom/red', 990: 'bonus/coin', 1020: 'signs/goal'}
+{0: 'signs/start', 70: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 200: 'mushroom/grey', 230: 'stones/medium', 260: 'stones/medium', 290: 'mushroom/grey',320: 'stones/small', 350: 'stones/medium', 380: 'stones/big', 430: 'stones/small', 460: 'mushroom/grey', 500: 'signs/distance', 560: 'mushroom/grey', 570: 'mushroom/grey', 600: 'stones/medium', 640: 'mushroom/grey', 700 : 'stones/medium', 740  : 'mushroom/purple', 800: 'stones/medium', 840: 'mushroom/grey', 860: 'mushroom/grey', 870: 'mushroom/grey', 900: 'stones/medium',  960: 'stones/medium', 980: 'mushroom/red', 1020: 'signs/goal'}
+{0: 'signs/start', 70: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/small'}
 
           : 'signs/goal'
           : 'mushroom/grey',
           : 'stones/medium',
+          :  bonus/coin statuette
+
 
 {0: 'signs/start', 60: 'mushroom/grey', 90: 'mushroom/grey',
 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium',

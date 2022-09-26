@@ -26,6 +26,9 @@ class Sound:
     def forest_music_level_one(self):
         self.play_sound('../src/assets/sounds/game_musics/forest_1.mp3', 0.6, -1)
 
+    def statistic_music(self):
+        self.play_sound('../src/assets/sounds/game_musics/statistic.mp3', 0.6, -1)
+
     def add_point(self):
         self.play_sound('../src/assets/sounds/point/point.wav')
 
@@ -53,4 +56,17 @@ class Sound:
     def grab_poison_mushroom(self):
         self.play_sound('../src/assets/sounds/player/fart.mp3')
 
+    def grab_coin(self):
+        self.play_sound('../src/assets/sounds/player/grab_coin.wav')
 
+    def grab_statuette(self):
+        self.play_sound('../src/assets/sounds/player/grab_statuette.wav')
+
+    def monkey_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/monkey.wav', 1)
+
+    def bullet_ricochet(self):
+        self.play_sound('../src/assets/sounds/bullet/ricochet.wav', 1)
+
+    def bullet_hit(self):
+        self.play_sound('../src/assets/sounds/bullet/hit_item.wav', 1)

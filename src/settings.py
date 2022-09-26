@@ -40,7 +40,6 @@ def screen_transition_animation(pic='../src/assets/images/frames/bg_statistic.pn
     image = pygame.image.load(pic)
     SCREEN.blit(image, [0, transition_counter, SCREEN_WIDTH, SCREEN_HEIGHT])
     if transition_counter < 0:
-        print(transition_counter)
         transition_counter += 10
     return transition_counter
 

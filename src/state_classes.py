@@ -75,21 +75,27 @@ class Score(Sound):
 
 # =========================================== LevelStatistic class
 class LevelStatistic(Sound):
+    PICTURE_DICT = {'statuette': 'bonus/statuette_big'}
+
     def __init__(self,):
         super().__init__()
         self.state = ''
-        self.stop_all_sounds()
 
-    def screen_animation(self):
+    def info_statistic(self):
         text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 15)
         # add music
         text_creator("CONGRATULATIONS", 'red', SCREEN_WIDTH // 2, 130, 55, None, None, True)
 
+        text_creator("Idol: 1000 pst", 'yellow', 270, 400, 36)
+        image = pygame.image.load(f'../src/assets/images/{self.PICTURE_DICT["statuette"]}.png')
+        SCREEN.blit(image, [440, 340])
+
     def update(self):
-        self.screen_animation()
+        self.info_statistic()
 
     @staticmethod
     def event(self):
         if key_pressed(pygame.K_SPACE):
             self.state = 'intro'
             Sound.btn_click(self)
+            Sound.stop_all_sounds()
