@@ -38,7 +38,18 @@ class Item(pygame.sprite.Sprite, Sound):
                         self.is_sound_played = True
                 if self.item_name == 'hedgehog':
                     self.enemy_current_pos(speed=1, y_pos=486)
+                if self.item_name == '1':
+                    self.enemy_current_pos(speed=1, y_pos=186)
+                if self.item_name == '2':
+                    self.enemy_current_pos(speed=1, y_pos=286)
+                if self.item_name == '3':
+                    self.enemy_current_pos(speed=1, y_pos=386)
+
+    def prevent_overflow_item_group(self):  # remove old item from item_group if it out of screen
+        if self.rect.x < -30 or self.rect.x > SCREEN_WIDTH:
+            self.kill()
 
     def update(self):
         pygame.mask.from_surface(self.image)
         self.movie()
+        self.prevent_overflow_item_group()

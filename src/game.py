@@ -88,7 +88,6 @@ class GameState(pygame.sprite.Sprite, Sound,):
                     Sound.sign_finish(self)
                     self.level += 1  # increase level
                     self.background.distance_mt = 0  # prevent ...
-                    self.sprite_cleaner(True)  # clear all game sprites group
                     Sound.stop_all_sounds()
                     Sound.statistic_music(self)
                     self.state = 'level_statistic'  # switch to statistic state
@@ -180,16 +179,6 @@ class GameState(pygame.sprite.Sprite, Sound,):
         if self.state == 'level_statistic':
             self.level_statistic()
 
-    # check and prevent fload, all sprite groups
-    @staticmethod
-    def sprite_cleaner(clear_all=False):
-        for k, v in all_spite_groups_dict.items():
-            if len(v) >= 30:
-                all_spite_groups_dict[k].empty()
-        if clear_all:  # clear all groups after leval complete
-            [v.empty() for v in all_spite_groups_dict.values() if len(v) > 1]
-
-
 #  ========================================================================== create new GameState
 game_state = GameState()
 
@@ -197,7 +186,6 @@ game_state = GameState()
 while True:
     SCREEN.fill(pygame.Color('black'))
     game_state.state_manager()
-    game_state.sprite_cleaner()
     pygame.display.update()
     CLOCK.tick(FPS)
     exit_game()
