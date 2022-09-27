@@ -1,4 +1,3 @@
-
 from settings import *
 from classes.class_background import Background
 from src.classes.class_sound import Sound
@@ -7,6 +6,7 @@ from classes.class_player import Player
 from classes.class_ground import Ground
 from classes.class_bullet import Bullet
 from classes.class_item import Item
+from classes.class_enemy import Enemy
 
 
 # ================================================================= TEST imported classes
@@ -25,16 +25,21 @@ item_group = pygame.sprite.Group()
 all_spite_groups_dict = {'player': player_group, 'bullets': bullets_group, 'ground': ground_group,
                          'items': item_group}
 
+
 # ======================================================================= initialize  Classes
 player = Player(Bullet, all_spite_groups_dict)
 ground = Ground()
-
+# add to group
 # ground2 = Ground('../src/assets/images/ground/distance.png', 100, SCREEN_HEIGHT - 150)
 # ground3 = Ground('../src/assets/images/ground/distance.png', 400, SCREEN_HEIGHT - 170)
-
-# add to group
 player_group.add(player)
 ground_group.add(ground)
+
+# create enemy classes
+class_enemy_monkey = Enemy('../src/assets/images/enemies/monkey/monkey.png', SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+enemy_classes_dict = {'class_enemy_monkey': class_enemy_monkey}
+
+
 # =======================================================================
 
 
@@ -68,10 +73,13 @@ class GameState(pygame.sprite.Sprite, Sound,):
             # ---------create
             for k, v in dictionary.items():  # t: 'item pic'
                 if k == int(self.background.distance_mt):
-                    if time_now - self.START_TIMER > 300:
+                    if time_now - self.START_TIMER > 300:  # timer prevent create double item in group
                         self.START_TIMER = time_now
-                        new_class = input_class(f'../src/assets/images/{v}.png')
-                        group_class.add(new_class)
+                        if v in enemy_classes_dict:  # check is class
+                            group_class.add(enemy_classes_dict[v])
+                        else:
+                            new_class = input_class(f'../src/assets/images/{v}.png')
+                            group_class.add(new_class)
                         self.background.distance_mt += 1  # prevent create double sp if player stay in same position
 
         def distance_counter(*args):
@@ -178,6 +186,7 @@ class GameState(pygame.sprite.Sprite, Sound,):
             self.start_game()
         if self.state == 'level_statistic':
             self.level_statistic()
+
 
 #  ========================================================================== create new GameState
 game_state = GameState()

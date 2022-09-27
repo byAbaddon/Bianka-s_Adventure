@@ -39,7 +39,7 @@ class Player(pygame.sprite.Sprite, Sound,):
         self.WALK_LEFT_SCREEN_BORDER = self.player_width_size - 14
         self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH // 3
 
-    def movie_plyer(self):
+    def movement_plyer(self):
         self.acceleration = vec(0, self.GRAVITY)  # fail gravity
         self.direction = vec(self.direction.x, self.direction.y)
 
@@ -247,7 +247,7 @@ class Player(pygame.sprite.Sprite, Sound,):
     def update(self):
         pygame.mask.from_surface(self.image)  # create mask image
         self.sprite_frames()
-        self.movie_plyer()
+        self.movement_plyer()
         self.check_ground_collide()
         self.check_item_collide()
         self.check_bullets_collide()
