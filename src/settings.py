@@ -25,6 +25,7 @@ CLOCK = pygame.time.Clock()
 FPS = 60
 
 # ==================================================================== local variables
+TOP_FRAME_SIZE = 100
 GROUND_HEIGHT_SIZE = 78
 BG_SPEED = 3.33
 BG_LOOP_SPEED_INCREASE = 2.27

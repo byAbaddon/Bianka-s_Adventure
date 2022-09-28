@@ -170,8 +170,7 @@ class Player(pygame.sprite.Sprite, Sound,):
                         if self.direction.x == 1:
                             self.image = pygame.image.load('../src/assets/images/player/stay/1.png')
                         else:
-                            self.image = pygame.transform.flip(
-                                pygame.image.load('../src/assets/images/player/stay/2.png'), True, False)
+                            self.image = pygame.image.load('../src/assets/images/player/stay/2.png')
                         self.is_jump = False
                 if self.player_dead:
                     self.image = pygame.image.load('../src/assets/images/player/dead/dead.png')
@@ -180,9 +179,6 @@ class Player(pygame.sprite.Sprite, Sound,):
     def check_item_collide(self):
         group_items = self.all_sprite_groups_dict['items']
         for sprite in pygame.sprite.spritecollide(self, group_items, False, pygame.sprite.collide_mask):
-
-            if sprite.group_name not in self.statistics:  # add item to statistics dict if not have key
-                self.statistics[sprite.group_name] = {sprite.item_name: 0}
             match sprite.group_name:
                 case 'enemies':
                     if sprite.item_name == 'monkey':
@@ -219,10 +215,14 @@ class Player(pygame.sprite.Sprite, Sound,):
                         self.energy_power -= 10
                         break
 
-            if sprite.item_name not in self.statistics[sprite.group_name]:
-                self.statistics[sprite.group_name][sprite.item_name] = 0
-            self.statistics[sprite.group_name][sprite.item_name] += 1
-
+            ignore_group_list = ['signs', 'stones']
+            if sprite.group_name not in ignore_group_list:
+                if sprite.group_name not in self.statistics:  # add item to statistics dict if not have key
+                    self.statistics[sprite.group_name] = {sprite.item_name: 1}
+                else:
+                    if sprite.item_name not in self.statistics[sprite.group_name]:
+                        self.statistics[sprite.group_name][sprite.item_name] = 0
+                    self.statistics[sprite.group_name][sprite.item_name] += 1
             # print(self.statistics)
 
     def check_bullets_collide(self):

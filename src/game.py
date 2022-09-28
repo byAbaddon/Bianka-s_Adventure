@@ -29,15 +29,24 @@ all_spite_groups_dict = {'player': player_group, 'bullets': bullets_group, 'grou
 # ======================================================================= initialize  Classes
 player = Player(Bullet, all_spite_groups_dict)
 ground = Ground()
+
 # add to group
 # ground2 = Ground('../src/assets/images/ground/distance.png', 100, SCREEN_HEIGHT - 150)
 # ground3 = Ground('../src/assets/images/ground/distance.png', 400, SCREEN_HEIGHT - 170)
 player_group.add(player)
 ground_group.add(ground)
 
+# variables
+pic_monkey = '../src/assets/images/enemies/monkey/monkey.png'
+pic_hedgehog = '../src/assets/images/enemies/hedgehog/hedgehog.png'
 # create enemy classes
-class_enemy_monkey = Enemy('../src/assets/images/enemies/monkey/monkey.png', SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
-enemy_classes_dict = {'class_enemy_monkey': class_enemy_monkey}
+enemy_monkey = Enemy(pic_monkey, SCREEN_WIDTH, 150, 5, True)
+enemy_hedgehog = Enemy(pic_hedgehog, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 1)
+enemy_static_hedgehog = Enemy(pic_hedgehog, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 0)
+
+
+enemy_classes_dict = {'enemy_monkey': enemy_monkey, 'enemy_hedgehog': enemy_hedgehog,
+                      'enemy_static_hedgehog': enemy_static_hedgehog}
 
 
 # =======================================================================
@@ -98,6 +107,7 @@ class GameState(pygame.sprite.Sprite, Sound,):
                     self.background.distance_mt = 0  # prevent ...
                     Sound.stop_all_sounds()
                     Sound.statistic_music(self)
+                    self.is_music_play = False
                     self.state = 'level_statistic'  # switch to statistic state
 
         def area_label():  # Info Table label when Start new Area/Level
@@ -115,7 +125,7 @@ class GameState(pygame.sprite.Sprite, Sound,):
         # ========================================== START GAME  with Area 1; Level 1
         if self.area == 1:
             if not self.is_music_play:
-                # self.current_music = Sound.forest_music_level_one(self)
+                self.current_music = Sound.forest_music_level_one(self)
                 self.is_music_play = True
 
             if not self.is_bg_created:
