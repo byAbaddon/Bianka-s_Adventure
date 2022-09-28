@@ -4,7 +4,7 @@ from src.classes.class_sound import Sound
 
 
 # ============================================= class Player===============================================
-class Player(pygame.sprite.Sprite, Sound,):
+class Player(pygame.sprite.Sprite, Sound, ):
     COOLDOWN = 1000  # milliseconds
     GRAVITY = 0.2
     SPRITE_ANIMATION_SPEED = 0.3
@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite, Sound,):
     player_dead = False
     counter = 0
 
-    def __init__(self, class_bullet, all_sprite_groups_dict={}):
+    def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
         self.class_bullet = class_bullet
         self.all_sprite_groups_dict = all_sprite_groups_dict
@@ -83,7 +83,7 @@ class Player(pygame.sprite.Sprite, Sound,):
                 pygame.image.load('../src/assets/images/player/walking/5.png'), True, False)
 
         # go left
-        if key[pygame.K_LEFT] and self.direction.y == 1 and self.pos.x >= self.WALK_LEFT_SCREEN_BORDER\
+        if key[pygame.K_LEFT] and self.direction.y == 1 and self.pos.x >= self.WALK_LEFT_SCREEN_BORDER \
                 and not key[pygame.K_RIGHT]:
             if self.pos.x <= 80:
                 self.direction.x = 1
@@ -93,7 +93,7 @@ class Player(pygame.sprite.Sprite, Sound,):
             self.image = pygame.transform.flip(self.image, True, False)
 
         # go right
-        if key[pygame.K_RIGHT] and self.direction.y == 1 and self.pos.x <= self.WALK_RIGHT_SCREEN_BORDER\
+        if key[pygame.K_RIGHT] and self.direction.y == 1 and self.pos.x <= self.WALK_RIGHT_SCREEN_BORDER \
                 and not key[pygame.K_LEFT]:
             self.direction.x = 1
             self.acceleration.x = self.PLAYER_SPEED
@@ -137,7 +137,7 @@ class Player(pygame.sprite.Sprite, Sound,):
             else:
                 self.image = pygame.image.load('../src/assets/images/player/angry/2.png')
                 x = self.shot_position[0] - 104
-            bullet = self.class_bullet('assets/images/bullets/spear_right.png', x, y, self.direction)
+            bullet = self.class_bullet('../src/assets/images/bullets/knife.png', x, y, self.direction)
             self.all_sprite_groups_dict['bullets'].add(bullet)
 
     def sprite_frames(self):
@@ -249,6 +249,8 @@ class Player(pygame.sprite.Sprite, Sound,):
         for sprite in pygame.sprite.spritecollide(self, bullets_group, False, pygame.sprite.collide_mask):
             match sprite.item_name:
                 case 'egg' | 'coconut':
+                    sprite.kill()
+                    Sound.enemy_bullet_hit_player_head(self)
                     self.energy_power -= 1
 
     def update(self):

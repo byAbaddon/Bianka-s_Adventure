@@ -5,7 +5,7 @@ pygame.mixer.pre_init(44100, -16, 2, 2048)
 
 class Sound:
     @staticmethod
-    def play_sound(sound_file, volume=0.2, loops=0):
+    def play_sound(sound_file, volume=0.5, loops=0):
         play = pygame.mixer.Sound(sound_file)
         play.set_volume(volume)
         play.play(loops)
@@ -65,12 +65,16 @@ class Sound:
     def grab_statuette(self):
         self.play_sound('../src/assets/sounds/player/grab_statuette.wav', 1)
 
+    def grab_amulets(self):
+        self.play_sound('../src/assets/sounds/player/grab_amulets.wav', 1)
+
     def monkey_sound(self):
         self.play_sound('../src/assets/sounds/enemies/monkey.wav', 1)
 
     def raven_sound(self):
         self.play_sound('../src/assets/sounds/enemies/raven.wav', 1)
 
+    # player bullets hit something
     def bullet_ricochet(self):
         self.play_sound('../src/assets/sounds/bullet/ricochet.wav')
 
@@ -82,3 +86,10 @@ class Sound:
 
     def bullet_fail(self):
         self.play_sound('../src/assets/sounds/bullet/fail.wav')
+
+    # enemy bullets hit player
+    def enemy_bullet_hit_player_head(self):
+        self.play_sound('../src/assets/sounds/player/enemy_shooting_hit_head.wav', 0.5)
+
+    def enemy_bullet_hit_player_body(self):
+        self.play_sound('../src/assets/sounds/player/enemy_shooting_hit_body.wav', 1)

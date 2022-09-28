@@ -9,7 +9,8 @@ class Bullet(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.group_name = pic.split('/')[4]
         self.item_name = pic.split('/')[5][:-4]
-        self.image = pygame.image.load(pic).convert_alpha()
+        self.pic = pic
+        self.image = pygame.image.load(self.pic).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]
         self.direction = direction
@@ -29,7 +30,8 @@ class Bullet(pygame.sprite.Sprite):
             if self.direction.x == 1:
                 self.rect.x += self.speed
             elif self.direction.x == -1:
-                self.image = pygame.image.load('assets/images/bullets/spear_left.png')
+                flipped_image = pygame.image.load(self.pic)
+                self.image = pygame.transform.flip(flipped_image, True, False)
                 self.rect.x -= self.speed
 
     def prevent_overflow_bullet_group(self):  # remove old shot from bullets_group if shoot out of screen
