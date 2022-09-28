@@ -6,8 +6,7 @@ from classes.class_player import Player
 from classes.class_ground import Ground
 from classes.class_bullet import Bullet
 from classes.class_item import Item
-from classes.class_enemy import enemy_classes_dict  # all enemy created in classes.class_enemy
-
+from classes.class_enemy import Enemy
 
 # ================================================================= TEST imported classes
 # print(dir(Menu))
@@ -25,10 +24,30 @@ item_group = pygame.sprite.Group()
 all_spite_groups_dict = {'player': player_group, 'bullets': bullets_group, 'ground': ground_group,
                          'items': item_group}
 
-
 # ======================================================================= initialize  Classes
 player = Player(Bullet, all_spite_groups_dict)
 ground = Ground()
+
+# ---------------------------------------------------------------------- create Enemies
+
+# variables
+pic_monkey = '../src/assets/images/enemies/monkey/monkey.png'
+pic_hedgehog = '../src/assets/images/enemies/hedgehog/hedgehog.png'
+pic_raven = '../src/assets/images/enemies/raven/1.png'
+pic_raven_bullet = '../src/assets/images/bullets/egg.png'
+pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
+asg = all_spite_groups_dict
+
+# create enemy classes
+enemy_monkey = Enemy(Bullet, asg, pic_monkey, SCREEN_WIDTH, 150, 5, True, True,pic_monkey_bullet, 0.6)
+
+enemy_hedgehog = Enemy(Bullet, asg, pic_hedgehog, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 1)
+enemy_static_hedgehog = Enemy(Bullet, asg, pic_hedgehog, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 0)
+
+enemy_raven = Enemy(Bullet, asg, pic_raven, SCREEN_WIDTH, TOP_FRAME_SIZE + 100, 3, True, True, pic_raven_bullet, 1)
+
+enemy_classes_dict = {'enemy_monkey': enemy_monkey, 'enemy_hedgehog': enemy_hedgehog, 'enemy_raven': enemy_raven,
+                      'enemy_static_hedgehog': enemy_static_hedgehog}
 
 # add to group
 # ground2 = Ground('../src/assets/images/ground/distance.png', 100, SCREEN_HEIGHT - 150)
@@ -41,7 +60,7 @@ ground_group.add(ground)
 
 
 # Game State
-class GameState(pygame.sprite.Sprite, Sound,):
+class GameState(pygame.sprite.Sprite, Sound, ):
     START_TIMER = pygame.time.get_ticks()
 
     def __init__(self, ):

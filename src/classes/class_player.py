@@ -106,27 +106,6 @@ class Player(pygame.sprite.Sprite, Sound,):
         #         elif self.direction.x == -1:
         #             self.velocity.x -= 0.5
 
-        # shooting
-        time_now = pygame.time.get_ticks()  # get time now
-        # velocity is equal shooting window time
-        if key[pygame.K_SPACE] and self.direction.x != 0 \
-                and abs(self.velocity.x) <= 3.0 and time_now - self.last_time > self.COOLDOWN:
-            Sound.player_shoot(self)
-            self.last_time = time_now
-
-            self.shot_position = self.rect.midright
-            y = self.shot_position[1] - 26
-
-            if self.direction.x == 1:
-                x = self.shot_position[0] + 30
-                self.image = pygame.image.load('../src/assets/images/player/angry/1.png')
-            else:
-                self.image = pygame.image.load('../src/assets/images/player/angry/2.png')
-                x = self.shot_position[0] - 104
-
-            bullet = self.class_bullet(x, y, self.direction)
-            self.all_sprite_groups_dict['bullets'].add(bullet)
-
         # =============================================================== MOVEMENT !!!
         # apply friction
         self.acceleration.x += self.velocity.x * self.PLAYER_FRICTION
@@ -139,6 +118,27 @@ class Player(pygame.sprite.Sprite, Sound,):
         self.pos += self.velocity + self.acceleration * self.PLAYER_SPEED
         self.rect.midbottom = self.pos
         # ============================================================================
+
+    def shooting_payer(self):  # shooting:
+        key = pygame.key.get_pressed()
+        time_now = pygame.time.get_ticks()  # get time now
+        # velocity is equal shooting window time
+        if key[pygame.K_SPACE] and self.direction.x != 0 \
+                and abs(self.velocity.x) <= 3.0 and time_now - self.last_time > self.COOLDOWN:
+            Sound.player_shoot(self)
+            self.last_time = time_now
+
+            self.shot_position = self.rect.midright
+            y = self.shot_position[1] - 26  # get y pos form rect
+
+            if self.direction.x == 1:
+                x = self.shot_position[0] + 30  # get x pos form rect
+                self.image = pygame.image.load('../src/assets/images/player/angry/1.png')
+            else:
+                self.image = pygame.image.load('../src/assets/images/player/angry/2.png')
+                x = self.shot_position[0] - 104
+            bullet = self.class_bullet('assets/images/bullets/spear_right.png', x, y, self.direction)
+            self.all_sprite_groups_dict['bullets'].add(bullet)
 
     def sprite_frames(self):
         key = pygame.key.get_pressed()
@@ -248,6 +248,7 @@ class Player(pygame.sprite.Sprite, Sound,):
         pygame.mask.from_surface(self.image)  # create mask image
         self.sprite_frames()
         self.movement_plyer()
+        self.shooting_payer()
         self.check_ground_collide()
         self.check_item_collide()
         self.check_bullets_collide()

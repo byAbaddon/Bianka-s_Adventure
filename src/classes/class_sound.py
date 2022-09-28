@@ -79,3 +79,6 @@ class Sound:
 
     def bullet_statuette_hit(self):
         self.play_sound('../src/assets/sounds/bullet/hit_statuette.wav', 1)
+
+    def bullet_fail(self):
+        self.play_sound('../src/assets/sounds/bullet/fail.wav')

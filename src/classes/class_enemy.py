@@ -1,25 +1,29 @@
-import pygame
-from src.settings import SCREEN_WIDTH, SCREEN_HEIGHT, GROUND_HEIGHT_SIZE, BG_SPEED, TOP_FRAME_SIZE, key_pressed
+from src.settings import *
 from src.classes.class_sound import Sound
+from src.classes.class_player import Player
 
 
-class Enemy(pygame.sprite.Sprite, Sound):
+class Enemy(Player, Sound):
     SPRITE_ANIMATION_SPEED = 0.1
 
-    def __init__(self, pic='', x=0, y=0, speed=0, noise=False, sprite_pic_num=0):
-        pygame.sprite.Sprite.__init__(self)
+    def __init__(self, class_bullet, all_sprite_groups_dict,
+                 pic='', x=0, y=0, speed=0, noise=False, shooting=False, pic_bullet='', bullet_speed=1, sprite_pic_num=0):
+        Player.__init__(self, class_bullet, all_sprite_groups_dict)
         self.group_name = pic.split('/')[4]
         self.item_name = pic.split('/')[5]
         self.image = pygame.image.load(pic).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]
+        self.direction = vec(0, -1)  # fall down
         self.speed = speed
         self.noise = noise
+        self.shooting = shooting
+        self.pic_bullet = pic_bullet
+        self.bullet_speed = bullet_speed
         self.current_sprite = 0
         self.sprite_pic_num = sprite_pic_num
         self.sprites_animate = [pygame.image.load(f'{pic[:-5]}{x}.png') for x in range(1, self.sprite_pic_num + 1)]
 
-        # src/assets/images/enemies/raven
     def movement_enemy_current_pos(self):
         if key_pressed(pygame.K_RIGHT):
             self.rect.x -= self.speed + BG_SPEED
@@ -32,6 +36,17 @@ class Enemy(pygame.sprite.Sprite, Sound):
             if self.current_sprite >= len(self.sprites_animate):
                 self.current_sprite = 1
             self.image = self.sprites_animate[int(self.current_sprite)]
+
+    def shooting_enemy(self):  # shooting:
+        if self.shooting:
+            if self.rect.x <= SCREEN_WIDTH // 2:
+                Sound.bullet_fail(self)
+                shot_position = self.rect.midbottom
+                x = shot_position[0] + self.image.get_width() // 4 - 30
+                y = shot_position[1] - 15  # get y pos form rect
+                bullet = self.class_bullet(self.pic_bullet, x, y, self.direction, self.bullet_speed, True)
+                self.all_sprite_groups_dict['bullets'].add(bullet)
+                self.shooting = False
 
     def prevent_overflow_item_group(self):  # remove old enemy from item_group if it out of screen
         if self.rect.x < -30 or self.rect.x > SCREEN_WIDTH:
@@ -50,22 +65,7 @@ class Enemy(pygame.sprite.Sprite, Sound):
         self.sprite_frames()
         self.prevent_overflow_item_group()
         self.make_sound()
+        self.shooting_enemy()
 
 
-# ---------------------------------------------------------------------- create Enemies
 
-
-# variables
-pic_monkey = '../src/assets/images/enemies/monkey/monkey.png'
-pic_hedgehog = '../src/assets/images/enemies/hedgehog/hedgehog.png'
-pic_raven = '../src/assets/images/enemies/raven/1.png'
-# create enemy classes
-enemy_monkey = Enemy(pic_monkey, SCREEN_WIDTH, 150, 5, True)
-
-enemy_hedgehog = Enemy(pic_hedgehog, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 1)
-enemy_static_hedgehog = Enemy(pic_hedgehog, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 0)
-
-enemy_raven = Enemy(pic_raven, SCREEN_WIDTH, TOP_FRAME_SIZE + 100, 3, True, 5)
-
-enemy_classes_dict = {'enemy_monkey': enemy_monkey, 'enemy_hedgehog': enemy_hedgehog, 'enemy_raven': enemy_raven,
-                      'enemy_static_hedgehog': enemy_static_hedgehog}
