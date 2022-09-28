@@ -23,7 +23,7 @@ class Item(pygame.sprite.Sprite):
             self.rect.x -= BG_SPEED + BG_LOOP_SPEED_INCREASE
 
     def prevent_overflow_item_group(self):  # remove old item from item_group if it out of screen
-        if self.rect.x < -30 or self.rect.x > SCREEN_WIDTH:
+        if self.rect.x < -80 or self.rect.x > SCREEN_WIDTH:
             self.kill()
 
     def update(self):

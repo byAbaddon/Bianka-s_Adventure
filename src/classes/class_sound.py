@@ -68,6 +68,9 @@ class Sound:
     def monkey_sound(self):
         self.play_sound('../src/assets/sounds/enemies/monkey.wav', 1)
 
+    def raven_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/raven.wav', 1)
+
     def bullet_ricochet(self):
         self.play_sound('../src/assets/sounds/bullet/ricochet.wav')
 

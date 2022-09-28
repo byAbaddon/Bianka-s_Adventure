@@ -91,12 +91,19 @@ class LevelStatistic(Sound):
         image = pygame.image.load(f'../src/assets/images/{self.PICTURE_DICT["statuette"]}.png')
         SCREEN.blit(image, [440, 340])
 
+    def play_music(self):
+        if not self.is_music:
+            Sound.stop_all_sounds()
+            Sound.statistic_music(self)
+        self.is_music = True
+
     def update(self):
         self.info_statistic()
+        self.play_music()
 
     @staticmethod
     def event(self):
         if key_pressed(pygame.K_SPACE):
-            self.state = 'intro'
+            self.state = 'start_game'
             Sound.btn_click(self)
             Sound.stop_all_sounds()

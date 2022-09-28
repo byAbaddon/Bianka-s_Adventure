@@ -6,7 +6,7 @@ from classes.class_player import Player
 from classes.class_ground import Ground
 from classes.class_bullet import Bullet
 from classes.class_item import Item
-from classes.class_enemy import Enemy
+from classes.class_enemy import enemy_classes_dict  # all enemy created in classes.class_enemy
 
 
 # ================================================================= TEST imported classes
@@ -21,7 +21,7 @@ ground_group = pygame.sprite.Group()
 bullets_group = pygame.sprite.Group()
 item_group = pygame.sprite.Group()
 
-# add to all_sprite_groups
+# add to all_sprite_groups   /items group include enemy/
 all_spite_groups_dict = {'player': player_group, 'bullets': bullets_group, 'ground': ground_group,
                          'items': item_group}
 
@@ -35,18 +35,6 @@ ground = Ground()
 # ground3 = Ground('../src/assets/images/ground/distance.png', 400, SCREEN_HEIGHT - 170)
 player_group.add(player)
 ground_group.add(ground)
-
-# variables
-pic_monkey = '../src/assets/images/enemies/monkey/monkey.png'
-pic_hedgehog = '../src/assets/images/enemies/hedgehog/hedgehog.png'
-# create enemy classes
-enemy_monkey = Enemy(pic_monkey, SCREEN_WIDTH, 150, 5, True)
-enemy_hedgehog = Enemy(pic_hedgehog, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 1)
-enemy_static_hedgehog = Enemy(pic_hedgehog, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 0)
-
-
-enemy_classes_dict = {'enemy_monkey': enemy_monkey, 'enemy_hedgehog': enemy_hedgehog,
-                      'enemy_static_hedgehog': enemy_static_hedgehog}
 
 
 # =======================================================================
@@ -66,6 +54,7 @@ class GameState(pygame.sprite.Sprite, Sound,):
         self.is_mushroom_created = False
         self.area = 1
         self.level = 1
+        self.level_reader_row = 1
 
     def start_game(self):
         # top display frames
@@ -94,7 +83,6 @@ class GameState(pygame.sprite.Sprite, Sound,):
         def distance_counter(*args):
             match int(self.background.distance_mt):
                 case 25:
-
                     Sound.sign_go(self)
                     # self.state = 'level_statistic'
                     self.background.distance_mt += 1  # prevent play double sound if player stay in same position
@@ -104,9 +92,8 @@ class GameState(pygame.sprite.Sprite, Sound,):
                 case 1100:  # Finished level
                     Sound.sign_finish(self)
                     self.level += 1  # increase level
+                    self.level_reader_row += 1  # read row level from txt
                     self.background.distance_mt = 0  # prevent ...
-                    Sound.stop_all_sounds()
-                    Sound.statistic_music(self)
                     self.is_music_play = False
                     self.state = 'level_statistic'  # switch to statistic state
 
@@ -125,7 +112,7 @@ class GameState(pygame.sprite.Sprite, Sound,):
         # ========================================== START GAME  with Area 1; Level 1
         if self.area == 1:
             if not self.is_music_play:
-                self.current_music = Sound.forest_music_level_one(self)
+                # self.current_music = Sound.forest_music_level_one(self)
                 self.is_music_play = True
 
             if not self.is_bg_created:
@@ -135,7 +122,7 @@ class GameState(pygame.sprite.Sprite, Sound,):
                 self.is_bg_created = True
 
             # ============== create level: items, enemy, and more
-            items_dict = eval(file_operation('../src/levels/level_one.txt', 'r', self.level))
+            items_dict = eval(file_operation('../src/levels/levels.txt', 'r', self.level_reader_row))
             sprite_creator(items_dict, Item, item_group)
 
             # ============= level counter
