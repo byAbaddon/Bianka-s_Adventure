@@ -10,7 +10,7 @@ class Enemy(Player, Sound):
                  pic='', x=0, y=0, speed=0, noise=False, shooting=False, pic_bullet='', bullet_speed=1, sprite_pic_num=0):
         Player.__init__(self, class_bullet, all_sprite_groups_dict)
         self.group_name = pic.split('/')[4]
-        self.item_name = pic.split('/')[5]
+        self.item_name = pic.split('/')[5][:-4]
         self.image = pygame.image.load(pic).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]

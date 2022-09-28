@@ -7,6 +7,8 @@ class Bullet(pygame.sprite.Sprite):
 
     def __init__(self, pic, x, y, direction, speed=6, falling_without_trajectory=False):
         pygame.sprite.Sprite.__init__(self)
+        self.group_name = pic.split('/')[4]
+        self.item_name = pic.split('/')[5][:-4]
         self.image = pygame.image.load(pic).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]

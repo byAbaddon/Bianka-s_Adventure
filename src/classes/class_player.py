@@ -244,6 +244,13 @@ class Player(pygame.sprite.Sprite, Sound,):
                         Sound.bullet_statuette_hit(self)
                         item[0].kill()
 
+    def check_enemy_bullets_collide(self):
+        bullets_group = self.all_sprite_groups_dict['bullets']
+        for sprite in pygame.sprite.spritecollide(self, bullets_group, False, pygame.sprite.collide_mask):
+            match sprite.item_name:
+                case 'egg' | 'coconut':
+                    self.energy_power -= 1
+
     def update(self):
         pygame.mask.from_surface(self.image)  # create mask image
         self.sprite_frames()
@@ -252,3 +259,4 @@ class Player(pygame.sprite.Sprite, Sound,):
         self.check_ground_collide()
         self.check_item_collide()
         self.check_bullets_collide()
+        self.check_enemy_bullets_collide()
