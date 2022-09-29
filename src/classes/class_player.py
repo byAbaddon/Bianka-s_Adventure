@@ -11,12 +11,14 @@ class Player(pygame.sprite.Sprite, Sound, ):
     JUMP_HEIGHT = -6
     PLAYER_FRICTION = -0.12
     PLAYER_SPEED = 0.4
+    lives = 3
     energy_power = 100
     points = 0
-    statistics = {}
     score = points
     player_dead = False
+    statistics = {}
     counter = 0
+    current_weapon = '../src/assets/images/bullets/knife.png'
 
     def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
@@ -137,7 +139,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
             else:
                 self.image = pygame.image.load('../src/assets/images/player/angry/2.png')
                 x = self.shot_position[0] - 104
-            bullet = self.class_bullet('../src/assets/images/bullets/knife.png', x, y, self.direction)
+            bullet = self.class_bullet(self.current_weapon, x, y, self.direction)
             self.all_sprite_groups_dict['bullets'].add(bullet)
 
     def sprite_frames(self):

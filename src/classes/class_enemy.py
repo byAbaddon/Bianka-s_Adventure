@@ -10,7 +10,7 @@ class Enemy(Player, Sound):
                  pic='', x=0, y=0, speed=0, noise=False, shooting=False, pic_bullet='', bullet_speed=1, sprite_pic_num=0):
         Player.__init__(self, class_bullet, all_sprite_groups_dict)
         self.group_name = pic.split('/')[4]
-        self.item_name = pic.split('/')[5][:-4]
+        self.item_name = pic.split('/')[5]
         self.image = pygame.image.load(pic).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]
@@ -39,7 +39,7 @@ class Enemy(Player, Sound):
 
     def shooting_enemy(self):  # shooting:
         if self.shooting:
-            if self.rect.x <= SCREEN_WIDTH // 2:
+            if self.rect.x <= SCREEN_WIDTH - 100:
                 Sound.bullet_fail(self)
                 shot_position = self.rect.midbottom
                 x = shot_position[0] + self.image.get_width() // 4 - 30
@@ -49,7 +49,7 @@ class Enemy(Player, Sound):
                 self.shooting = False
 
     def prevent_overflow_item_group(self):  # remove old enemy from item_group if it out of screen
-        if self.rect.x < -30 or self.rect.x > SCREEN_WIDTH:
+        if self.rect.x < -30 or self.rect.x > SCREEN_WIDTH or self.rect.y > SCREEN_HEIGHT:
             self.kill()
 
     def make_sound(self):

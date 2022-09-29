@@ -80,7 +80,6 @@ class LevelStatistic(Sound):
     def __init__(self,):
         super().__init__()
         self.state = ''
-        self.is_music = False
 
     def info_statistic(self):
         text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 15)
@@ -92,14 +91,10 @@ class LevelStatistic(Sound):
         SCREEN.blit(image, [440, 340])
 
     def play_music(self):
-        if not self.is_music:
-            Sound.stop_all_sounds()
-            Sound.statistic_music(self)
-        self.is_music = True
+        pass
 
     def update(self):
         self.info_statistic()
-        self.play_music()
 
     @staticmethod
     def event(self):

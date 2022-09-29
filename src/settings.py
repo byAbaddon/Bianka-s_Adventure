@@ -13,7 +13,7 @@ pygame.init()
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 # ========================================================================== add icon
-programIcon = pygame.image.load('assets/images/title_icon/girl.png')
+programIcon = pygame.image.load('../src/assets/images/title_icon/baby_hat.png')
 pygame.display.set_icon(programIcon)
 
 # ========================================================================== add caption
@@ -85,8 +85,9 @@ def text_creator(text='No Text', rgb_color=(255, 255, 255), x_pos=SCREEN_WIDTH /
     if under_line:
         pygame.font.Font.set_underline(font, True)
     input_text = font.render(text, True, rgb_color, background)
-    text_position = input_text.get_rect(center=(x_pos, y_pos))
+    text_position = input_text.get_rect(midleft=(x_pos, y_pos))
     SCREEN.blit(input_text, text_position)
+    return input_text.get_size()
 
 
 # resize image
@@ -104,7 +105,7 @@ def key_pressed(input_key=None):
 
 
 #  file read and write
-def file_operation(file_path, option="['r' or 'w' or 'a']", row_number_to_read=int, text_to_write='empty row'):
+def file_operation(file_path, option="['r' or 'w' or 'a']", row_number_to_read=0, text_to_write='empty row'):
     with open(file_path, option) as file:
         if option == 'r':
             return file.readlines()[row_number_to_read]

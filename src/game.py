@@ -1,5 +1,6 @@
 from settings import *
 from classes.class_background import Background
+from classes.class_table import Table
 from src.classes.class_sound import Sound
 from state_classes import Intro, Menu, Legend, Score, LevelStatistic
 from classes.class_player import Player
@@ -25,6 +26,7 @@ all_spite_groups_dict = {'player': player_group, 'bullets': bullets_group, 'grou
                          'items': item_group}
 
 # ======================================================================= initialize  Classes
+
 player = Player(Bullet, all_spite_groups_dict)
 ground = Ground()
 
@@ -44,7 +46,7 @@ enemy_monkey = Enemy(Bullet, asg, pic_monkey, SCREEN_WIDTH, 150, 5, True, True,p
 enemy_hedgehog = Enemy(Bullet, asg, pic_hedgehog, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 1)
 enemy_static_hedgehog = Enemy(Bullet, asg, pic_hedgehog, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 0)
 
-enemy_raven = Enemy(Bullet, asg, pic_raven, SCREEN_WIDTH, TOP_FRAME_SIZE + 100, 3, True, True, pic_raven_bullet, 1)
+enemy_raven = Enemy(Bullet, asg, pic_raven, SCREEN_WIDTH, TOP_FRAME_SIZE + 100, 3, True, True, pic_raven_bullet, 1, 5)
 
 enemy_classes_dict = {'enemy_monkey': enemy_monkey, 'enemy_hedgehog': enemy_hedgehog, 'enemy_raven': enemy_raven,
                       'enemy_static_hedgehog': enemy_static_hedgehog}
@@ -71,18 +73,20 @@ class GameState(pygame.sprite.Sprite, Sound, ):
         self.background = None
         self.is_bg_created = False
         self.is_mushroom_created = False
-        self.area = 1
+        self.area = 2
         self.level = 1
         self.level_reader_row = 1
 
     def start_game(self):
         # top display frames
-        background_image('../src/assets/images/top_frames/4.png', 0, -5, False)
+        table.update()
+        # background_image('../src/assets/images/top_frames/4.png', 0, -5, False)
+
         # developer utils
-        text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
-        text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
-        text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
-        text_creator(f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70, 22)
+        # text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
+        # text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
+        # text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
+        # text_creator(f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70, 22)
 
         # function sprite creator
         def sprite_creator(dictionary, input_class=None, group_class=None):
@@ -114,6 +118,8 @@ class GameState(pygame.sprite.Sprite, Sound, ):
                     self.level_reader_row += 1  # read row level from txt
                     self.background.distance_mt = 0  # prevent ...
                     self.is_music_play = False
+                    Sound.stop_all_sounds()
+                    Sound.statistic_music(self)
                     self.state = 'level_statistic'  # switch to statistic state
 
         def area_label():  # Info Table label when Start new Area/Level
@@ -123,10 +129,17 @@ class GameState(pygame.sprite.Sprite, Sound, ):
                 text_creator(f'Area {self.area} - {self.level}', 'white', SCREEN_WIDTH // 2,
                              SCREEN_HEIGHT // 2, 36)
 
+        def current_areas_watcher():
+            path = '../src/levels/current_area_levels.txt'
+            file_operation(path, 'w', 0, f'{{"area": {self.area} , "level": {self.level}}}')
+
         # ============== level manipulator
         if self.level > 4:
             self.level = 1
             self.area += 1
+
+        # save actual Area/Level on dict to txt file
+        current_areas_watcher()
 
         # ========================================== START GAME  with Area 1; Level 1
         if self.area == 1:
@@ -141,7 +154,7 @@ class GameState(pygame.sprite.Sprite, Sound, ):
                 self.is_bg_created = True
 
             # ============== create level: items, enemy, and more
-            items_dict = eval(file_operation('../src/levels/levels.txt', 'r', self.level_reader_row))
+            items_dict = eval(file_operation('levels/levels_data.txt', 'r', self.level_reader_row))
             sprite_creator(items_dict, Item, item_group)
 
             # ============= level counter
@@ -204,13 +217,16 @@ class GameState(pygame.sprite.Sprite, Sound, ):
             self.level_statistic()
 
 
-#  ========================================================================== create new GameState
+#  ================================ create new GameState
 game_state = GameState()
+# ================================================================ create top Table for: score , energy and more
+table = Table(Bullet, all_spite_groups_dict)
 
-# Starting Game
+# ============= Starting Game loop
 while True:
     SCREEN.fill(pygame.Color('black'))
     game_state.state_manager()
     pygame.display.update()
     CLOCK.tick(FPS)
     exit_game()
+
