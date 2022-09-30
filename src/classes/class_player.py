@@ -12,10 +12,10 @@ class Player(pygame.sprite.Sprite, Sound, ):
     PLAYER_FRICTION = -0.12
     PLAYER_SPEED = 0.4
     lives = 3
-    energy_power = 100
     points = 0
-    score = points
-    player_dead = False
+    energy_power = 100
+    is_player_dead = False
+    is_player_poisoned = False
     statistics = {}
     counter = 0
     current_weapon = '../src/assets/images/bullets/knife.png'
@@ -142,6 +142,12 @@ class Player(pygame.sprite.Sprite, Sound, ):
             bullet = self.class_bullet(self.current_weapon, x, y, self.direction)
             self.all_sprite_groups_dict['bullets'].add(bullet)
 
+    def poisoned_player_energy_decrease(self):
+        time_now = pygame.time.get_ticks()
+        if self.is_player_poisoned and time_now - self.last_time > self.COOLDOWN:
+            self.energy_power -= 1
+            self.last_time = time_now
+
     def sprite_frames(self):
         key = pygame.key.get_pressed()
         # left and right animation
@@ -174,7 +180,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
                         else:
                             self.image = pygame.image.load('../src/assets/images/player/stay/2.png')
                         self.is_jump = False
-                if self.player_dead:
+                if self.is_player_dead:
                     self.image = pygame.image.load('../src/assets/images/player/dead/dead.png')
                     self.pos.y = SCREEN_HEIGHT
 
@@ -186,7 +192,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
                     if sprite.item_name == 'monkey':
                         pass
                     if sprite.item_name == 'hedgehog':
-                        self.player_dead = True
+                        self.is_player_dead = True
                         Sound.player_dead(self)
                         # sprite.kill()
                 case 'mushroom':
@@ -200,6 +206,8 @@ class Player(pygame.sprite.Sprite, Sound, ):
                     if sprite.item_name == 'purple':
                         self.points += 500
                         Sound.grab_poison_mushroom(self)
+                        self.is_player_poisoned = True
+
                     sprite.kill()
                     Sound.grab_mushroom(self)
                 case 'bonus':
@@ -245,6 +253,9 @@ class Player(pygame.sprite.Sprite, Sound, ):
                     if item[0].item_name == 'statuette':
                         Sound.bullet_statuette_hit(self)
                         item[0].kill()
+                case 'enemies':
+                    if item[0].item_name == 'hedgehog':
+                        item[0].kill()
 
     def check_enemy_bullets_collide(self):
         bullets_group = self.all_sprite_groups_dict['bullets']
@@ -264,3 +275,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
         self.check_item_collide()
         self.check_bullets_collide()
         self.check_enemy_bullets_collide()
+        self.poisoned_player_energy_decrease()
+
+
+

@@ -62,24 +62,24 @@ ground_group.add(ground)
 
 
 # Game State
-class GameState(pygame.sprite.Sprite, Sound, ):
+class GameState(Sound,):
     START_TIMER = pygame.time.get_ticks()
 
     def __init__(self, ):
-        super().__init__()
         self.state = 'intro'
         self.current_music = Sound.intro_music(self)
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
         self.is_mushroom_created = False
-        self.area = 2
+        self.area = 1
         self.level = 1
         self.level_reader_row = 1
 
     def start_game(self):
         # top display frames
         table.update()
+
         # background_image('../src/assets/images/top_frames/4.png', 0, -5, False)
 
         # developer utils
@@ -126,20 +126,13 @@ class GameState(pygame.sprite.Sprite, Sound, ):
             if self.background.distance_mt < 10:
                 image = pygame.image.load('../src/assets/images/frames/level_frame.png')
                 SCREEN.blit(image, [SCREEN_WIDTH // 2 - 80, SCREEN_HEIGHT // 2 - 32])
-                text_creator(f'Area {self.area} - {self.level}', 'white', SCREEN_WIDTH // 2,
+                text_creator(f'Area {self.area} - {self.level}', 'white', SCREEN_WIDTH // 2 - 54,
                              SCREEN_HEIGHT // 2, 36)
-
-        def current_areas_watcher():
-            path = '../src/levels/current_area_levels.txt'
-            file_operation(path, 'w', 0, f'{{"area": {self.area} , "level": {self.level}}}')
 
         # ============== level manipulator
         if self.level > 4:
             self.level = 1
             self.area += 1
-
-        # save actual Area/Level on dict to txt file
-        current_areas_watcher()
 
         # ========================================== START GAME  with Area 1; Level 1
         if self.area == 1:
@@ -220,7 +213,7 @@ class GameState(pygame.sprite.Sprite, Sound, ):
 #  ================================ create new GameState
 game_state = GameState()
 # ================================================================ create top Table for: score , energy and more
-table = Table(Bullet, all_spite_groups_dict)
+table = Table(game_state, player)
 
 # ============= Starting Game loop
 while True:

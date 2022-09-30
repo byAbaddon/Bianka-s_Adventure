@@ -1,26 +1,20 @@
 from src.settings import *
-from src.classes.class_player import Player
 
 
-class Table(Player):
+class Table:
     height_score = 3000
     boss_energy = 200
+    area = 0
+    level = 0
+    score = 0
+    energy_power = 100
+    lives = 0
+    weapon = 'knife'
+    is_poisoned = False
 
-    def __init__(self, class_bullet, all_sprite_groups_dict):
-        Player.__init__(self, class_bullet, all_sprite_groups_dict)
-        self.area = 0
-        self.level = 0
-        self.score = Player.score
-        self.energy_power = Player.energy_power
-        self.lives = Player.lives
-
-    def get_current_area_level(self):
-        try:
-            data_dict = eval(file_operation('../src/levels/current_area_levels.txt', 'r'))
-            self.area = data_dict['area']
-            self.level = data_dict['level']
-        except:
-            print('Unable load level from txt file')
+    def __init__(self, game_state, player):
+        self.game_state = game_state
+        self.player = player
 
     @staticmethod
     def create_top_frame():
@@ -53,11 +47,17 @@ class Table(Player):
     def energy_bar(self):
         text_creator('Bianka', 'white', 328, 67, 29)
 
+        # bottom bar red
         bar = pygame.Rect(400, 60, 100, 16)
         pygame.draw.rect(SCREEN, 'red', bar, border_radius=2)
-        # up green
+
+        # top bar green / blue
         bar = pygame.Rect(400, 60, self.energy_power, 16)
-        pygame.draw.rect(SCREEN, (0, 200, 0), bar, border_radius=2)
+        # is_poisoned
+        if not self.is_poisoned:
+            pygame.draw.rect(SCREEN, (0, 200, 0), bar, border_radius=2)  # up green
+        else:
+            pygame.draw.rect(SCREEN, (0, 0, 200), bar, border_radius=2)  # up blue
 
     def energy_bar_boss(self):
         text_creator('Boss', 'white', 527, 67, 29)
@@ -68,10 +68,9 @@ class Table(Player):
         bar = pygame.Rect(SCREEN_WIDTH - 219, 60, self.boss_energy, 16)
         pygame.draw.rect(SCREEN, 'teal', bar, border_radius=2)
 
-    @staticmethod
-    def draw_weapon():
+    def draw_weapon(self):
         text_creator('Weapon', 'white', 162, 68, 29)
-        weapon = pygame.image.load(Player.current_weapon)
+        weapon = pygame.image.load(self.player.current_weapon)
         SCREEN.blit(weapon, (240, 38,))
         pygame.draw.rect(SCREEN, 'teal', [242, 54, 60, 24], 1, 2)
 
@@ -79,17 +78,27 @@ class Table(Player):
     def draw_amulet_bar():
         text_creator('Amulets', 'white', 240, 32, 29)
         # SCREEN.fill((70,70,70), [326, 15, 360, 40])
-        [pygame.draw.rect(SCREEN, (200,220,222), [326 + 40 * n, 15, 40, 40], 1, 1,) for n in range(0, 9)]
+        [pygame.draw.rect(SCREEN, (200, 220, 222), [326 + 40 * n, 15, 40, 40], 1, 1,) for n in range(0, 9)]
+
+    def updated_player_data(self):
+        self.area = self.game_state.area
+        self.level = self.game_state.level
+        self.score = self.player.points
+        self.lives = self.player.lives
+        self.energy_power = self.player.energy_power
+        self.weapon = self.player.current_weapon
+        self.is_poisoned = self.player.is_player_poisoned
 
     def update(self):
-        self.get_current_area_level()
         self.create_top_frame()
         self.draw_lives()
         self.draw_top_score()
         self.draw_current_score()
         self.draw_area_and_level()
         self.energy_bar()
-        # if game_state.boos_battle:
+        # if game_state.boos_battle:a
         self.energy_bar_boss()
         self.draw_weapon()
         self.draw_amulet_bar()
+        self.updated_player_data()
+
