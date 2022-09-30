@@ -59,7 +59,7 @@ enemy_static_hedgehog = Enemy(Bullet, asg, pic_hedgehog, S_H, S_H - G_H_S - 5, 0
 
 enemy_raven = Enemy(Bullet, asg, pic_raven, S_W, TOP_FRAME_SIZE + 100, 3, True, True, pic_raven_bullet, 1.4, 5)
 
-enemy_boar = Enemy(Bullet, asg, pic_boar, S_H, S_H - G_H_S - 32, 3, True,) # False, '', 0, 8)
+enemy_boar = Enemy(Bullet, asg, pic_boar, S_H, S_H - G_H_S - 32, 3, True)
 
 
 enemy_classes_dict = {'enemy_monkey': enemy_monkey, 'enemy_hedgehog': enemy_hedgehog, 'enemy_raven': enemy_raven,

@@ -6,6 +6,8 @@ from src.classes.class_sound import Sound
 # ============================================= class Player===============================================
 class Player(pygame.sprite.Sprite, Sound, ):
     COOLDOWN = 1000  # milliseconds
+    COOLDOWN_SHOOTING = {'knife': 600, 'axe': 800, 'spear': 1000}  # milliseconds
+
     GRAVITY = 0.2
     SPRITE_ANIMATION_SPEED = 0.3
     JUMP_HEIGHT = -6
@@ -19,7 +21,9 @@ class Player(pygame.sprite.Sprite, Sound, ):
     statistics = {}
     counter = 0
     current_weapon = '../src/assets/images/bullets/knife.png'
+    current_weapon_name = current_weapon.split('/')[5][:-4]
     AMULETS_LIST = [f'../src/assets/images/amulets/big/{x}.png' for x in range(1, 10)] # Boss must append amulet in list
+    hit_enemy_counter = 0
 
     def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
@@ -126,8 +130,8 @@ class Player(pygame.sprite.Sprite, Sound, ):
         key = pygame.key.get_pressed()
         time_now = pygame.time.get_ticks()  # get time now
         # velocity is equal shooting window time
-        if key[pygame.K_SPACE] and self.direction.x != 0 \
-                and abs(self.velocity.x) <= 3.0 and time_now - self.last_time > self.COOLDOWN:
+        if key[pygame.K_SPACE] and self.direction.x != 0 and abs(self.velocity.x) <= 3.0 and\
+                time_now - self.last_time > self.COOLDOWN_SHOOTING[self.current_weapon_name]:
             Sound.player_shoot(self)
             self.last_time = time_now
 
@@ -190,14 +194,20 @@ class Player(pygame.sprite.Sprite, Sound, ):
         for sprite in pygame.sprite.spritecollide(self, group_items, False, pygame.sprite.collide_mask):
             match sprite.group_name:
                 case 'enemies':
-                    if sprite.item_name == 'boat':
-                        pass
-                    if sprite.item_name == 'monkey':
-                        pass
+                    if sprite.item_name == 'raven':
+                        self.energy_power -= 20
+                        sprite.kill()
                     if sprite.item_name == 'hedgehog':
+                        self.energy_power -= 30
+                        sprite.kill()
+                    if sprite.item_name == 'monkey':
+                        self.energy_power -= 50
+                        sprite.kill()
+                    if sprite.item_name == 'boar':
                         self.is_player_dead = True
                         Sound.player_dead(self)
-                        # sprite.kill()
+                        sprite.kill()
+                        self.kill()
                 case 'mushroom':
                     Sound.add_point(self)
                     if sprite.item_name == 'grey':
@@ -249,6 +259,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
 
         for bullet, item in sprite.items():
             item = item[0]
+            hit_enemy_counter = 0
             match item.group_name:
                 case 'mushroom':
                     Sound.bullet_hit(self)
@@ -262,14 +273,16 @@ class Player(pygame.sprite.Sprite, Sound, ):
                         Sound.bullet_statuette_hit(self)
                         item.kill()
                 case 'enemies':
-
                     if item.item_name == 'hedgehog':
+                        self.points += 200
                         item.kill()
                     if item.item_name == 'boar':
-
-                        Sound.bullet_kill_boar(self)
-                        bullet.kill()
-                        item.kill()
+                        hit_enemy_counter += 1
+                        if hit_enemy_counter == 2:
+                            self.points += 500
+                            Sound.bullet_kill_boar(self)
+                            bullet.kill()
+                            item.kill()
 
     def check_enemy_bullets_collide(self):
         bullets_group = self.all_sprite_groups_dict['bullets']
