@@ -17,6 +17,17 @@ class Bullet(pygame.sprite.Sprite):
         self.speed = speed
         self.falling_without_trajectory = falling_without_trajectory
 
+    def weapon_capability(self):
+        if self.item_name == 'knife':
+            self.BULLED_SCALE = 2
+            self.speed = 7
+        if self.item_name == 'spear':
+            self.BULLED_SCALE = 1
+            self.speed = 6
+        if self.item_name == 'axe':
+            self.BULLED_SCALE = 2
+            self.speed = 5
+
     def direction_shooting(self):
         # print(self.position)
         pygame.mask.from_surface(self.image)  # create mask image
@@ -40,4 +51,5 @@ class Bullet(pygame.sprite.Sprite):
 
     def update(self):
         self.direction_shooting()
+        self.weapon_capability()
         self.prevent_overflow_bullet_group()

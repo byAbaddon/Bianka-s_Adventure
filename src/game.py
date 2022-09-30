@@ -47,16 +47,19 @@ pic_boar = '../src/assets/images/enemies/boar/1.png'
 pic_raven_bullet = '../src/assets/images/bullets/egg.png'
 pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
 asg = all_spite_groups_dict
+S_W = SCREEN_WIDTH
+S_H = SCREEN_HEIGHT
+G_H_S = GROUND_HEIGHT_SIZE
 
 # create enemy classes
-enemy_monkey = Enemy(Bullet, asg, pic_monkey, SCREEN_WIDTH, 150, 5, True, True,pic_monkey_bullet, 0.6)
+enemy_monkey = Enemy(Bullet, asg, pic_monkey, S_W, 150, 5, True, True,pic_monkey_bullet, 1)
 
-enemy_hedgehog = Enemy(Bullet, asg, pic_hedgehog, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 1)
-enemy_static_hedgehog = Enemy(Bullet, asg, pic_hedgehog, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 0)
+enemy_hedgehog = Enemy(Bullet, asg, pic_hedgehog, S_W, S_H - G_H_S - 5, 1)
+enemy_static_hedgehog = Enemy(Bullet, asg, pic_hedgehog, S_H, S_H - G_H_S - 5, 0)
 
-enemy_raven = Enemy(Bullet, asg, pic_raven, SCREEN_WIDTH, TOP_FRAME_SIZE + 100, 3, True, True, pic_raven_bullet, 1, 5)
+enemy_raven = Enemy(Bullet, asg, pic_raven, S_W, TOP_FRAME_SIZE + 100, 3, True, True, pic_raven_bullet, 1.4, 5)
 
-enemy_boar = Enemy(Bullet, asg, pic_boar, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 32, 3, True, False, '', 0, 8)
+enemy_boar = Enemy(Bullet, asg, pic_boar, S_H, S_H - G_H_S - 32, 3, True,) # False, '', 0, 8)
 
 
 enemy_classes_dict = {'enemy_monkey': enemy_monkey, 'enemy_hedgehog': enemy_hedgehog, 'enemy_raven': enemy_raven,
