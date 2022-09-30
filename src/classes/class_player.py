@@ -19,7 +19,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
     statistics = {}
     counter = 0
     current_weapon = '../src/assets/images/bullets/knife.png'
-    ITEMS_LIST = [f'../src/assets/images/amulets/big/{x}.png' for x in range(1, 10)]   # Boss must append amulet in list
+    AMULETS_LIST = [f'../src/assets/images/amulets/big/{x}.png' for x in range(1, 10)]   # Boss must append amulet in list
 
     def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
@@ -190,6 +190,8 @@ class Player(pygame.sprite.Sprite, Sound, ):
         for sprite in pygame.sprite.spritecollide(self, group_items, False, pygame.sprite.collide_mask):
             match sprite.group_name:
                 case 'enemies':
+                    if sprite.item_name == 'boat':
+                        pass
                     if sprite.item_name == 'monkey':
                         pass
                     if sprite.item_name == 'hedgehog':
@@ -246,21 +248,28 @@ class Player(pygame.sprite.Sprite, Sound, ):
         sprite = pygame.sprite.groupcollide(bullets_group, items_group, False, False, pygame.sprite.collide_mask)
 
         for bullet, item in sprite.items():
-            match item[0].group_name:
+            item = item[0]
+            match item.group_name:
                 case 'mushroom':
                     Sound.bullet_hit(self)
                     bullet.kill()
-                    item[0].kill()
+                    item.kill()
                 case 'stones':
                     Sound.bullet_ricochet(self)
                     bullet.kill()
                 case 'bonus':
-                    if item[0].item_name == 'statuette':
+                    if item.item_name == 'statuette':
                         Sound.bullet_statuette_hit(self)
-                        item[0].kill()
+                        item.kill()
                 case 'enemies':
-                    if item[0].item_name == 'hedgehog':
-                        item[0].kill()
+
+                    if item.item_name == 'hedgehog':
+                        item.kill()
+                    if item.item_name == 'boar':
+
+                        Sound.bullet_kill_boar(self)
+                        bullet.kill()
+                        item.kill()
 
     def check_enemy_bullets_collide(self):
         bullets_group = self.all_sprite_groups_dict['bullets']

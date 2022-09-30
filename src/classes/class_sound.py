@@ -68,13 +68,17 @@ class Sound:
     def grab_amulets(self):
         self.play_sound('../src/assets/sounds/player/grab_amulets.wav', 1)
 
+    # enemy sound
     def monkey_sound(self):
         self.play_sound('../src/assets/sounds/enemies/monkey.wav', 1)
 
     def raven_sound(self):
         self.play_sound('../src/assets/sounds/enemies/raven.wav', 1)
 
-    # player bullets hit something
+    def boar_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/boar/boar.mp3', 1)
+
+    # player bullets hit something and kill enemy
     def bullet_ricochet(self):
         self.play_sound('../src/assets/sounds/bullet/ricochet.wav')
 
@@ -86,6 +90,9 @@ class Sound:
 
     def bullet_fail(self):
         self.play_sound('../src/assets/sounds/bullet/fail.wav')
+
+    def bullet_kill_boar(self):
+        self.play_sound('../src/assets/sounds/enemies/boar/boar_squealing.wav')
 
     # enemy bullets hit player
     def enemy_bullet_hit_player_head(self):

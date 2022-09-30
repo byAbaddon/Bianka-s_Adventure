@@ -9,6 +9,7 @@ from classes.class_bullet import Bullet
 from classes.class_item import Item
 from classes.class_enemy import Enemy
 
+
 # ================================================================= TEST imported classes
 # print(dir(Menu))
 
@@ -30,12 +31,19 @@ all_spite_groups_dict = {'player': player_group, 'bullets': bullets_group, 'grou
 player = Player(Bullet, all_spite_groups_dict)
 ground = Ground()
 
+# add to group
+# ground2 = Ground('../src/assets/images/ground/distance.png', 100, SCREEN_HEIGHT - 150)
+# ground3 = Ground('../src/assets/images/ground/distance.png', 400, SCREEN_HEIGHT - 170)
+player_group.add(player)
+ground_group.add(ground)
+
 # ---------------------------------------------------------------------- create Enemies
 
 # variables
 pic_monkey = '../src/assets/images/enemies/monkey/monkey.png'
 pic_hedgehog = '../src/assets/images/enemies/hedgehog/hedgehog.png'
 pic_raven = '../src/assets/images/enemies/raven/1.png'
+pic_boar = '../src/assets/images/enemies/boar/1.png'
 pic_raven_bullet = '../src/assets/images/bullets/egg.png'
 pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
 asg = all_spite_groups_dict
@@ -48,15 +56,11 @@ enemy_static_hedgehog = Enemy(Bullet, asg, pic_hedgehog, SCREEN_WIDTH, SCREEN_HE
 
 enemy_raven = Enemy(Bullet, asg, pic_raven, SCREEN_WIDTH, TOP_FRAME_SIZE + 100, 3, True, True, pic_raven_bullet, 1, 5)
 
+enemy_boar = Enemy(Bullet, asg, pic_boar, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 32, 3, True, False, '', 0, 8)
+
+
 enemy_classes_dict = {'enemy_monkey': enemy_monkey, 'enemy_hedgehog': enemy_hedgehog, 'enemy_raven': enemy_raven,
-                      'enemy_static_hedgehog': enemy_static_hedgehog}
-
-# add to group
-# ground2 = Ground('../src/assets/images/ground/distance.png', 100, SCREEN_HEIGHT - 150)
-# ground3 = Ground('../src/assets/images/ground/distance.png', 400, SCREEN_HEIGHT - 170)
-player_group.add(player)
-ground_group.add(ground)
-
+                      'enemy_static_hedgehog': enemy_static_hedgehog, 'enemy_boar': enemy_boar}
 
 # =======================================================================
 
@@ -72,7 +76,7 @@ class GameState(Sound,):
         self.background = None
         self.is_bg_created = False
         self.is_mushroom_created = False
-        self.area = 2
+        self.area = 1
         self.level = 1
         self.level_reader_row = 1
 

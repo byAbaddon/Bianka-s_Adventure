@@ -81,7 +81,7 @@ class Table:
         [pygame.draw.rect(SCREEN, (200, 220, 222), [326 + 40 * x, 15, 40, 40], 1, 1,) for x in range(0, 9)]
 
         # draw items
-        lst = self.player.ITEMS_LIST
+        lst = self.player.AMULETS_LIST
         for x in range(0, len(lst)):
             scaled_pic = scale_image(lst[x], 32, 32)
             SCREEN.blit(scaled_pic, [332 + (41 * x - 1) - (x + 2), 18,  36, 36])
@@ -107,5 +107,4 @@ class Table:
         self.draw_weapon()
         self.draw_amulet_bar()
         self.updated_player_data()
-        print(self.player.ITEMS_LIST)
 
