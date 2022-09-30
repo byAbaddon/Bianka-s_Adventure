@@ -9,10 +9,10 @@ class Intro(Sound):
     def __init__(self):
         super().__init__()
         background_image('../src/assets/images/backgrounds/bg_intro.png')
-        text_creator('Copyright - 2022', (211, 0, 0), 80, SCREEN_HEIGHT - 20,)
-        text_creator('By Abaddon', (211, 0, 0), SCREEN_WIDTH - 60, SCREEN_HEIGHT - 20,)
-        text_creator('Start Game: SpaceBar', (255, 255, 200), SCREEN_WIDTH // 2, SCREEN_HEIGHT - 60, 36)
-        text_creator('MENU: Return', (255, 255, 200), SCREEN_WIDTH // 2, SCREEN_HEIGHT - 20, 36)
+        text_creator('Copyright - 2022', (211, 0, 0), 20, SCREEN_HEIGHT - 20,)
+        text_creator('By Abaddon', (211, 0, 0), SCREEN_WIDTH - 130, SCREEN_HEIGHT - 20,)
+        text_creator('Start Game: SpaceBar', (255, 255, 200), SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 100, 36)
+        text_creator('MENU: Return', (255, 255, 200), SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 140, 36)
         self.state = ''
 
     def event(self):

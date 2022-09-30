@@ -201,13 +201,12 @@ class Player(pygame.sprite.Sprite, Sound, ):
                         self.points += 100
                     if sprite.item_name == 'orange':
                         self.points += 150
-                    if sprite.item_name == 'orange':
+                    if sprite.item_name == 'red':
                         self.points += 250
                     if sprite.item_name == 'purple':
                         self.points += 500
                         Sound.grab_poison_mushroom(self)
                         self.is_player_poisoned = True
-
                     sprite.kill()
                     Sound.grab_mushroom(self)
                 case 'bonus':
@@ -218,13 +217,18 @@ class Player(pygame.sprite.Sprite, Sound, ):
                         Sound.grab_statuette(self)
                     sprite.kill()
                 case 'stones':
-                    if sprite.item_name == 'big' or 'medium' or 'small':
-                        Sound.player_stone_hit(self)
-                        self.image = pygame.image.load('../src/assets/images/player/fail/fail_right.png')
-                        sprite.rect.x -= 10
-                        self.energy_power -= 10
-                        break
+                    self.image = pygame.image.load('../src/assets/images/player/fail/fail_right.png')
+                    Sound.player_stone_hit(self)
+                    sprite.rect.x -= 10
+                    if sprite.item_name == 'big':
+                        self.energy_power -= 3
+                    if sprite.item_name == 'medium':
+                        self.energy_power -= 2
+                    if sprite.item_name == 'small':
+                        self.energy_power -= 1
+                    return
 
+            # -------------------------------------------------create statistics
             ignore_group_list = ['signs', 'stones']
             if sprite.group_name not in ignore_group_list:
                 if sprite.group_name not in self.statistics:  # add item to statistics dict if not have key

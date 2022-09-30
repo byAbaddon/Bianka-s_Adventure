@@ -72,7 +72,7 @@ class GameState(Sound,):
         self.background = None
         self.is_bg_created = False
         self.is_mushroom_created = False
-        self.area = 1
+        self.area = 2
         self.level = 1
         self.level_reader_row = 1
 
@@ -112,7 +112,7 @@ class GameState(Sound,):
                 case 550:
                     Sound.sign_middle(self)
                     self.background.distance_mt += 1  # prevent ...
-                case 1100:  # Finished level
+                case 1080:  # Finished level
                     Sound.sign_finish(self)
                     self.level += 1  # increase level
                     self.level_reader_row += 1  # read row level from txt

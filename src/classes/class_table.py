@@ -46,7 +46,6 @@ class Table:
 
     def energy_bar(self):
         text_creator('Bianka', 'white', 328, 67, 29)
-
         # bottom bar red
         bar = pygame.Rect(400, 60, 100, 16)
         pygame.draw.rect(SCREEN, 'red', bar, border_radius=2)
@@ -54,10 +53,10 @@ class Table:
         # top bar green / blue
         bar = pygame.Rect(400, 60, self.energy_power, 16)
         # is_poisoned
-        if not self.is_poisoned:
-            pygame.draw.rect(SCREEN, (0, 200, 0), bar, border_radius=2)  # up green
+        if self.is_poisoned:
+            pygame.draw.rect(SCREEN, (147, 112, 219), bar, border_radius=1)  # up purple
         else:
-            pygame.draw.rect(SCREEN, (0, 0, 200), bar, border_radius=2)  # up blue
+            pygame.draw.rect(SCREEN, (0, 200, 0), bar, border_radius=2)  # up green
 
     def energy_bar_boss(self):
         text_creator('Boss', 'white', 527, 67, 29)
@@ -77,8 +76,15 @@ class Table:
     @staticmethod
     def draw_amulet_bar():
         text_creator('Amulets', 'white', 240, 32, 29)
+
+        # draw cells
         # SCREEN.fill((70,70,70), [326, 15, 360, 40])
-        [pygame.draw.rect(SCREEN, (200, 220, 222), [326 + 40 * n, 15, 40, 40], 1, 1,) for n in range(0, 9)]
+        [pygame.draw.rect(SCREEN, (200, 220, 222), [326 + 40 * x, 15, 40, 40], 1, 1,) for x in range(0, 9)]
+
+        # draw items
+        for x in range(1, 10):
+            scaled_pic = scale_image(f'../src/assets/images/amulets/big/{x}.png', 32, 32)
+            SCREEN.blit(scaled_pic, [291 + (41 * x - 1) - (x + 2), 18,  36, 36])
 
     def updated_player_data(self):
         self.area = self.game_state.area
