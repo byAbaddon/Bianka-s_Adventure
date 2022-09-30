@@ -73,8 +73,7 @@ class Table:
         SCREEN.blit(weapon, (240, 38,))
         pygame.draw.rect(SCREEN, 'teal', [242, 54, 60, 24], 1, 2)
 
-    @staticmethod
-    def draw_amulet_bar():
+    def draw_amulet_bar(self):
         text_creator('Amulets', 'white', 240, 32, 29)
 
         # draw cells
@@ -82,9 +81,10 @@ class Table:
         [pygame.draw.rect(SCREEN, (200, 220, 222), [326 + 40 * x, 15, 40, 40], 1, 1,) for x in range(0, 9)]
 
         # draw items
-        for x in range(1, 10):
-            scaled_pic = scale_image(f'../src/assets/images/amulets/big/{x}.png', 32, 32)
-            SCREEN.blit(scaled_pic, [291 + (41 * x - 1) - (x + 2), 18,  36, 36])
+        lst = self.player.ITEMS_LIST
+        for x in range(0, len(lst)):
+            scaled_pic = scale_image(lst[x], 32, 32)
+            SCREEN.blit(scaled_pic, [332 + (41 * x - 1) - (x + 2), 18,  36, 36])
 
     def updated_player_data(self):
         self.area = self.game_state.area
@@ -107,4 +107,5 @@ class Table:
         self.draw_weapon()
         self.draw_amulet_bar()
         self.updated_player_data()
+        print(self.player.ITEMS_LIST)
 

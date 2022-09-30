@@ -19,6 +19,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
     statistics = {}
     counter = 0
     current_weapon = '../src/assets/images/bullets/knife.png'
+    ITEMS_LIST = [f'../src/assets/images/amulets/big/{x}.png' for x in range(1, 10)]   # Boss must append amulet in list
 
     def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
