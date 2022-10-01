@@ -259,7 +259,6 @@ class Player(pygame.sprite.Sprite, Sound, ):
 
         for bullet, item in sprite.items():
             item = item[0]
-            hit_enemy_counter = 0
             match item.group_name:
                 case 'mushroom':
                     Sound.bullet_hit(self)
@@ -277,12 +276,13 @@ class Player(pygame.sprite.Sprite, Sound, ):
                         self.points += 200
                         item.kill()
                     if item.item_name == 'boar':
-                        hit_enemy_counter += 1
-                        if hit_enemy_counter == 2:
+                        self.hit_enemy_counter += 1
+                        bullet.kill()
+                        if self.hit_enemy_counter == 2:
                             self.points += 500
-                            Sound.bullet_kill_boar(self)
                             bullet.kill()
                             item.kill()
+                        Sound.bullet_kill_boar(self)
 
     def check_enemy_bullets_collide(self):
         bullets_group = self.all_sprite_groups_dict['bullets']

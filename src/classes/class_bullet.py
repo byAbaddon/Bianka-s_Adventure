@@ -46,7 +46,7 @@ class Bullet(pygame.sprite.Sprite):
                 self.rect.x -= self.speed
 
     def prevent_overflow_bullet_group(self):  # remove old shot from bullets_group if shoot out of screen
-        if self.rect.x < -30 or self.rect.x > SCREEN_WIDTH or self.rect.y > SCREEN_HEIGHT:
+        if self.rect.x < -30 or self.rect.x > SCREEN_WIDTH + 100 or self.rect.y > SCREEN_HEIGHT:
             self.kill()
 
     def update(self):

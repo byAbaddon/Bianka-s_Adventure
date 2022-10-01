@@ -49,28 +49,30 @@ pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
 asg = all_spite_groups_dict
 S_W = SCREEN_WIDTH
 S_H = SCREEN_HEIGHT
-G_H_S = GROUND_HEIGHT_SIZE
+T_F_S = TOP_FRAME_SIZE
 
 # create enemy classes
-enemy_monkey = Enemy(Bullet, asg, pic_monkey, S_W, 150, 5, True, True,pic_monkey_bullet, 1)
-
-enemy_hedgehog = Enemy(Bullet, asg, pic_hedgehog, S_W, S_H - G_H_S - 5, 1)
-enemy_static_hedgehog = Enemy(Bullet, asg, pic_hedgehog, S_H, S_H - G_H_S - 5, 0)
-
-enemy_raven = Enemy(Bullet, asg, pic_raven, S_W, TOP_FRAME_SIZE + 100, 3, True, True, pic_raven_bullet, 1.4, 5)
-
-enemy_boar = Enemy(Bullet, asg, pic_boar, S_H, S_H - G_H_S - 32, 3, True)
-
-
-enemy_classes_dict = {'enemy_monkey': enemy_monkey, 'enemy_hedgehog': enemy_hedgehog, 'enemy_raven': enemy_raven,
-                      'enemy_static_hedgehog': enemy_static_hedgehog, 'enemy_boar': enemy_boar}
+# enemy_monkey = Enemy(Bullet, asg, pic_monkey, SCREEN_WIDTH, 150, 5, True, True, pic_monkey_bullet, 1)
+#
+# enemy_hedgehog = Enemy(Bullet, asg, pic_hedgehog, SCREEN_WIDTH , SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 1)
+# enemy_static_hedgehog = Enemy(Bullet, asg, pic_hedgehog, SCREEN_HEIGHT, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 0)
+#
+# enemy_raven = Enemy(Bullet, asg, pic_raven, SCREEN_WIDTH, TOP_FRAME_SIZE + 100, 3, True, True, pic_raven_bullet, 1.4, 5)
+#
+# enemy_boar = Enemy(Bullet, asg, pic_boar, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 32, 3, True)
+#
+#
+# enemy_classes_dict = {'enemy_monkey': enemy_monkey, 'enemy_hedgehog': enemy_hedgehog, 'enemy_raven': enemy_raven,
+#                       'enemy_static_hedgehog': enemy_static_hedgehog, 'enemy_boar': enemy_boar}
 
 # =======================================================================
 
 
 # Game State
+# noinspection PyTypedDict,PyUnboundLocalVariable
 class GameState(Sound,):
     START_TIMER = pygame.time.get_ticks()
+    enemy_list = ['enemy_raven', 'enemy_monkey']
 
     def __init__(self, ):
         self.state = 'intro'
@@ -95,20 +97,29 @@ class GameState(Sound,):
         # text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
         # text_creator(f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70, 22)
 
+        def enemy_creator(enemy_name):
+            if enemy_name == 'enemy_raven':
+                return Enemy(Bullet, asg, pic_raven, S_H, T_F_S + 100, 3, True, True, pic_raven_bullet, 1.4, 5)
+            if enemy_name == 'enemy_monkey':
+                return Enemy(Bullet, asg, pic_monkey, SCREEN_WIDTH, 150, 5, True, True, pic_monkey_bullet, 1)
+
         # function sprite creator
         def sprite_creator(dictionary, input_class=None, group_class=None):
-            time_now = pygame.time.get_ticks()
+            # time_now = pygame.time.get_ticks()
             # ---------create
             for k, v in dictionary.items():  # t: 'item pic'
                 if k == int(self.background.distance_mt):
-                    if time_now - self.START_TIMER > 300:  # timer prevent create double item in group
-                        self.START_TIMER = time_now
-                        if v in enemy_classes_dict:  # check is class
-                            group_class.add(enemy_classes_dict[v])
-                        else:
-                            new_class = input_class(f'../src/assets/images/{v}.png')
-                            group_class.add(new_class)
-                        self.background.distance_mt += 1  # prevent create double sp if player stay in same position
+                    # if time_now - self.START_TIMER > 0:  # timer prevent 300ms create double item in group
+                    #     self.START_TIMER = time_now
+                    if v in self.enemy_list:  # check is class
+                        # create new class from enemy_name
+                        new_enemy_class = enemy_creator(enemy_name=v)
+                        # add to item group
+                        group_class.add(new_enemy_class)
+                    else:
+                        new_item_class = input_class(f'../src/assets/images/{v}.png')  # create item class
+                        group_class.add(new_item_class)  # add new class to item_group
+                    self.background.distance_mt += 1  # prevent create double sp if player stay in same position
 
         def distance_counter(*args):
             match int(self.background.distance_mt):
@@ -159,6 +170,7 @@ class GameState(Sound,):
 
             # ============= level counter
             distance_counter(item_group)
+            # print(len(item_group))
 
             # =================================================== UPDATE
             # update BG
@@ -166,14 +178,14 @@ class GameState(Sound,):
             # --------------------------- draw sprite group
             # ground_group.draw(SCREEN)  # hide under bg
             bullets_group.draw(SCREEN)
-            item_group.draw(SCREEN)
             player_group.draw(SCREEN)
+            item_group.draw(SCREEN)
 
             # --------------------------- update sprite group
             ground_group.update()
-            item_group.update()
-            bullets_group.update()
             player_group.update()
+            bullets_group.update()
+            item_group.update()
 
             # ============== draw current area/level labels
             area_label()

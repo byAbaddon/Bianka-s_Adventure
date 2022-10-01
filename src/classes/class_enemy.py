@@ -6,13 +6,12 @@ from src.classes.class_player import Player
 class Enemy(Player, Sound):
     SPRITE_ANIMATION_SPEED = 0.1
 
-    def __init__(self, class_bullet, all_sprite_groups_dict, pic='', x=0, y=0, speed=0, noise=False, shooting=False,
+    def __init__(self, class_bullet, all_sprite_groups_dict, pic='', x=SCREEN_WIDTH, y=0, speed=0, noise=False, shooting=False,
                  pic_bullet='', bullet_speed=1, sprite_pic_num=0):
         Player.__init__(self, class_bullet, all_sprite_groups_dict)
-        self.pic = pic
-        self.group_name = self.pic.split('/')[4]
-        self.item_name = self.pic.split('/')[5]
-        self.image = pygame.image.load(self.pic).convert_alpha()
+        self.group_name = pic.split('/')[4]
+        self.item_name = pic.split('/')[5]
+        self.image = pygame.image.load(pic).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]
         self.direction = vec(0, -1)  # fall down
@@ -24,7 +23,7 @@ class Enemy(Player, Sound):
         self.current_sprite = 0
         self.sprite_pic_num = sprite_pic_num
         self.sprites_animate = None
-        self.sprites_animate = [pygame.image.load(f'{self.pic[:-5]}{x}.png') for x in range(1, self.sprite_pic_num + 1)]
+        self.sprites_animate = [pygame.image.load(f'{pic[:-5]}{x}.png') for x in range(1, self.sprite_pic_num + 1)]
 
     def movement_enemy_current_pos(self):
         if key_pressed(pygame.K_RIGHT):
@@ -51,25 +50,25 @@ class Enemy(Player, Sound):
                 self.shooting = False
 
     def prevent_overflow_item_group(self):  # remove old enemy from item_group if it out of screen
-        if self.rect.x < -30 or self.rect.x > SCREEN_WIDTH or self.rect.y > SCREEN_HEIGHT:
+        if self.rect.x < -60 or self.rect.x > SCREEN_WIDTH + 100 or self.rect.y > SCREEN_HEIGHT:
             self.kill()
 
     def make_sound(self):
         if self.noise:
             if self.item_name == 'monkey':
                 Sound.monkey_sound(self)
-            elif self.item_name == 'raven':
+            if self.item_name == 'raven':
                 Sound.raven_sound(self)
-            elif self.item_name == 'boar':
+            if self.item_name == 'boar':
                 Sound.boar_sound(self)
         self.noise = False
 
     def update(self):
-        self.movement_enemy_current_pos()
         self.sprite_frames()
-        self.prevent_overflow_item_group()
+        self.movement_enemy_current_pos()
         self.make_sound()
         self.shooting_enemy()
+        self.prevent_overflow_item_group()
 
 
 
