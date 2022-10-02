@@ -40,39 +40,26 @@ ground_group.add(ground)
 # ---------------------------------------------------------------------- create Enemies
 
 # variables
+asg = all_spite_groups_dict
+S_W = SCREEN_WIDTH
+S_H = SCREEN_HEIGHT
+G_H_S = GROUND_HEIGHT_SIZE
+T_F_S = TOP_FRAME_SIZE
 pic_monkey = '../src/assets/images/enemies/monkey/monkey.png'
 pic_hedgehog = '../src/assets/images/enemies/hedgehog/hedgehog.png'
 pic_raven = '../src/assets/images/enemies/raven/1.png'
 pic_boar = '../src/assets/images/enemies/boar/1.png'
+pic_bee = '../src/assets/images/enemies/bee/1.png'
+
 pic_raven_bullet = '../src/assets/images/bullets/egg.png'
 pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
-asg = all_spite_groups_dict
-S_W = SCREEN_WIDTH
-S_H = SCREEN_HEIGHT
-T_F_S = TOP_FRAME_SIZE
-
-# create enemy classes
-# enemy_monkey = Enemy(Bullet, asg, pic_monkey, SCREEN_WIDTH, 150, 5, True, True, pic_monkey_bullet, 1)
-#
-# enemy_hedgehog = Enemy(Bullet, asg, pic_hedgehog, SCREEN_WIDTH , SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 1)
-# enemy_static_hedgehog = Enemy(Bullet, asg, pic_hedgehog, SCREEN_HEIGHT, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 5, 0)
-#
-# enemy_raven = Enemy(Bullet, asg, pic_raven, SCREEN_WIDTH, TOP_FRAME_SIZE + 100, 3, True, True, pic_raven_bullet, 1.4, 5)
-#
-# enemy_boar = Enemy(Bullet, asg, pic_boar, SCREEN_WIDTH, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - 32, 3, True)
-#
-#
-# enemy_classes_dict = {'enemy_monkey': enemy_monkey, 'enemy_hedgehog': enemy_hedgehog, 'enemy_raven': enemy_raven,
-#                       'enemy_static_hedgehog': enemy_static_hedgehog, 'enemy_boar': enemy_boar}
-
-# =======================================================================
 
 
 # Game State
 # noinspection PyTypedDict,PyUnboundLocalVariable
 class GameState(Sound,):
     START_TIMER = pygame.time.get_ticks()
-    enemy_list = ['enemy_raven', 'enemy_monkey']
+    enemy_list = ['enemy_raven', 'enemy_monkey', 'enemy_hedgehog', 'enemy_static_hedgehog', 'enemy_boar', 'enemy_bee']
 
     def __init__(self, ):
         self.state = 'intro'
@@ -97,11 +84,21 @@ class GameState(Sound,):
         # text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
         # text_creator(f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70, 22)
 
+        # ================================ create enemy classes
         def enemy_creator(enemy_name):
             if enemy_name == 'enemy_raven':
-                return Enemy(Bullet, asg, pic_raven, S_H, T_F_S + 100, 3, True, True, pic_raven_bullet, 1.4, 5)
+                return Enemy(Bullet, asg, pic_raven, S_W, T_F_S + 100, 3, True, True, pic_raven_bullet, 1.4, 5)
             if enemy_name == 'enemy_monkey':
-                return Enemy(Bullet, asg, pic_monkey, SCREEN_WIDTH, 150, 5, True, True, pic_monkey_bullet, 1)
+                return Enemy(Bullet, asg, pic_monkey, S_W, 150, 5, True, True, pic_monkey_bullet, 1)
+            if enemy_name == 'enemy_hedgehog':
+                return Enemy(Bullet, asg, pic_hedgehog, S_W, S_H - G_H_S - 5, 1)
+            if enemy_name == 'enemy_static_hedgehog':
+                return Enemy(Bullet, asg, pic_hedgehog, S_W, S_H - G_H_S - 5, 0)
+            if enemy_name == 'enemy_boar':
+                return Enemy(Bullet, asg, pic_boar, S_W, S_H - G_H_S - 32, 3, True, False, pic_boar, 0, 8)
+            if enemy_name == 'enemy_bee':
+                return Enemy(Bullet, asg, pic_bee, S_W, S_H - (G_H_S + player.image.get_height() // 2), 3, True, False,
+                             pic_bee, 0, 4)
 
         # function sprite creator
         def sprite_creator(dictionary, input_class=None, group_class=None):

@@ -78,6 +78,9 @@ class Sound:
     def boar_sound(self):
         self.play_sound('../src/assets/sounds/enemies/boar/boar.mp3', 1)
 
+    def bee_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/bee/bee.wav', 1, 2)
+
     # player bullets hit something and kill enemy
     def bullet_ricochet(self):
         self.play_sound('../src/assets/sounds/bullet/ricochet.wav')
@@ -93,6 +96,9 @@ class Sound:
 
     def bullet_kill_boar(self):
         self.play_sound('../src/assets/sounds/enemies/boar/boar_squealing.wav')
+
+    def bullet_kill_bee(self):
+        self.play_sound('../src/assets/sounds/enemies/bee/player_hit_bee.wav')
 
     # enemy bullets hit player
     def enemy_bullet_hit_player_head(self):

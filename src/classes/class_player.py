@@ -270,15 +270,24 @@ class Player(pygame.sprite.Sprite, Sound, ):
                 case 'bonus':
                     if item.item_name == 'statuette':
                         Sound.bullet_statuette_hit(self)
+                        bullet.kill()
                         item.kill()
                 case 'enemies':
+                    if item.item_name == 'bee':
+                        self.points += 100
+                        Sound.bullet_kill_bee(self)
+                        item.kill()
+                        bullet.kill()
                     if item.item_name == 'hedgehog':
                         self.points += 200
+                        Sound.bullet_kill_bee(self)
                         item.kill()
+                        bullet.kill()
                     if item.item_name == 'boar':
                         self.hit_enemy_counter += 1
                         bullet.kill()
                         if self.hit_enemy_counter == 2:
+                            self.hit_enemy_counter = 0
                             self.points += 500
                             bullet.kill()
                             item.kill()

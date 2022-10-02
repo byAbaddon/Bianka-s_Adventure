@@ -9,7 +9,9 @@
 'statuette': 10_000
 
 =========================== enemy
+'bee' : 100
 'hedgehog' : 200
 'raven' : 300
 'monkey' : 500
 'boar' : 500
+'wolf' : 500
