@@ -63,6 +63,8 @@ class Enemy(Player, Sound):
                 Sound.boar_sound(self)
             if self.item_name == 'bee':
                 Sound.bee_sound(self)
+            if self.item_name == 'mouse':
+                Sound.mouse_sound(self)
         self.noise = False
 
     def update(self):

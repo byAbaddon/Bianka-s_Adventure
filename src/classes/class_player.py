@@ -194,6 +194,9 @@ class Player(pygame.sprite.Sprite, Sound, ):
         for sprite in pygame.sprite.spritecollide(self, group_items, False, pygame.sprite.collide_mask):
             match sprite.group_name:
                 case 'enemies':
+                    if sprite.item_name == 'mouse':
+                        self.energy_power -= 10
+                        sprite.kill()
                     if sprite.item_name == 'raven':
                         self.energy_power -= 20
                         sprite.kill()
@@ -211,13 +214,12 @@ class Player(pygame.sprite.Sprite, Sound, ):
                 case 'mushroom':
                     Sound.add_point(self)
                     if sprite.item_name == 'grey':
-                        self.points += 100
+                        self.points += 50
                     if sprite.item_name == 'orange':
-                        self.points += 150
+                        self.points += 100
                     if sprite.item_name == 'red':
-                        self.points += 250
+                        self.points += 200
                     if sprite.item_name == 'purple':
-                        self.points += 500
                         Sound.grab_poison_mushroom(self)
                         self.is_player_poisoned = True
                     sprite.kill()
@@ -234,7 +236,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
                     Sound.player_stone_hit(self)
                     sprite.rect.x -= 10
                     if sprite.item_name == 'big':
-                        self.energy_power -= 3
+                        self.energy_power -= 3  # X 2
                     if sprite.item_name == 'medium':
                         self.energy_power -= 2
                     if sprite.item_name == 'small':
@@ -273,14 +275,19 @@ class Player(pygame.sprite.Sprite, Sound, ):
                         bullet.kill()
                         item.kill()
                 case 'enemies':
+                    if item.item_name == 'mouse':
+                        self.points += 100
+                        Sound.bullet_kill_enemy(self)
+                        item.kill()
+                        bullet.kill()
                     if item.item_name == 'bee':
                         self.points += 100
-                        Sound.bullet_kill_bee(self)
+                        Sound.bullet_kill_enemy(self)
                         item.kill()
                         bullet.kill()
                     if item.item_name == 'hedgehog':
                         self.points += 200
-                        Sound.bullet_kill_bee(self)
+                        Sound.bullet_kill_enemy(self)
                         item.kill()
                         bullet.kill()
                     if item.item_name == 'boar':

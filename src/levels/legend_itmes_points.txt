@@ -1,17 +1,17 @@
 =========================== mushrooms
-'grey': 100
-'orange':150
-'red':250
-'purple': 500
+'purple': 0
+'grey': 50
+'orange':100
+'red':200
 
 =========================== bonus
 'coin': 1000
-'statuette': 10_000
+'statuette': 3000
 
 =========================== enemy
 'bee' : 100
+'mouse' : 100
 'hedgehog' : 200
 'raven' : 300
 'monkey' : 500
 'boar' : 500
-'wolf' : 500
