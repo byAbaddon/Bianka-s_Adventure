@@ -194,6 +194,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
         for sprite in pygame.sprite.spritecollide(self, group_items, False, pygame.sprite.collide_mask):
             match sprite.group_name:
                 case 'enemies':
+                    Sound.player_enemy_hit(self)  # sound if player hit with some enemy
                     if sprite.item_name == 'mouse':
                         self.energy_power -= 10
                         sprite.kill()
@@ -201,6 +202,9 @@ class Player(pygame.sprite.Sprite, Sound, ):
                         self.energy_power -= 20
                         sprite.kill()
                     if sprite.item_name == 'hedgehog':
+                        self.energy_power -= 30
+                        sprite.kill()
+                    if sprite.item_name == 'mole':
                         self.energy_power -= 30
                         sprite.kill()
                     if sprite.item_name == 'monkey':
@@ -275,7 +279,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
                         bullet.kill()
                         item.kill()
                 case 'enemies':
-                    if item.item_name == 'mouse':
+                    if item.item_name == 'mole':
                         self.points += 100
                         Sound.bullet_kill_enemy(self)
                         item.kill()
@@ -287,6 +291,11 @@ class Player(pygame.sprite.Sprite, Sound, ):
                         bullet.kill()
                     if item.item_name == 'hedgehog':
                         self.points += 200
+                        Sound.bullet_kill_enemy(self)
+                        item.kill()
+                        bullet.kill()
+                    if item.item_name == 'mouse':
+                        self.points += 300
                         Sound.bullet_kill_enemy(self)
                         item.kill()
                         bullet.kill()

@@ -38,6 +38,9 @@ class Sound:
     def player_stone_hit(self):
         self.play_sound('../src/assets/sounds/player/stone_hit.wav')
 
+    def player_enemy_hit(self):
+        self.play_sound('../src/assets/sounds/player/enemy_hit.wav', 1)
+
     def player_shoot(self):
         self.play_sound('../src/assets/sounds/player/jump_shoot.wav', 1)
 
@@ -71,6 +74,9 @@ class Sound:
     # enemy sound
     def mouse_sound(self):
         self.play_sound('../src/assets/sounds/enemies/mouse.wav', 1,)
+
+    def mole_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/mole.wav', 1, )
 
     def monkey_sound(self):
         self.play_sound('../src/assets/sounds/enemies/monkey.wav', 1)

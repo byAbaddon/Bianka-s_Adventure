@@ -51,7 +51,7 @@ pic_raven = '../src/assets/images/enemies/raven/1.png'
 pic_boar = '../src/assets/images/enemies/boar/1.png'
 pic_bee = '../src/assets/images/enemies/bee/1.png'
 pic_mouse = '../src/assets/images/enemies/mouse/1.png'
-
+pic_mole = '../src/assets/images/enemies/mole/mole.png'
 pic_raven_bullet = '../src/assets/images/bullets/egg.png'
 pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
 
@@ -61,7 +61,7 @@ pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
 class GameState(Sound,):
     START_TIMER = pygame.time.get_ticks()
     enemy_list = ['enemy_raven', 'enemy_monkey', 'enemy_hedgehog', 'enemy_static_hedgehog', 'enemy_boar', 'enemy_bee',
-                  'enemy_mouse']
+                  'enemy_mouse', 'enemy_static_mole']
 
     def __init__(self, ):
         self.state = 'intro'
@@ -88,6 +88,12 @@ class GameState(Sound,):
 
         # ================================ create enemy classes
         def enemy_creator(enemy_name):
+            if enemy_name == 'enemy_bee':
+                b1 = Enemy(Bullet, asg, pic_bee, S_W, S_H - (G_H_S + player.image.get_height() // 2), 2,
+                           True, False, pic_bee, 0, 4)
+                b2 = Enemy(Bullet, asg, pic_bee, S_W + 40, S_H - (G_H_S + player.image.get_height() // 2 - 40), 2,
+                           True, False, pic_bee, 0, 4)
+                return b1, b2
             if enemy_name == 'enemy_raven':
                 return Enemy(Bullet, asg, pic_raven, S_W, T_F_S + 100, 3, True, True, pic_raven_bullet, 1.4, 5)
             if enemy_name == 'enemy_monkey':
@@ -100,12 +106,8 @@ class GameState(Sound,):
                 return Enemy(Bullet, asg, pic_boar, S_W, S_H - G_H_S - 32, 3, True, False, pic_boar, 0, 8)
             if enemy_name == 'enemy_mouse':
                 return Enemy(Bullet, asg, pic_mouse, S_W, S_H - G_H_S - 2, 5, True, False, '', 0, 3)
-            if enemy_name == 'enemy_bee':
-                b1 = Enemy(Bullet, asg, pic_bee, S_W, S_H - (G_H_S + player.image.get_height() // 2), 2,
-                           True, False, pic_bee, 0, 4)
-                b2 = Enemy(Bullet, asg, pic_bee, S_W + 40, S_H - (G_H_S + player.image.get_height() // 2 - 40), 2,
-                           True, False, pic_bee, 0, 4)
-                return b1, b2
+            if enemy_name == 'enemy_static_mole':
+                return Enemy(Bullet, asg, pic_mole, S_W, S_H - G_H_S - 2, 0, True)
 
         # function sprite creator
         def sprite_creator(dictionary, input_class=None, group_class=None):
