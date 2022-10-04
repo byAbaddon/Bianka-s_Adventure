@@ -9,7 +9,6 @@ from classes.class_bullet import Bullet
 from classes.class_item import Item
 from classes.class_enemy import Enemy
 
-
 # ================================================================= TEST imported classes
 # print(dir(Menu))
 
@@ -57,14 +56,13 @@ pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
 
 
 # Game State
-class GameState(Sound,):
+class GameState(Sound, ):
     START_TIMER = pygame.time.get_ticks()
     enemy_list = ['enemy_raven', 'enemy_monkey', 'enemy_hedgehog', 'enemy_static_hedgehog', 'enemy_boar', 'enemy_bee',
                   'enemy_mouse', 'enemy_static_mole']
 
     def __init__(self, player_data):
         self.state = 'intro'
-        # self.state = 'level_statistic'
         self.current_music = Sound.intro_music(self)
         self.is_music_play = False
         self.background = None
@@ -72,17 +70,21 @@ class GameState(Sound,):
         self.is_mushroom_created = False
         self.area = 1
         self.level = 1
+        self.boss_number = 1
         self.level_reader_row = 1
         self.player_data = player_data
         self.bonus_pts = 0
         self.is_add_bonus = False
 
     def start_game(self):
+
         # top display frames
         table.update()
+
         # background_image('../src/assets/images/top_frames/4.png', 0, -5, False)
 
         # developer utils
+        text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
         # text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
         # text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
         # text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
@@ -162,7 +164,7 @@ class GameState(Sound,):
         # ========================================== START GAME  with Area 1; Level 1
         if self.area == 1:
             if not self.is_music_play:
-                self.current_music = Sound.forest_music_level_one(self)
+                # self.current_music = Sound.forest_music_level_one(self)
                 self.is_music_play = True
 
             if not self.is_bg_created:
@@ -196,9 +198,42 @@ class GameState(Sound,):
 
             # ============== draw current area/level labels
             area_label()
-
         if self.area == 2:
             print('AREA 2 ; Level 1')
+
+    def boss(self):
+        # top display frames
+        # table.update()
+
+        if self.boss_number == 1:
+            background_image('../src/assets/images/top_frames/4.png', 0, 0, False)
+            background_image('../src/assets/images/backgrounds/boss/bg_area_one_forest_boss.png', 0, 100)
+            text_creator(f'FPS {CLOCK.get_fps()}', 'white', 10, 10, 25)
+            if not self.is_music_play:
+                # Sound.boss_music_area_one(self)
+                self.is_music_play = True
+
+            # if not self.is_bg_created:
+            #     print(self.is_bg_created)
+            #     # resize image
+            #     img = '../src/assets/images/backgrounds/boss/not used/bg_area_one_forest_boss.png'
+            #     scaled_img = scale_image(img, 800, 510)
+            #     self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
+            #     self.is_bg_created = True
+
+            # # # =================================================== UPDAT
+            # update BG
+            # self.background.update()
+            # # # --------------------------- draw sprite group
+            # # # ground_group.draw(SCREEN)  # hide under bg
+            bullets_group.draw(SCREEN)
+            player_group.draw(SCREEN)
+            # item_group.draw(SCREEN)
+            # # # --------------------------- update sprite group
+            # ground_group.update()
+            player_group.update()
+            bullets_group.update()
+            # item_group.update()
 
     def intro(self):
         Intro()
@@ -220,7 +255,7 @@ class GameState(Sound,):
         table.update()
         if screen_transition_animation() >= 0:  # clear screen
             LevelStatistic(self.bonus_pts, self.player_data, self.level).update()
-            LevelStatistic(self.bonus_pts,  self.player_data, self.level).event(self)
+            LevelStatistic(self.bonus_pts, self.player_data, self.level).event(self)
 
             if self.player_data.energy_power > 0:  # add bonus points to score
                 self.player_data.energy_power -= 1
@@ -247,6 +282,8 @@ class GameState(Sound,):
             self.start_game()
         if self.state == 'level_statistic':
             self.level_statistic()
+        if self.state == 'boss':
+            self.boss()
 
 
 #  ================================ create new GameState
@@ -261,4 +298,3 @@ while True:
     pygame.display.update()
     CLOCK.tick(FPS)
     exit_game()
-

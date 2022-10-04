@@ -23,8 +23,13 @@ class Sound:
     def game_over_music(self):
         self.play_sound('..src/assets/sounds/game_musics/game_over.mp3', 0.2, -1)
 
-    def forest_music_level_one(self):
+    # forest
+    def forest_music_area_one(self):
         self.play_sound('../src/assets/sounds/game_musics/forest_1.mp3', 0.6, -1)
+
+    # boss
+    def boss_music_area_one(self):
+        self.play_sound('../src/assets/sounds/game_musics/boss/boss_2.mp3', 0.6, -1)
 
     def statistic_music(self):
         self.play_sound('../src/assets/sounds/game_musics/statistic.mp3', 0.6, -1)

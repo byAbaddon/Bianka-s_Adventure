@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
     hit_enemy_counter = 0
     current_weapon = '../src/assets/images/bullets/knife.png'
     current_weapon_name = current_weapon.split('/')[5][:-4]
-    AMULETS_LIST = [f'../src/assets/images/amulets/big/{x}.png' for x in range(1, 10)]  # Boss append amulet in list
+    AMULETS_LIST = [f'../src/assets/images/amulets/small/{x}.png' for x in range(1, 10)]  # Boss append amulet in list
     bonus_coins = 0
     bonus_statuette = 0
 

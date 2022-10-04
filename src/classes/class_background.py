@@ -1,5 +1,5 @@
 import pygame
-from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, key_pressed, vec, text_creator
+from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, key_pressed, vec, text_creator, CLOCK
 
 
 class Background:
