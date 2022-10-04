@@ -77,7 +77,7 @@ class GameState(Sound, ):
         self.is_add_bonus = False
 
     def start_game(self):
-
+        player.is_boos_level = False  # set player walking border to 1/3 S_W
         # top display frames
         table.update()
 
@@ -202,28 +202,24 @@ class GameState(Sound, ):
             print('AREA 2 ; Level 1')
 
     def boss(self):
+        player.is_boos_level = True  # set player walking border to all S_W
         # top display frames
-        # table.update()
-
+        table.update()
         if self.boss_number == 1:
-            background_image('../src/assets/images/top_frames/4.png', 0, 0, False)
-            background_image('../src/assets/images/backgrounds/boss/bg_area_one_forest_boss.png', 0, 100)
-            text_creator(f'FPS {CLOCK.get_fps()}', 'white', 10, 10, 25)
+            text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 10, 25)
             if not self.is_music_play:
                 # Sound.boss_music_area_one(self)
                 self.is_music_play = True
 
-            # if not self.is_bg_created:
-            #     print(self.is_bg_created)
-            #     # resize image
-            #     img = '../src/assets/images/backgrounds/boss/not used/bg_area_one_forest_boss.png'
-            #     scaled_img = scale_image(img, 800, 510)
-            #     self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
-            #     self.is_bg_created = True
+            if not self.is_bg_created:
+                # resize image
+                scaled_img = scale_image('../src/assets/images/backgrounds/boss/bg_area_one_forest_boss.png', 800, 510)
+                self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
+                self.is_bg_created = True
 
-            # # # =================================================== UPDAT
+            # # # =================================================== UPDATE
             # update BG
-            # self.background.update()
+            self.background.update()
             # # # --------------------------- draw sprite group
             # # # ground_group.draw(SCREEN)  # hide under bg
             bullets_group.draw(SCREEN)

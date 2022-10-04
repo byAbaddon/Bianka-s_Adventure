@@ -46,6 +46,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
         self.shot_position = self.pos
         self.WALK_LEFT_SCREEN_BORDER = self.player_width_size - 14
         self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH // 3
+        self.is_boos_level = False
 
     def movement_plyer(self):
         self.acceleration = vec(0, self.GRAVITY)  # fail gravity
@@ -101,12 +102,21 @@ class Player(pygame.sprite.Sprite, Sound, ):
             self.image = pygame.transform.flip(self.image, True, False)
 
         # go right
-        if key[pygame.K_RIGHT] and self.direction.y == 1 and self.pos.x <= self.WALK_RIGHT_SCREEN_BORDER \
-                and not key[pygame.K_LEFT]:
-            self.direction.x = 1
-            self.acceleration.x = self.PLAYER_SPEED
+        # if key[pygame.K_RIGHT] and self.direction.y == 1 and self.pos.x <= self.WALK_RIGHT_SCREEN_BORDER \
+        #         and not key[pygame.K_LEFT]:
+        #     self.direction.x = 1
+        #     self.acceleration.x = self.PLAYER_SPEED
+        if key[pygame.K_RIGHT] and self.direction.y == 1 and not key[pygame.K_LEFT]:
+            if self.is_boos_level:
+                if self.pos.x <= SCREEN_WIDTH - self.player_width_size:
+                    self.direction.x = 1
+                    self.acceleration.x = self.PLAYER_SPEED
+            else:
+                if self.pos.x <= self.WALK_RIGHT_SCREEN_BORDER:
+                    self.direction.x = 1
+                    self.acceleration.x = self.PLAYER_SPEED
 
-        # running
+                    # running
         # if key[pygame.K_a] and self.pos.x > self.WALK_LEFT_SCREEN_BORDER:
         #     if not self.direction.y == -1 and not self.direction.y == 0:
         #         if self.direction.x == 1:

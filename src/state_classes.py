@@ -20,8 +20,8 @@ class Intro(Sound):
             self.state = 'menu'
         if keys[pygame.K_SPACE]:
             Sound.stop_all_sounds()  # if eny music play stop it
-            self.state = 'start_game'
-            # self.state = 'boss'
+            # self.state = 'start_game'
+            self.state = 'boss'
 
 
 # =========================================== Menu state class ============================================
