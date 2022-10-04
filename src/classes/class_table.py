@@ -95,6 +95,9 @@ class Table:
         self.weapon = self.player.current_weapon
         self.is_poisoned = self.player.is_player_poisoned
 
+    def player_energy(self):
+        return self.player.energy_power
+
     def update(self):
         self.create_top_frame()
         self.draw_lives()
@@ -107,4 +110,6 @@ class Table:
         self.draw_weapon()
         self.draw_amulet_bar()
         self.updated_player_data()
+
+        self.player_energy()
 

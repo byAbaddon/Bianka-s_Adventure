@@ -1,5 +1,3 @@
-import pygame
-
 from src.settings import *
 from src.classes.class_sound import Sound
 
@@ -75,23 +73,32 @@ class Score(Sound):
 
 # =========================================== LevelStatistic class
 class LevelStatistic(Sound):
-    PICTURE_DICT = {'statuette': 'bonus/statuette_big'}
 
-    def __init__(self,):
-        super().__init__()
+    def __init__(self, bonus_pts, player_data, level):
         self.state = ''
+        self.bonus_pts = bonus_pts
+        self.player_data = player_data
+        self.level = level
 
     def info_statistic(self):
-        text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 15)
-        # add music
-        text_creator("CONGRATULATIONS", 'red', SCREEN_WIDTH // 2, 130, 55, None, None, True)
+        text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 5)
 
-        text_creator("Idol: 1000 pst", 'yellow', 270, 400, 36)
-        image = pygame.image.load(f'../src/assets/images/{self.PICTURE_DICT["statuette"]}.png')
-        SCREEN.blit(image, [440, 340])
-
-    def play_music(self):
-        pass
+        text_creator("CONGRATULATIONS", 'red', 200, 230, 55, None, None, True)
+        # bonus point
+        text_creator(f'Bonus Points', 'yellow', 336, 320, 30)
+        text_creator(f'{self.bonus_pts }', 'yellow', 372, 350, 36)
+        image = pygame.image.load(f'../src/assets/images/frames/down_left.png')
+        SCREEN.blit(image, [300, 300])
+        image = pygame.image.load(f'../src/assets/images/frames/down_right.png')
+        SCREEN.blit(image, [400, 300])
+        # coin
+        image = pygame.image.load(f'../src/assets/images/bonus/coin_medium.png')
+        SCREEN.blit(image, [150, 400])
+        text_creator(f'x {self.player_data.bonus_coins} = {self.player_data.bonus_coins * 1000}', 'yellow', 220, 430, 30)
+        # idol
+        text_creator(f'{self.player_data.bonus_statuette * 3000} = {self.player_data.bonus_statuette} x', 'yellow', 480, 430, 30)
+        image = pygame.image.load(f'../src/assets/images/bonus/statuette_medium.png')
+        SCREEN.blit(image, [580, 360])
 
     def update(self):
         self.info_statistic()
@@ -99,6 +106,8 @@ class LevelStatistic(Sound):
     @staticmethod
     def event(self):
         if key_pressed(pygame.K_SPACE):
-            self.state = 'start_game'
-            Sound.btn_click(self)
+            self.player_data.reset_player_data()  # rest energy player and more...
             Sound.stop_all_sounds()
+            self.state = 'start_game'
+            self.level += 1  # increase level
+

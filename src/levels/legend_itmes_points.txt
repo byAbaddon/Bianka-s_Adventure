@@ -10,9 +10,9 @@
 
 =========================== enemy
 'bee' : 100
-'mouse' : 100
 'mole': 200
 'hedgehog' : 200
+'mouse' : 300
 'raven' : 300
 'monkey' : 500
 'boar' : 500

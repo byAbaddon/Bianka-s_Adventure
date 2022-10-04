@@ -19,11 +19,12 @@ class Player(pygame.sprite.Sprite, Sound, ):
     is_player_dead = False
     is_player_poisoned = False
     statistics = {}
-    counter = 0
+    hit_enemy_counter = 0
     current_weapon = '../src/assets/images/bullets/knife.png'
     current_weapon_name = current_weapon.split('/')[5][:-4]
-    AMULETS_LIST = [f'../src/assets/images/amulets/big/{x}.png' for x in range(1, 10)] # Boss must append amulet in list
-    hit_enemy_counter = 0
+    AMULETS_LIST = [f'../src/assets/images/amulets/big/{x}.png' for x in range(1, 10)]  # Boss append amulet in list
+    bonus_coins = 0
+    bonus_statuette = 0
 
     def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
@@ -230,9 +231,10 @@ class Player(pygame.sprite.Sprite, Sound, ):
                     Sound.grab_mushroom(self)
                 case 'bonus':
                     if sprite.item_name == 'coin':
-                        self.points += 1000
+                        self.bonus_coins += 1
                         Sound.grab_coin(self)
                     if sprite.item_name == 'statuette':
+                        self.bonus_statuette = 1
                         Sound.grab_statuette(self)
                     sprite.kill()
                 case 'stones':
@@ -274,7 +276,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
                     Sound.bullet_ricochet(self)
                     bullet.kill()
                 case 'bonus':
-                    if item.item_name == 'statuette':
+                    if 'coin' == item.item_name == 'statuette':
                         Sound.bullet_statuette_hit(self)
                         bullet.kill()
                         item.kill()
@@ -317,6 +319,13 @@ class Player(pygame.sprite.Sprite, Sound, ):
                     sprite.kill()
                     Sound.enemy_bullet_hit_player_head(self)
                     self.energy_power -= 1
+
+    def reset_player_data(self):
+        self.energy_power = 101  # add 1 to for fix full energy
+        self.bonus_statuette = 0
+        self.bonus_coins = 0
+        self.is_player_dead = False
+        self.is_player_poisoned = False
 
     def update(self):
         pygame.mask.from_surface(self.image)  # create mask image

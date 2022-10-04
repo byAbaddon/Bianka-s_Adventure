@@ -57,14 +57,14 @@ pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
 
 
 # Game State
-# noinspection PyTypedDict,PyUnboundLocalVariable
 class GameState(Sound,):
     START_TIMER = pygame.time.get_ticks()
     enemy_list = ['enemy_raven', 'enemy_monkey', 'enemy_hedgehog', 'enemy_static_hedgehog', 'enemy_boar', 'enemy_bee',
                   'enemy_mouse', 'enemy_static_mole']
 
-    def __init__(self, ):
+    def __init__(self, player_data):
         self.state = 'intro'
+        # self.state = 'level_statistic'
         self.current_music = Sound.intro_music(self)
         self.is_music_play = False
         self.background = None
@@ -73,11 +73,13 @@ class GameState(Sound,):
         self.area = 1
         self.level = 1
         self.level_reader_row = 1
+        self.player_data = player_data
+        self.bonus_pts = 0
+        self.is_add_bonus = False
 
     def start_game(self):
         # top display frames
         table.update()
-
         # background_image('../src/assets/images/top_frames/4.png', 0, -5, False)
 
         # developer utils
@@ -138,7 +140,6 @@ class GameState(Sound,):
                     self.background.distance_mt += 1  # prevent ...
                 case 1080:  # Finished level
                     Sound.sign_finish(self)
-                    self.level += 1  # increase level
                     self.level_reader_row += 1  # read row level from txt
                     self.background.distance_mt = 0  # prevent ...
                     self.is_music_play = False
@@ -161,7 +162,7 @@ class GameState(Sound,):
         # ========================================== START GAME  with Area 1; Level 1
         if self.area == 1:
             if not self.is_music_play:
-                # self.current_music = Sound.forest_music_level_one(self)
+                self.current_music = Sound.forest_music_level_one(self)
                 self.is_music_play = True
 
             if not self.is_bg_created:
@@ -216,9 +217,22 @@ class GameState(Sound,):
         Score().event(self)
 
     def level_statistic(self):
+        table.update()
         if screen_transition_animation() >= 0:  # clear screen
-            LevelStatistic().event(self)
-            LevelStatistic().update()
+            LevelStatistic(self.bonus_pts, self.player_data, self.level).update()
+            LevelStatistic(self.bonus_pts,  self.player_data, self.level).event(self)
+
+            if self.player_data.energy_power > 0:  # add bonus points to score
+                self.player_data.energy_power -= 1
+                self.bonus_pts += 30  # 3000 pts
+                player.points += round(self.player_data.energy_power % 10 + 25.5)
+            elif not self.is_add_bonus and player.energy_power == 0 and (player.bonus_coins or player.bonus_statuette):
+                Sound.grab_coin(self)
+                if player.bonus_coins:
+                    player.points += 1000 * player.bonus_coins
+                if player.bonus_statuette:
+                    player.points += 3000
+                self.is_add_bonus = True
 
     # ========================================= state manager
     def state_manager(self):
@@ -236,7 +250,7 @@ class GameState(Sound,):
 
 
 #  ================================ create new GameState
-game_state = GameState()
+game_state = GameState(player)
 # ================================================================ create top Table for: score , energy and more
 table = Table(game_state, player)
 
