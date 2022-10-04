@@ -4,6 +4,7 @@ from classes.class_table import Table
 from src.classes.class_sound import Sound
 from state_classes import Intro, Menu, Legend, Score, LevelStatistic
 from classes.class_player import Player
+from classes.class_knight import Knight
 from classes.class_ground import Ground
 from classes.class_bullet import Bullet
 from classes.class_item import Item
@@ -17,6 +18,7 @@ from classes.class_enemy import Enemy
 # ======================================================================== create Sprite groups
 background_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
+knight_group = pygame.sprite.GroupSingle()
 ground_group = pygame.sprite.Group()
 bullets_group = pygame.sprite.Group()
 item_group = pygame.sprite.Group()
@@ -28,12 +30,14 @@ all_spite_groups_dict = {'player': player_group, 'bullets': bullets_group, 'grou
 # ======================================================================= initialize  Classes
 
 player = Player(Bullet, all_spite_groups_dict)
+knight = Knight(Bullet, all_spite_groups_dict)
 ground = Ground()
 
 # add to group
 # ground2 = Ground('../src/assets/images/ground/distance.png', 100, SCREEN_HEIGHT - 150)
 # ground3 = Ground('../src/assets/images/ground/distance.png', 400, SCREEN_HEIGHT - 170)
 player_group.add(player)
+knight_group.add(knight)
 ground_group.add(ground)
 
 # ---------------------------------------------------------------------- create Enemies
@@ -213,7 +217,7 @@ class GameState(Sound, ):
 
             if not self.is_bg_created:
                 # resize image
-                scaled_img = scale_image('../src/assets/images/backgrounds/boss/bg_area_one_forest_boss.png', 800, 510)
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_boss/bg_area_one_forest_boss.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
                 self.is_bg_created = True
 
@@ -224,10 +228,12 @@ class GameState(Sound, ):
             # # # ground_group.draw(SCREEN)  # hide under bg
             bullets_group.draw(SCREEN)
             player_group.draw(SCREEN)
+            knight_group.draw(SCREEN)
             # item_group.draw(SCREEN)
             # # # --------------------------- update sprite group
             # ground_group.update()
             player_group.update()
+            knight_group.update()
             bullets_group.update()
             # item_group.update()
 
