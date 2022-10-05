@@ -120,3 +120,22 @@ class Sound:
 
     def enemy_bullet_hit_player_body(self):
         self.play_sound('../src/assets/sounds/player/enemy_shooting_hit_body.wav', 1)
+
+    # ==================================== BOSS KNIGHT
+    def bullet_player_hit_knight_face(self):
+        self.play_sound('../src/assets/sounds/boss_knight/hit_face.wav', 1)
+
+    def bullet_player_hit_knight_armor(self):
+        self.play_sound('../src/assets/sounds/boss_knight/hit_armor.wav', 1)
+
+    def knight_sword_slash(self):
+        self.play_sound('../src/assets/sounds/boss_knight/sword_slash.wav', 1)
+
+    def knight_jump(self):
+        self.play_sound('../src/assets/sounds/boss_knight/jump.wav', 1)
+
+    def knight_walk(self):
+        self.play_sound('../src/assets/sounds/boss_knight/walk.wav', 1)
+
+    def knight_dead(self):
+        self.play_sound('../src/assets/sounds/boss_knight/dead.wav', 1)

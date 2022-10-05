@@ -331,6 +331,9 @@ class Player(pygame.sprite.Sprite, Sound, ):
                     Sound.enemy_bullet_hit_player_head(self)
                     self.energy_power -= 1
 
+
+
+
     def reset_player_data(self):
         self.energy_power = 101  # add 1 to for fix full energy
         self.bonus_statuette = 0

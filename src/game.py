@@ -24,8 +24,8 @@ bullets_group = pygame.sprite.Group()
 item_group = pygame.sprite.Group()
 
 # add to all_sprite_groups   /items group include enemy/
-all_spite_groups_dict = {'player': player_group, 'bullets': bullets_group, 'ground': ground_group,
-                         'items': item_group}
+all_spite_groups_dict = {'player': player_group, 'knight_group': knight_group, 'bullets': bullets_group,
+                         'ground': ground_group, 'items': item_group}
 
 # ======================================================================= initialize  Classes
 
@@ -206,7 +206,7 @@ class GameState(Sound, ):
             print('AREA 2 ; Level 1')
 
     def boss(self):
-        player.is_boos_level = True  # set player walking border to all S_W
+        player.is_boos_level = True  # set player walking border to all SCREEN_WIDTH
         # top display frames
         table.update()
         if self.boss_number == 1:
@@ -225,17 +225,13 @@ class GameState(Sound, ):
             # update BG
             self.background.update()
             # # # --------------------------- draw sprite group
-            # # # ground_group.draw(SCREEN)  # hide under bg
             bullets_group.draw(SCREEN)
             player_group.draw(SCREEN)
             knight_group.draw(SCREEN)
-            # item_group.draw(SCREEN)
             # # # --------------------------- update sprite group
-            # ground_group.update()
             player_group.update()
             knight_group.update()
             bullets_group.update()
-            # item_group.update()
 
     def intro(self):
         Intro()

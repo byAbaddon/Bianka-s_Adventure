@@ -26,7 +26,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
         self.sprites_knight = [pygame.image.load(f'../src/assets/images/boss_knight/idle/{x}.png') for x in range(1, 11)]
         self.current_sprite = 0
         self.rect = self.image.get_bounding_rect(min_alpha=1)
-        self.rect.midbottom = (SCREEN_WIDTH - 100, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE)
+        self.rect.midbottom = (SCREEN_WIDTH - 100, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE + 4)
         self.direction = vec(0, 1)  # stay/idle 0
         self.pos = vec(self.rect.x, self.rect.y)
 
@@ -44,9 +44,23 @@ class Knight(pygame.sprite.Sprite, Sound,):
                 self.current_sprite = 1
             self.image = self.sprites_knight[int(self.current_sprite)]
 
-    def check_collide(self):
-        pass
+    def check_players_bullet_collide(self):
+        bullets_group = self.all_sprite_groups_dict['bullets']
+        sprite = pygame.sprite.spritecollide(self, bullets_group, True, pygame.sprite.collide_mask)
+
+        if sprite:
+            for hit_point in sprite:
+                print(hit_point.rect.topleft[1])
+                if 400 <= hit_point.rect.topleft[1] <= 442:  # head shoot
+                    Sound.bullet_player_hit_knight_face(self)
+                else:
+                    Sound.bullet_player_hit_knight_armor(self)  # body soot
+
+
+
+
 
     def update(self,):
         self.sprite_frames()
         self.knight_movie()
+        self.check_players_bullet_collide()
