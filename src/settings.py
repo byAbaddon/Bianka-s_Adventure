@@ -1,4 +1,5 @@
 import pygame
+from random import randrange
 from sys import exit
 from pygame.math import Vector2
 

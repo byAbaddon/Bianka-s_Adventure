@@ -30,8 +30,9 @@ all_spite_groups_dict = {'player': player_group, 'knight_group': knight_group, '
 # ======================================================================= initialize  Classes
 
 player = Player(Bullet, all_spite_groups_dict)
-knight = Knight(Bullet, all_spite_groups_dict)
+knight = Knight(Bullet, all_spite_groups_dict, player)
 ground = Ground()
+
 
 # add to group
 # ground2 = Ground('../src/assets/images/ground/distance.png', 100, SCREEN_HEIGHT - 150)
@@ -81,6 +82,7 @@ class GameState(Sound, ):
         self.is_add_bonus = False
 
     def start_game(self):
+        self.bonus_pts = 0  # reset pts
         player.is_boos_level = False  # set player walking border to 1/3 S_W
         # top display frames
         table.update()
@@ -139,7 +141,7 @@ class GameState(Sound, ):
             match int(self.background.distance_mt):
                 case 25:
                     Sound.sign_go(self)
-                    # self.state = 'level_statistic'
+                    self.state = 'level_statistic'
                     self.background.distance_mt += 1  # prevent play double sound if player stay in same position
                 case 550:
                     Sound.sign_middle(self)
@@ -164,6 +166,7 @@ class GameState(Sound, ):
         if self.level > 4:
             self.level = 1
             self.area += 1
+            self.state = 'boss'
 
         # ========================================== START GAME  with Area 1; Level 1
         if self.area == 1:
@@ -215,11 +218,14 @@ class GameState(Sound, ):
                 # Sound.boss_music_area_one(self)
                 self.is_music_play = True
 
-            if not self.is_bg_created:
+            if not self.is_bg_created:  #todo remove not  only for test
                 # resize image
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_boss/bg_area_one_forest_boss.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
-                self.is_bg_created = True
+                self.is_bg_created = True # todo must be False
+
+            if self.player_data.is_player_kill_boss:
+                self.state = 'level_statistic'
 
             # # # =================================================== UPDATE
             # update BG
@@ -251,6 +257,7 @@ class GameState(Sound, ):
 
     def level_statistic(self):
         table.update()
+
         if screen_transition_animation() >= 0:  # clear screen
             LevelStatistic(self.bonus_pts, self.player_data, self.level).update()
             LevelStatistic(self.bonus_pts, self.player_data, self.level).event(self)
@@ -265,6 +272,8 @@ class GameState(Sound, ):
                     player.points += 1000 * player.bonus_coins
                 if player.bonus_statuette:
                     player.points += 3000
+                if player.is_player_kill_boss:
+                    player.points += 5000
                 self.is_add_bonus = True
 
     # ========================================= state manager
@@ -286,10 +295,11 @@ class GameState(Sound, ):
 
 #  ================================ create new GameState
 game_state = GameState(player)
-# ================================================================ create top Table for: score , energy and more
-table = Table(game_state, player)
 
-# ============= Starting Game loop
+# ================================================================ create top Table for: score , energy and more
+table = Table(game_state, player, knight)
+
+# ============= Starting Game loo
 while True:
     SCREEN.fill(pygame.Color('black'))
     game_state.state_manager()

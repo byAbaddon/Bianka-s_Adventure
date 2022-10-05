@@ -6,8 +6,13 @@ from src.classes.class_sound import Sound
 # ============================================= class Player===============================================
 class Player(pygame.sprite.Sprite, Sound, ):
     COOLDOWN = 1000  # milliseconds
-    COOLDOWN_SHOOTING = {'knife': 600, 'axe': 800, 'spear': 1000}  # milliseconds
-
+    # milliseconds cooldown
+    WEAPONS_DICT = {'knife': {'cooldown_shooting': 600, 'power': 5},
+                    'spear': {'cooldown_shooting': 1000, 'power': 7},
+                    'axe': {'cooldown_shooting': 800, 'power': 10}
+                    }
+    current_weapon = '../src/assets/images/bullets/knife.png'
+    current_weapon_name = current_weapon.split('/')[5][:-4]
     GRAVITY = 0.2
     SPRITE_ANIMATION_SPEED = 0.3
     JUMP_HEIGHT = -6
@@ -20,12 +25,11 @@ class Player(pygame.sprite.Sprite, Sound, ):
     is_player_poisoned = False
     statistics = {}
     hit_enemy_counter = 0
-    current_weapon = '../src/assets/images/bullets/knife.png'
-    current_weapon_name = current_weapon.split('/')[5][:-4]
-    boss_taken_amulets = 10
-    AMULETS_LIST = [f'../src/assets/images/amulets/small/{x}.png' for x in range(1, boss_taken_amulets)]  # Boss append amulet in list
+    boss_taken_amulets = 0
+    AMULETS_LIST = [f'../src/assets/images/amulets/small/{x}.png' for x in range(1, 10)]  # Boss append amulet in list
     bonus_coins = 0
     bonus_statuette = 0
+    is_player_kill_boss = False
 
     def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
@@ -71,13 +75,21 @@ class Player(pygame.sprite.Sprite, Sound, ):
                 self.image = pygame.image.load('../src/assets/images/player/walking/5.png')
 
         # jump up right
-        if key[pygame.K_UP] and key[pygame.K_RIGHT] and self.pos.x < self.WALK_RIGHT_SCREEN_BORDER:
-            if not self.is_jump:
-                self.velocity.y = self.JUMP_HEIGHT
-            self.direction = vec(1, 0)
-            self.acceleration.x = self.PLAYER_SPEED
-            self.is_jump = True
-            self.image = pygame.image.load('../src/assets/images/player/walking/5.png')
+        if key[pygame.K_UP] and key[pygame.K_RIGHT]:  # and self.pos.x < self.WALK_RIGHT_SCREEN_BORDER:
+            if not self.is_boos_level and self.pos.x < self.WALK_RIGHT_SCREEN_BORDER:
+                if not self.is_jump:
+                    self.velocity.y = self.JUMP_HEIGHT
+                self.direction = vec(1, 0)
+                self.acceleration.x = self.PLAYER_SPEED
+                self.is_jump = True
+                self.image = pygame.image.load('../src/assets/images/player/walking/5.png')
+            elif self.is_boos_level:
+                if not self.is_jump:
+                    self.velocity.y = self.JUMP_HEIGHT
+                self.direction = vec(1, 0)
+                self.acceleration.x = self.PLAYER_SPEED
+                self.is_jump = True
+                self.image = pygame.image.load('../src/assets/images/player/walking/5.png')
 
         # jump up left
         if key[pygame.K_UP] and key[pygame.K_LEFT] and self.pos.x >= self.WALK_LEFT_SCREEN_BORDER:
@@ -143,7 +155,8 @@ class Player(pygame.sprite.Sprite, Sound, ):
         time_now = pygame.time.get_ticks()  # get time now
         # velocity is equal shooting window time
         if key[pygame.K_SPACE] and self.direction.x != 0 and abs(self.velocity.x) <= 3.0 and\
-                time_now - self.last_time > self.COOLDOWN_SHOOTING[self.current_weapon_name]:
+                time_now - self.last_time > self.WEAPONS_DICT[self.current_weapon_name]['cooldown_shooting']:
+
             Sound.player_shoot(self)
             self.last_time = time_now
 
@@ -330,9 +343,6 @@ class Player(pygame.sprite.Sprite, Sound, ):
                     sprite.kill()
                     Sound.enemy_bullet_hit_player_head(self)
                     self.energy_power -= 1
-
-
-
 
     def reset_player_data(self):
         self.energy_power = 101  # add 1 to for fix full energy

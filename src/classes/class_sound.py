@@ -122,6 +122,12 @@ class Sound:
         self.play_sound('../src/assets/sounds/player/enemy_shooting_hit_body.wav', 1)
 
     # ==================================== BOSS KNIGHT
+    def player_scream_die(self):
+        self.play_sound('../src/assets/sounds/boss_knight/player_scream_die.wav', 1)
+
+    def knight_scream(self):
+        self.play_sound('../src/assets/sounds/boss_knight/knight_scream_time_to_kill.wav', 1)
+
     def bullet_player_hit_knight_face(self):
         self.play_sound('../src/assets/sounds/boss_knight/hit_face.wav', 1)
 

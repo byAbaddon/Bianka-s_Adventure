@@ -20,7 +20,7 @@ class Intro(Sound):
             self.state = 'menu'
         if keys[pygame.K_SPACE]:
             Sound.stop_all_sounds()  # if eny music play stop it
-            # self.state = 'start_game'
+            self.state = 'start_game'
             self.state = 'boss'
 
 
@@ -85,21 +85,37 @@ class LevelStatistic(Sound):
         text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 5)
 
         text_creator("CONGRATULATIONS", 'red', 200, 230, 55, None, None, True)
-        # bonus point
-        text_creator(f'Bonus Points', 'yellow', 336, 320, 30)
-        text_creator(f'{self.bonus_pts }', 'yellow', 372, 350, 36)
-        image = pygame.image.load(f'../src/assets/images/frames/down_left.png')
-        SCREEN.blit(image, [300, 300])
-        image = pygame.image.load(f'../src/assets/images/frames/down_right.png')
-        SCREEN.blit(image, [400, 300])
-        # coin
-        image = pygame.image.load(f'../src/assets/images/bonus/coin_medium.png')
-        SCREEN.blit(image, [150, 400])
-        text_creator(f'x {self.player_data.bonus_coins} = {self.player_data.bonus_coins * 1000}', 'yellow', 220, 430, 30)
-        # idol
-        text_creator(f'{self.player_data.bonus_statuette * 3000} = {self.player_data.bonus_statuette} x', 'yellow', 480, 430, 30)
-        image = pygame.image.load(f'../src/assets/images/bonus/statuette_medium.png')
-        SCREEN.blit(image, [580, 360])
+
+        if not self.player_data.is_player_kill_boss:
+            # bonus point
+            text_creator(f'Bonus Points', 'yellow', 336, 320, 30)
+            text_creator(f'{self.bonus_pts}', 'yellow', 372, 350, 36)
+            image = pygame.image.load(f'../src/assets/images/frames/down_left.png')
+            SCREEN.blit(image, [300, 300])
+            image = pygame.image.load(f'../src/assets/images/frames/down_right.png')
+            SCREEN.blit(image, [400, 300])
+            # coin
+            image = pygame.image.load(f'../src/assets/images/bonus/coin_medium.png')
+            SCREEN.blit(image, [150, 400])
+            text_creator(f'x {self.player_data.bonus_coins} = {self.player_data.bonus_coins * 1000}', 'yellow', 220, 430, 30)
+            # idol
+            text_creator(f'{self.player_data.bonus_statuette * 3000} = {self.player_data.bonus_statuette} x', 'yellow', 480, 430, 30)
+            image = pygame.image.load(f'../src/assets/images/bonus/statuette_medium.png')
+            SCREEN.blit(image, [580, 360])
+        else:
+            # bonus point
+            text_creator(f'Bonus Points', 'yellow', 336, 410, 30)
+            text_creator(f'{self.bonus_pts}', 'yellow', 372, 440, 36)
+            image = pygame.image.load(f'../src/assets/images/frames/down_left.png')
+            SCREEN.blit(image, [300, 380])
+            image = pygame.image.load(f'../src/assets/images/frames/down_right.png')
+            SCREEN.blit(image, [400, 380])
+            # amulet
+            text_creator(f'1  x', 'yellow', 280, 320, 30)
+            text_creator(f'{5000}', 'yellow', 480, 320, 30)
+            amulet_img = f'../src/assets/images/amulets/big/{self.player_data.boss_taken_amulets}.png'
+            scaled_amulet = scale_image(amulet_img, 100, 100)
+            SCREEN.blit(scaled_amulet, [SCREEN_WIDTH // 2 - 50, 270])
 
     def update(self):
         self.info_statistic()
@@ -110,5 +126,5 @@ class LevelStatistic(Sound):
             self.player_data.reset_player_data()  # rest energy player and more...
             Sound.stop_all_sounds()
             self.state = 'start_game'
-            self.level += 1  # increase level
-
+            if not self.player_data.is_player_kill_boss:
+                self.level += 1  # increase level
