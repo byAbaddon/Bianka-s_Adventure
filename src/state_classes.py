@@ -21,7 +21,7 @@ class Intro(Sound):
         if keys[pygame.K_SPACE]:
             Sound.stop_all_sounds()  # if eny music play stop it
             self.state = 'start_game'
-            self.state = 'boss'
+            # self.state = 'boss'
 
 
 # =========================================== Menu state class ============================================
@@ -122,7 +122,7 @@ class LevelStatistic(Sound):
 
     @staticmethod
     def event(self):
-        if key_pressed(pygame.K_SPACE):
+        if key_pressed(pygame.K_SPACE) and self.player_data.energy_power == 0:
             self.player_data.reset_player_data()  # rest energy player and more...
             Sound.stop_all_sounds()
             self.state = 'start_game'

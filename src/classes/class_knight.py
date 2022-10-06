@@ -33,7 +33,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
 
     def knight_movie(self):
         if self.is_walk and not self.is_dead:
-            # ---------------------------------------- firs knight scream sound
+            # ---------------------------------------- first knight scream sound
             if not self.is_sound:
                 Sound.knight_scream(self)
                 # change list ot pic sprite USING scope BOOLEAN SOUND TO PREVENT falling FPS
@@ -71,14 +71,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
         get_amulet = self.player.rect.colliderect(img_rect)
         if get_amulet:
             Sound.grab_amulets(self)
-            self.player.is_player_kill_boss = True  # return info to player if boss death and take amulet
-
-
-
-
-
-
-
+            self.player.is_player_kill_boss = True  # return info to player class if boss death and take amulet
 
     def sprite_frames(self):
         if self.direction.y == 1:

@@ -266,7 +266,8 @@ class GameState(Sound, ):
                 self.player_data.energy_power -= 1
                 self.bonus_pts += 30  # 3000 pts
                 player.points += round(self.player_data.energy_power % 10 + 25.5)
-            elif not self.is_add_bonus and player.energy_power == 0 and (player.bonus_coins or player.bonus_statuette):
+            elif not self.is_add_bonus and player.energy_power == 0 and\
+                    (player.bonus_coins or player.bonus_statuette or player.is_player_kill_boss):
                 Sound.grab_coin(self)
                 if player.bonus_coins:
                     player.points += 1000 * player.bonus_coins
