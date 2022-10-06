@@ -97,15 +97,6 @@ class Table:
         self.is_poisoned = self.player.is_player_poisoned
         self.boss_energy = self.knight.energy_power
 
-    # def check_is_heroes_die(self):
-    #     if self.energy_power <= 0 or self.boss_energy <= 0:
-    #         self.player.is_player_dead = False
-    #         self.knight.is_dead = False
-    #         self.energy_power = 100
-    #         self.boss_energy = 200
-    #         self.game_state.state = 'intro'
-
-
     def update(self):
         self.create_top_frame()
         self.draw_lives()
@@ -118,8 +109,6 @@ class Table:
         self.draw_weapon()
         self.draw_amulet_bar()
         self.updated_player_data()
-
-        # self.check_is_heroes_die()
 
 
 

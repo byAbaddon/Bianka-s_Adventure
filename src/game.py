@@ -24,7 +24,7 @@ bullets_group = pygame.sprite.Group()
 item_group = pygame.sprite.Group()
 
 # add to all_sprite_groups   /items group include enemy/
-all_spite_groups_dict = {'player': player_group, 'knight_group': knight_group, 'bullets': bullets_group,
+all_spite_groups_dict = {'player': player_group, 'knight': knight_group, 'bullets': bullets_group,
                          'ground': ground_group, 'items': item_group}
 
 # ======================================================================= initialize  Classes
@@ -62,7 +62,9 @@ pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
 
 # Game State
 class GameState(Sound, ):
-    START_TIMER = pygame.time.get_ticks()
+    COOLDOWN = 3000  # milliseconds
+    start_timer = pygame.time.get_ticks()
+    count_visit = 0
     enemy_list = ['enemy_raven', 'enemy_monkey', 'enemy_hedgehog', 'enemy_static_hedgehog', 'enemy_boar', 'enemy_bee',
                   'enemy_mouse', 'enemy_static_mole']
 
@@ -72,7 +74,7 @@ class GameState(Sound, ):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.is_mushroom_created = False
+        # self.is_mushroom_created = False
         self.area = 1
         self.level = 1
         self.boss_number = 1
@@ -84,6 +86,7 @@ class GameState(Sound, ):
     def start_game(self):
         self.bonus_pts = 0  # reset pts
         player.is_boos_level = False  # set player walking border to 1/3 S_W
+
         # top display frames
         table.update()
 
@@ -162,6 +165,16 @@ class GameState(Sound, ):
                 text_creator(f'Area {self.area} - {self.level}', 'white', SCREEN_WIDTH // 2 - 54,
                              SCREEN_HEIGHT // 2, 36)
 
+        # ==================== player dead  rip
+        def rip_player():
+            self.state = 'funeral_agency'
+            # todo: set time out and empty group player
+            # player_group.empty()
+
+        # check is player ALIVE
+        if self.player_data.is_player_dead:
+            rip_player()
+
         # ============== level manipulator
         if self.level > 4:
             self.level = 1
@@ -171,7 +184,7 @@ class GameState(Sound, ):
         # ========================================== START GAME  with Area 1; Level 1
         if self.area == 1:
             if not self.is_music_play:
-                # self.current_music = Sound.forest_music_level_one(self)
+                self.current_music = Sound.forest_music_area_one(self)
                 self.is_music_play = True
 
             if not self.is_bg_created:
@@ -218,14 +231,16 @@ class GameState(Sound, ):
                 # Sound.boss_music_area_one(self)
                 self.is_music_play = True
 
-            if not self.is_bg_created:  #todo remove not  only for test
+            if self.is_bg_created:  # todo remove not  only for test
                 # resize image
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_boss/bg_area_one_forest_boss.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
-                self.is_bg_created = True # todo must be False
+                self.is_bg_created = False  # todo must be False
 
             if self.player_data.is_player_kill_boss:
                 self.state = 'level_statistic'
+            if self.player_data.is_player_dead:
+                self.state = 'funeral_agency'
 
             # # # =================================================== UPDATE
             # update BG
@@ -255,14 +270,30 @@ class GameState(Sound, ):
         Score()
         Score().event(self)
 
+    def funeral_agency(self):
+        background_image('../src/assets/images/player/dead/bg/rip.png', 0, 0)
+        if self.is_music_play:
+            Sound.stop_all_sounds()
+            Sound.player_dead_funeral_march(self)
+            self.is_music_play = False
+
+        if key_pressed(pygame.K_SPACE):
+            Sound.stop_all_sounds()
+            self.is_music_play = False
+            self.background = None
+            self.is_bg_created = False
+            self.state = 'start_game'
+            # self.player_data.reset_player_data()
+            # knight_group.empty()
+
     def level_statistic(self):
         table.update()
-
         if screen_transition_animation() >= 0:  # clear screen
             LevelStatistic(self.bonus_pts, self.player_data, self.level).update()
             LevelStatistic(self.bonus_pts, self.player_data, self.level).event(self)
 
             if self.player_data.energy_power > 0:  # add bonus points to score
+                Sound.add_point(self)
                 self.player_data.energy_power -= 1
                 self.bonus_pts += 30  # 3000 pts
                 player.points += round(self.player_data.energy_power % 10 + 25.5)
@@ -292,6 +323,8 @@ class GameState(Sound, ):
             self.level_statistic()
         if self.state == 'boss':
             self.boss()
+        if self.state == 'funeral_agency':
+            self.funeral_agency()
 
 
 #  ================================ create new GameState

@@ -128,3 +128,11 @@ class LevelStatistic(Sound):
             self.state = 'start_game'
             if not self.player_data.is_player_kill_boss:
                 self.level += 1  # increase level
+
+
+
+
+
+
+
+

@@ -1,17 +1,19 @@
 import pygame
-from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT_SIZE, vec, randrange
+from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT_SIZE, screen_transition_animation ,vec, randrange
 from src.classes.class_sound import Sound
 
 
 class Knight(pygame.sprite.Sprite, Sound,):
     SPRITE_ANIMATION_SPEED = 0.3
-    COOLDOWN = 1000  # milliseconds
     COOLDOWN_ATTACK = {'run': 600, 'attack': 800, 'dead': 1000}  # milliseconds
     WALK_LEFT_SCREEN_BORDER = 20  # is knight w_size
     WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH - 20
     WALK_SPEED = 3
     JUMP_HEIGHT = -6
-    energy_power = 4
+    COOLDOWN = 3000  # milliseconds
+    last_time = pygame.time.get_ticks()
+    count_visit = 0
+    energy_power = 6
     is_walk = False
     is_run = False
     is_jump = False
@@ -70,6 +72,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
         # check collide player and amulet
         get_amulet = self.player.rect.colliderect(img_rect)
         if get_amulet:
+            self.reset_knife_data()  # RESET ALL KNIGHT DATA
             Sound.grab_amulets(self)
             self.player.is_player_kill_boss = True  # return info to player class if boss death and take amulet
 
@@ -92,10 +95,41 @@ class Knight(pygame.sprite.Sprite, Sound,):
                 else:
                     Sound.bullet_player_hit_knight_armor(self)  # body soot
 
+    def check_players_and_boss_collide(self):
+        player_group = self.all_sprite_groups_dict['player']
+        knight_group = self.all_sprite_groups_dict['knight']
+
+        hit = pygame.sprite.groupcollide(player_group, knight_group, False, False, pygame.sprite.collide_mask)
+        if hit and not self.player.is_player_dead and not self.is_dead:
+            if self.count_visit == 0:
+                self.count_visit = 1
+                Sound.player_dead(self)
+                self.player.image = pygame.image.load('../src/assets/images/player/dead/dead_back.png')
+                self.player.rect.center = [self.rect.x, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE + 10]
+
+            time_now = pygame.time.get_ticks()
+            if time_now - self.last_time > self.COOLDOWN:
+                self.last_time = time_now
+                self.count_visit += 1
+                if self.count_visit == 2:
+                    print('game over')
+                    self.player.is_player_dead = True
+
+    def reset_knife_data(self):
+        self.count_visit = 0
+        self.energy_power = 6
+        self.is_walk = False
+        self.is_run = False
+        self.is_jump = False
+        self.is_attack = False
+        self.is_dead = False
+        self.is_sound = False
+
     def update(self,):
         self.sprite_frames()
         self.knight_movie()
         self.check_players_bullet_collide()
+        self.check_players_and_boss_collide()
         if self.energy_power <= 0:
             self.knight_dead()
 

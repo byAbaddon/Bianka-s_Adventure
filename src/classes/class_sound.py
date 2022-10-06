@@ -52,6 +52,9 @@ class Sound:
     def player_dead(self):
         self.play_sound('../src/assets/sounds/player/dead.wav', 1)
 
+    def player_dead_funeral_march(self):
+        self.play_sound('../src/assets/sounds/player/funeral_march.wav', 0.5, -1)
+
     def sign_go(self):
         self.play_sound('../src/assets/sounds/sign/go.wav', 1)
 

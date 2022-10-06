@@ -56,6 +56,9 @@ class Player(pygame.sprite.Sprite, Sound, ):
     def movement_plyer(self):
         self.acceleration = vec(0, self.GRAVITY)  # fail gravity
         self.direction = vec(self.direction.x, self.direction.y)
+        # if boss leve walk in all SCREEN_WIDTH
+        if self.is_boos_level:
+            self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH - 60
 
         key = pygame.key.get_pressed()
 
@@ -75,21 +78,13 @@ class Player(pygame.sprite.Sprite, Sound, ):
                 self.image = pygame.image.load('../src/assets/images/player/walking/5.png')
 
         # jump up right
-        if key[pygame.K_UP] and key[pygame.K_RIGHT]:  # and self.pos.x < self.WALK_RIGHT_SCREEN_BORDER:
-            if not self.is_boos_level and self.pos.x < self.WALK_RIGHT_SCREEN_BORDER:
-                if not self.is_jump:
-                    self.velocity.y = self.JUMP_HEIGHT
-                self.direction = vec(1, 0)
-                self.acceleration.x = self.PLAYER_SPEED
-                self.is_jump = True
-                self.image = pygame.image.load('../src/assets/images/player/walking/5.png')
-            elif self.is_boos_level:
-                if not self.is_jump:
-                    self.velocity.y = self.JUMP_HEIGHT
-                self.direction = vec(1, 0)
-                self.acceleration.x = self.PLAYER_SPEED
-                self.is_jump = True
-                self.image = pygame.image.load('../src/assets/images/player/walking/5.png')
+        if key[pygame.K_UP] and key[pygame.K_RIGHT] and self.pos.x < self.WALK_RIGHT_SCREEN_BORDER:
+            if not self.is_jump:
+                self.velocity.y = self.JUMP_HEIGHT
+            self.direction = vec(1, 0)
+            self.acceleration.x = self.PLAYER_SPEED
+            self.is_jump = True
+            self.image = pygame.image.load('../src/assets/images/player/walking/5.png')
 
         # jump up left
         if key[pygame.K_UP] and key[pygame.K_LEFT] and self.pos.x >= self.WALK_LEFT_SCREEN_BORDER:
@@ -111,23 +106,14 @@ class Player(pygame.sprite.Sprite, Sound, ):
                 self.direction.x = 1
             else:
                 self.direction.x = -1
-            self.acceleration.x = -self.PLAYER_SPEED
-            self.image = pygame.transform.flip(self.image, True, False)
+                self.image = pygame.transform.flip(self.image, True, False)
+                self.acceleration.x = -self.PLAYER_SPEED
 
         # go right
-        # if key[pygame.K_RIGHT] and self.direction.y == 1 and self.pos.x <= self.WALK_RIGHT_SCREEN_BORDER \
-        #         and not key[pygame.K_LEFT]:
-        #     self.direction.x = 1
-        #     self.acceleration.x = self.PLAYER_SPEED
-        if key[pygame.K_RIGHT] and self.direction.y == 1 and not key[pygame.K_LEFT]:
-            if self.is_boos_level:
-                if self.pos.x <= SCREEN_WIDTH - self.player_width_size:
-                    self.direction.x = 1
-                    self.acceleration.x = self.PLAYER_SPEED
-            else:
-                if self.pos.x <= self.WALK_RIGHT_SCREEN_BORDER:
-                    self.direction.x = 1
-                    self.acceleration.x = self.PLAYER_SPEED
+        if key[pygame.K_RIGHT] and self.direction.y == 1 and self.pos.x <= self.WALK_RIGHT_SCREEN_BORDER \
+                and not key[pygame.K_LEFT]:
+            self.direction.x = 1
+            self.acceleration.x = self.PLAYER_SPEED
 
                     # running
         # if key[pygame.K_a] and self.pos.x > self.WALK_LEFT_SCREEN_BORDER:
@@ -353,9 +339,12 @@ class Player(pygame.sprite.Sprite, Sound, ):
 
     def update(self):
         pygame.mask.from_surface(self.image)  # create mask image
-        self.sprite_frames()
-        self.movement_plyer()
-        self.shooting_payer()
+        self.sprite_frames()  # don't change position !!!
+        if not self.is_player_dead:
+            self.movement_plyer()
+            self.shooting_payer()
+        else:
+            self.reset_player_data()  # player dead RESET ALL DATA
         self.check_ground_collide()
         self.check_item_collide()
         self.check_bullets_collide()
