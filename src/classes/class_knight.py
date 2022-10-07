@@ -12,7 +12,8 @@ class Knight(pygame.sprite.Sprite, Sound,):
     JUMP_HEIGHT = -6
     COOLDOWN = 3000  # milliseconds
     last_time = pygame.time.get_ticks()
-    count_visit = 0
+    time_counter = 0
+    visited = False
     energy_power = 200
     is_walk = False
     is_run = False
@@ -20,6 +21,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
     is_attack = False
     is_dead = False
     is_sound = False
+    player_dead_x_pos = 0
 
     def __init__(self, class_bullet, all_sprite_groups_dict, player):
         pygame.sprite.Sprite.__init__(self)
@@ -88,6 +90,10 @@ class Knight(pygame.sprite.Sprite, Sound,):
         sprite = pygame.sprite.spritecollide(self, bullets_group, True, pygame.sprite.collide_mask)
         if sprite:
             for hit_point in sprite:
+                # add bullet effect explosion
+                hit_explosion = pygame.image.load('../src/assets/images/explosion/exp_1.png')
+                SCREEN.blit(hit_explosion, hit_point.rect.topleft)
+
                 if 400 <= hit_point.rect.topleft[1] <= 442:  # head shoot
                     self.is_walk = True
                     Sound.bullet_player_hit_knight_face(self)
@@ -101,29 +107,19 @@ class Knight(pygame.sprite.Sprite, Sound,):
 
         hit = pygame.sprite.groupcollide(player_group, knight_group, False, False, pygame.sprite.collide_mask)
         if hit and not self.player.is_player_dead and not self.is_dead:
-            if self.count_visit == 0:
-                self.count_visit = 1
+            if not self.visited:
                 Sound.player_dead(self)
-                self.player.image = pygame.image.load('../src/assets/images/player/dead/dead_back.png')
-                self.player.rect.center = [self.rect.x, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE + 10]
-
+                self.player_dead_x_pos = self.player.rect.x
+                self.visited = True
+        if self.visited:
+            self.player.rect.center = [self.player_dead_x_pos, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE + 10]
+            self.player.image = pygame.image.load('../src/assets/images/player/dead/dead_back.png')
             time_now = pygame.time.get_ticks()
-            if time_now - self.last_time > self.COOLDOWN:
+            if time_now - self.last_time > 3000:
                 self.last_time = time_now
-                self.count_visit += 1
-                if self.count_visit == 2:
-                    print('game over')
+                self.time_counter += 1
+                if self.time_counter == 2:
                     self.player.is_player_dead = True
-
-    def reset_knife_data(self):
-        self.count_visit = 0
-        self.energy_power = 6
-        self.is_walk = False
-        self.is_run = False
-        self.is_jump = False
-        self.is_attack = False
-        self.is_dead = False
-        self.is_sound = False
 
     def update(self,):
         self.sprite_frames()
@@ -133,3 +129,13 @@ class Knight(pygame.sprite.Sprite, Sound,):
         if self.energy_power <= 0:
             self.knight_dead()
 
+    # ======================================reset knight data
+    def reset_knife_data(self):
+        self.energy_power = 200
+        self.time_counter = 0
+        self.is_walk = False
+        self.is_run = False
+        self.is_jump = False
+        self.is_attack = False
+        self.is_dead = False
+        self.is_sound = False

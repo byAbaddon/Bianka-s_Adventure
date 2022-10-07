@@ -84,10 +84,9 @@ class GameState(Sound, ):
         self.is_start_new_game = False
 
     def start_game(self):
-
+        # =============================================== RESET ALL DATA IF START NEW GAME
         if self.is_start_new_game:  # reset all old data
             self.is_start_new_game = False
-            print('reset')
             Sound.stop_all_sounds()
             self.player_data.reset_all_player_data_for_new_game()  # reset all player data
             item_group.empty()
@@ -100,13 +99,11 @@ class GameState(Sound, ):
             self.level_reader_row = 1
             self.bonus_pts = 0
             self.is_add_bonus = False
-
+        # -----------------------------------------------
         self.bonus_pts = 0  # reset pts
         player.is_boos_level = False  # set player walking border to 1/3 S_W
-        # top display frames
+        # top display frame
         table.update()
-
-        # background_image('../src/assets/images/top_frames/4.png', 0, -5, False)
 
         # developer utils
         text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
@@ -160,7 +157,7 @@ class GameState(Sound, ):
             match int(self.background.distance_mt):
                 case 25:
                     Sound.sign_go(self)
-                    # self.state = 'level_statistic'
+                    self.state = 'level_statistic'
                     self.background.distance_mt += 1  # prevent play double sound if player stay in same position
                 case 550:
                     Sound.sign_middle(self)
@@ -180,11 +177,6 @@ class GameState(Sound, ):
                 SCREEN.blit(image, [SCREEN_WIDTH // 2 - 80, SCREEN_HEIGHT // 2 - 32])
                 text_creator(f'Area {self.area} - {self.level}', 'white', SCREEN_WIDTH // 2 - 54,
                              SCREEN_HEIGHT // 2, 36)
-
-        def reset_game_state_data():
-            self.is_music_play = False
-            self.background = None
-            self.is_bg_created = False
 
         # ==================== # check is player ALIVE
         if self.player_data.is_player_dead:
@@ -242,7 +234,7 @@ class GameState(Sound, ):
 
             # ============== draw current area/level labels
             area_label()
-
+            # ========================================== START GAME  with Area 2; Level 1
         if self.area == 2:
             table.update()
             # top display frames
@@ -269,16 +261,16 @@ class GameState(Sound, ):
                 # Sound.boss_music_area_one(self)
                 self.is_music_play = True
 
-            if self.is_bg_created:  # todo remove not  only for test
+            if not self.is_bg_created:  # todo remove not  only for test
                 # resize image
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_boss/bg_area_one_forest_boss.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
-                self.is_bg_created = False  # todo must be False
+                self.is_bg_created = True  # todo must be False
 
             if self.player_data.is_player_kill_boss:
                 self.state = 'level_statistic'
             if self.player_data.is_player_dead:
-                self.state = 'funeral_agency'
+                self.state = 'start_game'
 
             # # # =================================================== UPDATE
             # update BG
@@ -309,7 +301,7 @@ class GameState(Sound, ):
         Score().event(self)
 
     def player_dead(self):
-        # reset game_state data
+        # reset part of game_state data
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
@@ -323,7 +315,7 @@ class GameState(Sound, ):
             self.state = 'intro'
 
     def level_statistic(self):
-        # reset game state
+        # reset part of game state
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False

@@ -1,5 +1,5 @@
 import pygame
-from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH, vec
+from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, vec
 from src.classes.class_sound import Sound
 
 
@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
     JUMP_HEIGHT = -6
     PLAYER_FRICTION = -0.12
     PLAYER_SPEED = 0.4
-    lives = 1
+    lives = 3
     points = 0
     energy_power = 100
     is_player_dead = False
@@ -276,8 +276,14 @@ class Player(pygame.sprite.Sprite, Sound, ):
         sprite = pygame.sprite.groupcollide(bullets_group, items_group, False, False, pygame.sprite.collide_mask)
 
         for bullet, item in sprite.items():
+            # add bullet effect explosion
+            hit_explosion = pygame.image.load('../src/assets/images/explosion/exp_1.png')
+            SCREEN.blit(hit_explosion, bullet.rect.topleft)
             item = item[0]
             match item.group_name:
+                case 'signs':
+                    Sound.bullet_hit(self)
+                    bullet.kill()
                 case 'mushroom':
                     Sound.bullet_hit(self)
                     bullet.kill()
@@ -286,7 +292,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
                     Sound.bullet_ricochet(self)
                     bullet.kill()
                 case 'bonus':
-                    if 'coin' == item.item_name == 'statuette':
+                    if 'coin' or 'statuette':
                         Sound.bullet_statuette_hit(self)
                         bullet.kill()
                         item.kill()
@@ -362,7 +368,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
     # RESET TO NEW GAME
     def reset_all_player_data_for_new_game(self):
         self.current_weapon = '../src/assets/images/bullets/knife.png'
-        self.lives = 1
+        self.lives = 3
         self.points = 0
         self.energy_power = 100
         self.bonus_statuette = 0
