@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
     JUMP_HEIGHT = -6
     PLAYER_FRICTION = -0.12
     PLAYER_SPEED = 0.4
-    lives = 3
+    lives = 1
     points = 0
     energy_power = 100
     is_player_dead = False
@@ -335,13 +335,6 @@ class Player(pygame.sprite.Sprite, Sound, ):
             self.is_player_dead = True
             self.lives -= 1
 
-    def reset_player_data(self):
-        self.energy_power = 101  # add 1 to for fix full energy
-        self.bonus_statuette = 0
-        self.bonus_coins = 0
-        self.is_player_dead = False
-        self.is_player_poisoned = False
-
     def update(self):
         self.check_is_energy_player()
         pygame.mask.from_surface(self.image)  # create mask image
@@ -349,14 +342,36 @@ class Player(pygame.sprite.Sprite, Sound, ):
         if not self.is_player_dead:
             self.movement_plyer()
             self.shooting_payer()
-        else:
-            pass
-            # self.reset_player_data()  # player dead RESET ALL DATA
         self.check_ground_collide()
         self.check_item_collide()
         self.check_bullets_collide()
         self.check_enemy_bullets_collide()
         self.poisoned_player_energy_decrease()
 
+    # ============================================ RESET PLAYER DATA ====================================
 
+    # reset For current game
+    def reset_current_player_data(self):
+        self.energy_power = 101  # add 1 to for fix full energy
+        self.is_player_dead = False
+        self.is_player_poisoned = False
+        self.is_player_kill_boss = False
+        self.bonus_coins = 0
+        self.bonus_statuette = 0
 
+    # RESET TO NEW GAME
+    def reset_all_player_data_for_new_game(self):
+        self.current_weapon = '../src/assets/images/bullets/knife.png'
+        self.lives = 1
+        self.points = 0
+        self.energy_power = 100
+        self.bonus_statuette = 0
+        self.bonus_coins = 0
+        self.bonus_coins = 0
+        self.bonus_statuette = 0
+        self.statistics = {}
+        self.hit_enemy_counter = 0
+        self.boss_taken_amulets = 0
+        self.is_player_dead = False
+        self.is_player_poisoned = False
+        self.is_player_kill_boss = False

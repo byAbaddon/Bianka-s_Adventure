@@ -81,8 +81,26 @@ class GameState(Sound, ):
         self.player_data = player_data
         self.bonus_pts = 0
         self.is_add_bonus = False
+        self.is_start_new_game = False
 
     def start_game(self):
+
+        if self.is_start_new_game:  # reset all old data
+            self.is_start_new_game = False
+            print('reset')
+            Sound.stop_all_sounds()
+            self.player_data.reset_all_player_data_for_new_game()  # reset all player data
+            item_group.empty()
+            self.is_music_play = False
+            self.background = None
+            self.is_bg_created = False
+            self.area = 1
+            self.level = 1
+            self.boss_number = 1
+            self.level_reader_row = 1
+            self.bonus_pts = 0
+            self.is_add_bonus = False
+
         self.bonus_pts = 0  # reset pts
         player.is_boos_level = False  # set player walking border to 1/3 S_W
         # top display frames
@@ -163,14 +181,21 @@ class GameState(Sound, ):
                 text_creator(f'Area {self.area} - {self.level}', 'white', SCREEN_WIDTH // 2 - 54,
                              SCREEN_HEIGHT // 2, 36)
 
+        def reset_game_state_data():
+            self.is_music_play = False
+            self.background = None
+            self.is_bg_created = False
+
         # ==================== # check is player ALIVE
         if self.player_data.is_player_dead:
             Sound.stop_all_sounds()
             if self.player_data.lives > 0:
                 Sound.player_lost_live_music(self)
-                self.player_data.reset_player_data()
+                self.player_data.reset_current_player_data()    # reset player data for current game
+                all_spite_groups_dict['items'].empty()   # clear item group
+                # reset_game_state_data()
                 self.state = 'player_dead'
-            else:
+            if self.player_data.lives == 0:
                 Sound.player_dead_funeral_march(self)
                 self.state = 'funeral_agency'   # - Game Over
 
@@ -267,7 +292,7 @@ class GameState(Sound, ):
             knight_group.update()
             bullets_group.update()
 
-    def intro(self):
+    def intro(self,):
         Intro()
         Intro.event(self)
 
@@ -284,21 +309,18 @@ class GameState(Sound, ):
         Score().event(self)
 
     def player_dead(self):
-        PlayerDead()
+        # reset game_state data
+        self.is_music_play = False
+        self.background = None
+        self.is_bg_created = False
+        PlayerDead(self.player_data, self.area, self.level)
         PlayerDead.event(self)
 
     def funeral_agency(self):
-        # if self.player_data.energy_power == 0:
-        #     self.state = 'game_over'
         background_image('../src/assets/images/player/dead/bg/rip.png', 0, 0)
-        if key_pressed(pygame.K_SPACE):
-            Sound.stop_all_sounds()
-            self.is_music_play = False
-            self.background = None
-            self.is_bg_created = False
-            self.state = 'start_game'
-            # self.player_data.reset_player_data()
-            # knight_group.empty()
+        if key_pressed(pygame.K_RETURN):
+            self.is_start_new_game = True  # for reset old game
+            self.state = 'intro'
 
     def level_statistic(self):
         # reset game state
@@ -347,6 +369,7 @@ class GameState(Sound, ):
             self.player_dead()
         if self.state == 'funeral_agency':
             self.funeral_agency()
+
 
 #  ================================ create new GameState
 game_state = GameState(player)

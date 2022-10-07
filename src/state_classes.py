@@ -74,7 +74,6 @@ class Score(Sound):
 
 # =========================================== LevelStatistic class
 class LevelStatistic(Sound):
-
     def __init__(self, bonus_pts, player_data, level):
         self.state = ''
         self.bonus_pts = bonus_pts
@@ -123,7 +122,7 @@ class LevelStatistic(Sound):
     @staticmethod
     def event(self):
         if key_pressed(pygame.K_SPACE) and self.player_data.energy_power == 0:
-            self.player_data.reset_player_data()  # rest energy player and more...
+            self.player_data.reset_current_player_data()  # rest energy player and more...
             Sound.stop_all_sounds()
             self.state = 'start_game'
             if not self.player_data.is_player_kill_boss:
@@ -132,14 +131,28 @@ class LevelStatistic(Sound):
 
 # =========================================== GameOver class
 class PlayerDead(Sound):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, player_data, area, level):
         self.state = ''
+        self.player_data = player_data
+        self.area = area
+        self.level = level
+
         background_image('../src/assets/images/player/cry/cry.png', 70, 70)
-        text_creator('Press Space to continue...', 'white', SCREEN_WIDTH // 2 + 100, SCREEN_HEIGHT - 30)
+        text_creator('Ha-ha-ha', 'orange', SCREEN_WIDTH - 155, 15)
+        text_creator('He will be mine...', 'orange', SCREEN_WIDTH - 155, 35)
+
+        scaled_image = scale_image('../src/assets/images/wizard/wizard_two.png', 300, 200)
+        SCREEN.blit(scaled_image, [480, 40])
+
+        text_creator('You are dead!', 'red', 390, 340, 50)
+        text_creator(f'Area: {self.area} / Level: {self.level}', 'yellow', 510, 380)
+        text_creator(f'Lives: {self.player_data.lives}', 'green', 620, 410)
+
+        text_creator('Press Space to try again...', 'white', SCREEN_WIDTH // 2 + 100, SCREEN_HEIGHT - 30)
 
     def event(self):
         if key_pressed(pygame.K_SPACE):
+            Sound.stop_all_sounds()
             Sound.btn_click(self)
             self.state = 'start_game'
 
