@@ -2,7 +2,7 @@ from settings import *
 from classes.class_background import Background
 from classes.class_table import Table
 from src.classes.class_sound import Sound
-from state_classes import Intro, Menu, Legend, Score, LevelStatistic
+from state_classes import Intro, Menu, Legend, Score, LevelStatistic, PlayerDead
 from classes.class_player import Player
 from classes.class_knight import Knight
 from classes.class_ground import Ground
@@ -74,7 +74,6 @@ class GameState(Sound, ):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        # self.is_mushroom_created = False
         self.area = 1
         self.level = 1
         self.boss_number = 1
@@ -86,7 +85,6 @@ class GameState(Sound, ):
     def start_game(self):
         self.bonus_pts = 0  # reset pts
         player.is_boos_level = False  # set player walking border to 1/3 S_W
-
         # top display frames
         table.update()
 
@@ -144,7 +142,7 @@ class GameState(Sound, ):
             match int(self.background.distance_mt):
                 case 25:
                     Sound.sign_go(self)
-                    self.state = 'level_statistic'
+                    # self.state = 'level_statistic'
                     self.background.distance_mt += 1  # prevent play double sound if player stay in same position
                 case 550:
                     Sound.sign_middle(self)
@@ -165,15 +163,16 @@ class GameState(Sound, ):
                 text_creator(f'Area {self.area} - {self.level}', 'white', SCREEN_WIDTH // 2 - 54,
                              SCREEN_HEIGHT // 2, 36)
 
-        # ==================== player dead  rip
-        def rip_player():
-            self.state = 'funeral_agency'
-            # todo: set time out and empty group player
-            # player_group.empty()
-
-        # check is player ALIVE
+        # ==================== # check is player ALIVE
         if self.player_data.is_player_dead:
-            rip_player()
+            Sound.stop_all_sounds()
+            if self.player_data.lives > 0:
+                Sound.player_lost_live_music(self)
+                self.player_data.reset_player_data()
+                self.state = 'player_dead'
+            else:
+                Sound.player_dead_funeral_march(self)
+                self.state = 'funeral_agency'   # - Game Over
 
         # ============== level manipulator
         if self.level > 4:
@@ -181,7 +180,7 @@ class GameState(Sound, ):
             self.area += 1
             self.state = 'boss'
 
-        # ========================================== START GAME  with Area 1; Level 1
+            # ========================================== START GAME  with Area 1; Level 1
         if self.area == 1:
             if not self.is_music_play:
                 self.current_music = Sound.forest_music_area_one(self)
@@ -218,7 +217,21 @@ class GameState(Sound, ):
 
             # ============== draw current area/level labels
             area_label()
+
         if self.area == 2:
+            table.update()
+            # top display frames
+
+            if not self.is_music_play:
+                self.current_music = Sound.see_music_area_two(self)
+                self.is_music_play = True
+
+            if not self.is_bg_created:
+                # resize image
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_sea.png', 800, 510)
+                self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
+                self.is_bg_created = True
+
             print('AREA 2 ; Level 1')
 
     def boss(self):
@@ -270,13 +283,14 @@ class GameState(Sound, ):
         Score()
         Score().event(self)
 
-    def funeral_agency(self):
-        background_image('../src/assets/images/player/dead/bg/rip.png', 0, 0)
-        if self.is_music_play:
-            Sound.stop_all_sounds()
-            Sound.player_dead_funeral_march(self)
-            self.is_music_play = False
+    def player_dead(self):
+        PlayerDead()
+        PlayerDead.event(self)
 
+    def funeral_agency(self):
+        # if self.player_data.energy_power == 0:
+        #     self.state = 'game_over'
+        background_image('../src/assets/images/player/dead/bg/rip.png', 0, 0)
         if key_pressed(pygame.K_SPACE):
             Sound.stop_all_sounds()
             self.is_music_play = False
@@ -287,7 +301,13 @@ class GameState(Sound, ):
             # knight_group.empty()
 
     def level_statistic(self):
+        # reset game state
+        self.is_music_play = False
+        self.background = None
+        self.is_bg_created = False
+        # ---------------------------------------------
         table.update()
+
         if screen_transition_animation() >= 0:  # clear screen
             LevelStatistic(self.bonus_pts, self.player_data, self.level).update()
             LevelStatistic(self.bonus_pts, self.player_data, self.level).event(self)
@@ -323,9 +343,10 @@ class GameState(Sound, ):
             self.level_statistic()
         if self.state == 'boss':
             self.boss()
+        if self.state == 'player_dead':
+            self.player_dead()
         if self.state == 'funeral_agency':
             self.funeral_agency()
-
 
 #  ================================ create new GameState
 game_state = GameState(player)

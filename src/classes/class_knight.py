@@ -13,7 +13,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
     COOLDOWN = 3000  # milliseconds
     last_time = pygame.time.get_ticks()
     count_visit = 0
-    energy_power = 6
+    energy_power = 200
     is_walk = False
     is_run = False
     is_jump = False

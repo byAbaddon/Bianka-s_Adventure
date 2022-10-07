@@ -330,6 +330,11 @@ class Player(pygame.sprite.Sprite, Sound, ):
                     Sound.enemy_bullet_hit_player_head(self)
                     self.energy_power -= 1
 
+    def check_is_energy_player(self):
+        if self.energy_power <= 0:
+            self.is_player_dead = True
+            self.lives -= 1
+
     def reset_player_data(self):
         self.energy_power = 101  # add 1 to for fix full energy
         self.bonus_statuette = 0
@@ -338,13 +343,15 @@ class Player(pygame.sprite.Sprite, Sound, ):
         self.is_player_poisoned = False
 
     def update(self):
+        self.check_is_energy_player()
         pygame.mask.from_surface(self.image)  # create mask image
         self.sprite_frames()  # don't change position !!!
         if not self.is_player_dead:
             self.movement_plyer()
             self.shooting_payer()
         else:
-            self.reset_player_data()  # player dead RESET ALL DATA
+            pass
+            # self.reset_player_data()  # player dead RESET ALL DATA
         self.check_ground_collide()
         self.check_item_collide()
         self.check_bullets_collide()

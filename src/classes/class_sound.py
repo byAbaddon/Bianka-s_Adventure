@@ -20,14 +20,17 @@ class Sound:
     def intro_music(self):
         self.play_sound('../src/assets/sounds/game_musics/intro_1.mp3')
 
-    def game_over_music(self):
-        self.play_sound('..src/assets/sounds/game_musics/game_over.mp3', 0.2, -1)
+    # =================================== areas bg music
 
-    # forest
+    # Area 1 forest
     def forest_music_area_one(self):
         self.play_sound('../src/assets/sounds/game_musics/forest_1.mp3', 0.6, -1)
 
-    # boss
+    # Area 2 See
+    def see_music_area_two(self):
+        self.play_sound('../src/assets/sounds/game_musics/see_1.mp3', 0.6, -1)
+
+    # ======================================   BOSS
     def boss_music_area_one(self):
         self.play_sound('../src/assets/sounds/game_musics/boss/boss_2.mp3', 0.6, -1)
 
@@ -51,9 +54,6 @@ class Sound:
 
     def player_dead(self):
         self.play_sound('../src/assets/sounds/player/dead.wav', 1)
-
-    def player_dead_funeral_march(self):
-        self.play_sound('../src/assets/sounds/player/funeral_march.wav', 0.5, -1)
 
     def sign_go(self):
         self.play_sound('../src/assets/sounds/sign/go.wav', 1)
@@ -148,3 +148,14 @@ class Sound:
 
     def knight_dead(self):
         self.play_sound('../src/assets/sounds/boss_knight/dead.wav', 1)
+
+    # ============================================ dead and game over
+    # lost_live
+    def player_dead_funeral_march(self):
+        self.play_sound('../src/assets/sounds/player/funeral_march.wav', 0.5, -1)
+
+    def player_lost_live_music(self):
+        self.play_sound('../src/assets/sounds/dead_live/dead_live.mp3', 0.2, -1)
+
+    def game_over_voice(self):
+        self.play_sound('../src/assets/sounds/game_over/game-over_voice.wav', 1,)

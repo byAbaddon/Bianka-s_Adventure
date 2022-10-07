@@ -130,6 +130,18 @@ class LevelStatistic(Sound):
                 self.level += 1  # increase level
 
 
+# =========================================== GameOver class
+class PlayerDead(Sound):
+    def __init__(self):
+        super().__init__()
+        self.state = ''
+        background_image('../src/assets/images/player/cry/cry.png', 70, 70)
+        text_creator('Press Space to continue...', 'white', SCREEN_WIDTH // 2 + 100, SCREEN_HEIGHT - 30)
+
+    def event(self):
+        if key_pressed(pygame.K_SPACE):
+            Sound.btn_click(self)
+            self.state = 'start_game'
 
 
 
