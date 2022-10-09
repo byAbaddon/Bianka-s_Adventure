@@ -27,8 +27,8 @@ class Sound:
         self.play_sound('../src/assets/sounds/game_musics/forest_1.mp3', 0.6, -1)
 
     # Area 2 See
-    def see_music_area_two(self):
-        self.play_sound('../src/assets/sounds/game_musics/see_1.mp3', 0.6, -1)
+    def sea_music_area_two(self):
+        self.play_sound('../src/assets/sounds/game_musics/sea_1.mp3', 0.6, -1)
 
     # ======================================   BOSS
     def boss_music_area_one(self):

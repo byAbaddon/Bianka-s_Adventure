@@ -43,7 +43,10 @@ class Table:
 
     def draw_area_and_level(self):
         text_creator(f'Area:  {self.area}', (255, 200, 0), SCREEN_WIDTH - 92, 24, 29)
-        text_creator(f'Level: {self.level}', (255, 200, 0), SCREEN_WIDTH - 92, 44, 29)
+        if not self.player.is_boos_level:
+            text_creator(f'Level: {self.level}', (255, 200, 0), SCREEN_WIDTH - 92, 44, 29)
+        else:
+            text_creator(f'-BOSS-', (255, 200, 0), SCREEN_WIDTH - 92, 44, 29)
 
     def energy_bar(self):
         text_creator('Bianka', 'white', 328, 67, 29)

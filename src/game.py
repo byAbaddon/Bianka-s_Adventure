@@ -35,7 +35,7 @@ ground = Ground()
 
 
 # add to group
-# ground2 = Ground('../src/assets/images/ground/distance.png', 100, SCREEN_HEIGHT - 150)
+# ground2 = Ground('../src/assets/images/cloud/static.png', SCREEN_WIDTH, SCREEN_HEIGHT - 150)
 # ground3 = Ground('../src/assets/images/ground/distance.png', 400, SCREEN_HEIGHT - 170)
 player_group.add(player)
 knight_group.add(knight)
@@ -68,17 +68,18 @@ class GameState(Sound, ):
     enemy_list = ['enemy_raven', 'enemy_monkey', 'enemy_hedgehog', 'enemy_static_hedgehog', 'enemy_boar', 'enemy_bee',
                   'enemy_mouse', 'enemy_static_mole']
 
-    def __init__(self, player_data):
+    def __init__(self, player_data, knight_data):
         self.state = 'intro'
         self.current_music = Sound.intro_music(self)
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 1
+        self.area = 2
         self.level = 1
         self.boss_number = 1
         self.level_reader_row = 1
         self.player_data = player_data
+        self.knight_data = knight_data
         self.bonus_pts = 0
         self.is_add_bonus = False
         self.is_start_new_game = False
@@ -135,6 +136,11 @@ class GameState(Sound, ):
             if enemy_name == 'enemy_static_mole':
                 return Enemy(Bullet, asg, pic_mole, S_W, S_H - G_H_S - 2, 0, True)
 
+        # ================================ create cloud platform classes
+        # def cloud_platform_creator(cloud_type):
+        #     # if cloud_type == 'cloud_static':
+        #     return Ground('../src/assets/images/cloud/static.png', 200 + self.background.distance_mt, S_H - 170)
+
         # function sprite creator
         def sprite_creator(dictionary, input_class=None, group_class=None):
             # time_now = pygame.time.get_ticks()
@@ -148,6 +154,12 @@ class GameState(Sound, ):
                         new_enemy_class = enemy_creator(enemy_name=v)
                         # add to item group
                         group_class.add(new_enemy_class)
+                    elif v.split('/')[0] == 'cloud':  # ----------- create ground platform cloud
+                        # create new class from cloud platform
+                        # new_cloud_class = cloud_platform_creator(cloud_type=v)
+                        new_cloud_class = input_class(f'../src/assets/images/{v}.png', S_W, 470)
+                        # add to item group
+                        group_class.add(new_cloud_class)
                     else:
                         new_item_class = input_class(f'../src/assets/images/{v}.png')  # create item class
                         group_class.add(new_item_class)  # add new class to item_group
@@ -157,7 +169,7 @@ class GameState(Sound, ):
             match int(self.background.distance_mt):
                 case 25:
                     Sound.sign_go(self)
-                    self.state = 'level_statistic'
+                    # self.state = 'level_statistic'
                     self.background.distance_mt += 1  # prevent play double sound if player stay in same position
                 case 550:
                     Sound.sign_middle(self)
@@ -185,7 +197,7 @@ class GameState(Sound, ):
                 Sound.player_lost_live_music(self)
                 self.player_data.reset_current_player_data()    # reset player data for current game
                 all_spite_groups_dict['items'].empty()   # clear item group
-                # reset_game_state_data()
+                self.knight_data.reset_knife_data()
                 self.state = 'player_dead'
             if self.player_data.lives == 0:
                 Sound.player_dead_funeral_march(self)
@@ -193,11 +205,15 @@ class GameState(Sound, ):
 
         # ============== level manipulator
         if self.level > 4:
-            self.level = 1
-            self.area += 1
-            self.state = 'boss'
+            if self.level == 5:
+                self.state = 'boss'
+                if self.knight_data.is_boss_level_complete:   #todo:
+                    self.level -= 1
+            else:
+                self.level = 1
+                self.area += 1
 
-            # ========================================== START GAME  with Area 1; Level 1
+        # ========================================== START GAME  with Area 1; Level 1
         if self.area == 1:
             if not self.is_music_play:
                 self.current_music = Sound.forest_music_area_one(self)
@@ -214,7 +230,7 @@ class GameState(Sound, ):
             sprite_creator(items_dict, Item, item_group)
 
             # ============= level counter
-            distance_counter(item_group)
+            distance_counter()
             # print(len(item_group))
 
             # =================================================== UPDATE
@@ -234,25 +250,56 @@ class GameState(Sound, ):
 
             # ============== draw current area/level labels
             area_label()
-            # ========================================== START GAME  with Area 2; Level 1
+
+        # ========================================== START GAME  with Area 2; Level 1
         if self.area == 2:
             table.update()
             # top display frames
 
             if not self.is_music_play:
-                self.current_music = Sound.see_music_area_two(self)
+                # self.current_music = Sound.sea_music_area_two(self)
                 self.is_music_play = True
 
             if not self.is_bg_created:
                 # resize image
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_sea.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
+                # add rock ground
+                ground_group.empty()
+                ground_rock = Ground('../src/assets/images/ground/dock2.png', False, 0, S_H - 100)
+                ground_group.add(ground_rock)
                 self.is_bg_created = True
 
-            print('AREA 2 ; Level 1')
+            # ============== create level: items, enemy, and more
+            items_dict = eval(file_operation('levels/levels_data.txt', 'r', self.level_reader_row))
+            sprite_creator(items_dict, Item, item_group)
+
+            # ============= level counter
+            distance_counter()
+
+            # =================================================== UPDATE
+            # update BG
+            self.background.update()
+            # --------------------------- draw sprite group
+            ground_group.draw(SCREEN)  # hide under bg
+            bullets_group.draw(SCREEN)
+            player_group.draw(SCREEN)
+            item_group.draw(SCREEN)
+
+            # --------------------------- update sprite group
+            ground_group.update()
+            player_group.update()
+            bullets_group.update()
+            item_group.update()
+
+            # ============== draw current area/level labels
+            area_label()
+
+            # print('AREA 2 ; Level 1')
 
     def boss(self):
         player.is_boos_level = True  # set player walking border to all SCREEN_WIDTH
+
         # top display frames
         table.update()
         if self.boss_number == 1:
@@ -261,16 +308,16 @@ class GameState(Sound, ):
                 # Sound.boss_music_area_one(self)
                 self.is_music_play = True
 
-            if not self.is_bg_created:  # todo remove not  only for test
+            if self.is_bg_created:  # todo remove not  only for test
                 # resize image
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_boss/bg_area_one_forest_boss.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
-                self.is_bg_created = True  # todo must be False
+                self.is_bg_created = False  # todo must be False
 
             if self.player_data.is_player_kill_boss:
                 self.state = 'level_statistic'
             if self.player_data.is_player_dead:
-                self.state = 'start_game'
+                self.state = 'player_dead'
 
             # # # =================================================== UPDATE
             # update BG
@@ -290,15 +337,15 @@ class GameState(Sound, ):
 
     def menu(self):
         Menu()
-        Menu().event(self)
+        Menu.event(self)
 
     def legend(self):
         Legend()
-        Legend().event(self)
+        Legend.event(self)
 
     def score(self):
         Score()
-        Score().event(self)
+        Score.event(self)
 
     def player_dead(self):
         # reset part of game_state data
@@ -364,7 +411,7 @@ class GameState(Sound, ):
 
 
 #  ================================ create new GameState
-game_state = GameState(player)
+game_state = GameState(player, knight)
 
 # ================================================================ create top Table for: score , energy and more
 table = Table(game_state, player, knight)

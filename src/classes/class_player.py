@@ -200,6 +200,29 @@ class Player(pygame.sprite.Sprite, Sound, ):
                     self.image = pygame.image.load('../src/assets/images/player/dead/dead.png')
                     self.pos.y = SCREEN_HEIGHT
 
+    def check_cloud_platform_collide(self):
+        buffer = 5  # buffer image to improve collide
+        group_items = self.all_sprite_groups_dict['items']
+        for sprite in pygame.sprite.spritecollide(self, group_items, False, pygame.sprite.collide_mask):
+            if sprite.group_name == 'cloud':
+                if not (sprite.rect.left > self.pos.x or self.pos.x > sprite.rect.right):
+                    # check is player head hits in bottom platform
+                    if self.pos.y < sprite.rect.bottom:
+                        # ground collide
+                        self.pos.y = sprite.rect.top + buffer  # buffer after collide for removing player trembling
+                        self.velocity.y = 0
+                        self.direction.y = 1
+                        # change image after jump
+                        if self.is_jump:
+                            if self.direction.x == 1:
+                                self.image = pygame.image.load('../src/assets/images/player/stay/1.png')
+                            else:
+                                self.image = pygame.image.load('../src/assets/images/player/stay/2.png')
+                            self.is_jump = False
+                    if self.is_player_dead:
+                        self.image = pygame.image.load('../src/assets/images/player/dead/dead.png')
+                        self.pos.y = SCREEN_HEIGHT
+
     def check_item_collide(self):
         group_items = self.all_sprite_groups_dict['items']
         for sprite in pygame.sprite.spritecollide(self, group_items, False, pygame.sprite.collide_mask):
@@ -353,6 +376,7 @@ class Player(pygame.sprite.Sprite, Sound, ):
         self.check_bullets_collide()
         self.check_enemy_bullets_collide()
         self.poisoned_player_energy_decrease()
+        self.check_cloud_platform_collide()
 
     # ============================================ RESET PLAYER DATA ====================================
 

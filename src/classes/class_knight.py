@@ -14,7 +14,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
     last_time = pygame.time.get_ticks()
     time_counter = 0
     visited = False
-    energy_power = 200
+    energy_power = 6
     is_walk = False
     is_run = False
     is_jump = False
@@ -22,6 +22,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
     is_dead = False
     is_sound = False
     player_dead_x_pos = 0
+    is_boss_level_complete = False
 
     def __init__(self, class_bullet, all_sprite_groups_dict, player):
         pygame.sprite.Sprite.__init__(self)
@@ -77,6 +78,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
             self.reset_knife_data()  # RESET ALL KNIGHT DATA
             Sound.grab_amulets(self)
             self.player.is_player_kill_boss = True  # return info to player class if boss death and take amulet
+            self.is_boss_level_complete = True
 
     def sprite_frames(self):
         if self.direction.y == 1:
@@ -115,10 +117,11 @@ class Knight(pygame.sprite.Sprite, Sound,):
             self.player.rect.center = [self.player_dead_x_pos, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE + 10]
             self.player.image = pygame.image.load('../src/assets/images/player/dead/dead_back.png')
             time_now = pygame.time.get_ticks()
-            if time_now - self.last_time > 3000:
+            if time_now - self.last_time > 3000:  # pause after dead
                 self.last_time = time_now
                 self.time_counter += 1
                 if self.time_counter == 2:
+                    self.player.lives -= 1
                     self.player.is_player_dead = True
 
     def update(self,):
@@ -139,3 +142,5 @@ class Knight(pygame.sprite.Sprite, Sound,):
         self.is_attack = False
         self.is_dead = False
         self.is_sound = False
+        self.player_dead_x_pos = 0
+        self.is_boss_level_complete = False
