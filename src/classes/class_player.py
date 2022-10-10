@@ -4,7 +4,7 @@ from src.classes.class_sound import Sound
 
 
 # ============================================= class Player===============================================
-class Player(pygame.sprite.Sprite, Sound, ):
+class Player(pygame.sprite.Sprite, Sound):
     COOLDOWN = 1000  # milliseconds
     # milliseconds cooldown
     WEAPONS_DICT = {'knife': {'cooldown_shooting': 600, 'power': 5},

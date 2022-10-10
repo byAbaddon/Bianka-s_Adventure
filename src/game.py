@@ -9,6 +9,7 @@ from classes.class_ground import Ground
 from classes.class_bullet import Bullet
 from classes.class_item import Item
 from classes.class_enemy import Enemy
+from classes.class_cloud import Cloud
 
 # ================================================================= TEST imported classes
 # print(dir(Menu))
@@ -22,6 +23,7 @@ knight_group = pygame.sprite.GroupSingle()
 ground_group = pygame.sprite.Group()
 bullets_group = pygame.sprite.Group()
 item_group = pygame.sprite.Group()
+
 
 # add to all_sprite_groups   /items group include enemy/
 all_spite_groups_dict = {'player': player_group, 'knight': knight_group, 'bullets': bullets_group,
@@ -40,6 +42,8 @@ ground = Ground()
 player_group.add(player)
 knight_group.add(knight)
 ground_group.add(ground)
+
+
 
 # ---------------------------------------------------------------------- create Enemies
 
@@ -137,9 +141,12 @@ class GameState(Sound, ):
                 return Enemy(Bullet, asg, pic_mole, S_W, S_H - G_H_S - 2, 0, True)
 
         # ================================ create cloud platform classes
-        # def cloud_platform_creator(cloud_type):
-        #     # if cloud_type == 'cloud_static':
-        #     return Ground('../src/assets/images/cloud/static.png', 200 + self.background.distance_mt, S_H - 170)
+        def cloud_platform_creator(cloud_type):
+            pic = '../src/assets/images/cloud/static.png'
+            if cloud_type == 'cloud/static':
+                return Cloud(self.player_data)
+            if cloud_type == 'cloud/up_down':
+                return Cloud(self.player_data, pic, S_W, S_H - 160, False, 2, 'left_right', 300)
 
         # function sprite creator
         def sprite_creator(dictionary, input_class=None, group_class=None):
@@ -156,8 +163,7 @@ class GameState(Sound, ):
                         group_class.add(new_enemy_class)
                     elif v.split('/')[0] == 'cloud':  # ----------- create ground platform cloud
                         # create new class from cloud platform
-                        # new_cloud_class = cloud_platform_creator(cloud_type=v)
-                        new_cloud_class = input_class(f'../src/assets/images/{v}.png', S_W, 470)
+                        new_cloud_class = cloud_platform_creator(cloud_type=v)
                         # add to item group
                         group_class.add(new_cloud_class)
                     else:
@@ -266,7 +272,7 @@ class GameState(Sound, ):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 # add rock ground
                 ground_group.empty()
-                ground_rock = Ground('../src/assets/images/ground/dock2.png', False, 0, S_H - 100)
+                ground_rock = Ground('../src/assets/images/ground/rock.png', False, 0, S_H - 100)
                 ground_group.add(ground_rock)
                 self.is_bg_created = True
 
