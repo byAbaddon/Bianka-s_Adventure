@@ -30,6 +30,7 @@ class Player(pygame.sprite.Sprite, Sound):
     bonus_coins = 0
     bonus_statuette = 0
     is_player_kill_boss = False
+    player_dead_x_pos = 0
 
     def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
@@ -52,6 +53,7 @@ class Player(pygame.sprite.Sprite, Sound):
         self.WALK_LEFT_SCREEN_BORDER = self.player_width_size - 14
         self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH // 3
         self.is_boos_level = False
+        self.jump_limit = SCREEN_HEIGHT  # allowed jump form all position
 
     def movement_plyer(self):
         self.acceleration = vec(0, self.GRAVITY)  # fail gravity
@@ -63,7 +65,7 @@ class Player(pygame.sprite.Sprite, Sound):
         key = pygame.key.get_pressed()
 
         # jump up
-        if key[pygame.K_UP] and self.direction.y == 1 and self.direction.x != 0:
+        if key[pygame.K_UP] and self.direction.y == 1 and self.direction.x != 0 and self.rect.bottom < self.jump_limit:
             Sound.player_jump(self)
             self.is_jump = True
             self.direction.y = -1
@@ -200,11 +202,12 @@ class Player(pygame.sprite.Sprite, Sound):
                     self.image = pygame.image.load('../src/assets/images/player/dead/dead.png')
                     self.pos.y = SCREEN_HEIGHT
 
-    def check_cloud_platform_collide(self):
-        buffer = 5  # buffer image to improve collide
+    def check_water_platform_collide(self):
+        buffer = 7  # buffer image to improve collide
         group_items = self.all_sprite_groups_dict['items']
         for sprite in pygame.sprite.spritecollide(self, group_items, False, pygame.sprite.collide_mask):
-            if sprite.group_name == 'cloud':
+            # print(sprite.group_name)
+            if sprite.group_name == 'cloud' or sprite.group_name == 'logs':
                 if not (sprite.rect.left > self.pos.x or self.pos.x > sprite.rect.right):
                     # check is player head hits in bottom platform
                     if self.pos.y < sprite.rect.bottom:
@@ -304,7 +307,7 @@ class Player(pygame.sprite.Sprite, Sound):
             SCREEN.blit(hit_explosion, bullet.rect.topleft)
             item = item[0]
             match item.group_name:
-                case 'signs':
+                case 'signs' | 'logs' | 'cloud':
                     Sound.bullet_hit(self)
                     bullet.kill()
                 case 'mushroom':
@@ -321,6 +324,11 @@ class Player(pygame.sprite.Sprite, Sound):
                         item.kill()
                 case 'enemies':
                     if item.item_name == 'mole':
+                        self.points += 100
+                        Sound.bullet_kill_enemy(self)
+                        item.kill()
+                        bullet.kill()
+                    if item.item_name == 'crab':
                         self.points += 100
                         Sound.bullet_kill_enemy(self)
                         item.kill()
@@ -364,6 +372,17 @@ class Player(pygame.sprite.Sprite, Sound):
             self.is_player_dead = True
             self.lives -= 1
 
+    def check_is_player_fail_out_of_screen(self):
+        if self.pos.y > SCREEN_HEIGHT and not self.is_player_dead:
+            self.player_dead_x_pos = self.pos.x
+            if not self.is_player_dead:
+                self.lives -= 1
+                pic = pygame.image.load('../src/assets/images/splashes/splashes.png')
+                SCREEN.blit(pic, [self.player_dead_x_pos - 70, 300])
+                Sound.stop_all_sounds()
+                Sound.fail_in_sea(self)
+                self.is_player_dead = True
+
     def update(self):
         self.check_is_energy_player()
         pygame.mask.from_surface(self.image)  # create mask image
@@ -376,7 +395,8 @@ class Player(pygame.sprite.Sprite, Sound):
         self.check_bullets_collide()
         self.check_enemy_bullets_collide()
         self.poisoned_player_energy_decrease()
-        self.check_cloud_platform_collide()
+        self.check_water_platform_collide()
+        self.check_is_player_fail_out_of_screen()  # return True or False
 
     # ============================================ RESET PLAYER DATA ====================================
 

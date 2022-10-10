@@ -50,7 +50,7 @@ class Enemy(Player, Sound):
                 self.shooting = False
 
     def prevent_overflow_item_group(self):  # remove old enemy from item_group if it out of screen
-        if self.rect.x < -60 or self.rect.x > SCREEN_WIDTH + 100 or self.rect.y > SCREEN_HEIGHT:
+        if self.rect.x < -200 or self.rect.x > SCREEN_WIDTH + 100 or self.rect.y > SCREEN_HEIGHT:
             self.kill()
 
     def make_sound(self):
@@ -67,6 +67,8 @@ class Enemy(Player, Sound):
                 Sound.mouse_sound(self)
             if self.item_name == 'mole':
                 Sound.mole_sound(self)
+            if self.item_name == 'crab':
+                Sound.crab_sound(self)
         self.noise = False
 
     def update(self):

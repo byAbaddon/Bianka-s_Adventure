@@ -9,9 +9,11 @@
 'statuette': 3000
 
 =========================== enemy
+'crab' : 100
 'bee' : 100
 'mole': 200
 'hedgehog' : 200
+'butterfly' : 300
 'mouse' : 300
 'raven' : 300
 'monkey' : 500

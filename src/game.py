@@ -10,6 +10,7 @@ from classes.class_bullet import Bullet
 from classes.class_item import Item
 from classes.class_enemy import Enemy
 from classes.class_cloud import Cloud
+from classes.class_log import Log
 
 # ================================================================= TEST imported classes
 # print(dir(Menu))
@@ -44,7 +45,6 @@ knight_group.add(knight)
 ground_group.add(ground)
 
 
-
 # ---------------------------------------------------------------------- create Enemies
 
 # variables
@@ -60,8 +60,11 @@ pic_boar = '../src/assets/images/enemies/boar/1.png'
 pic_bee = '../src/assets/images/enemies/bee/1.png'
 pic_mouse = '../src/assets/images/enemies/mouse/1.png'
 pic_mole = '../src/assets/images/enemies/mole/mole.png'
+pic_crab = '../src/assets/images/enemies/crab/1.png'
 pic_raven_bullet = '../src/assets/images/bullets/egg.png'
 pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
+pic_bonus_coin = '../src/assets/images/bonus/1.png'
+pic_butterfly = '../src/assets/images/enemies/butterfly/1.png'
 
 
 # Game State
@@ -70,7 +73,7 @@ class GameState(Sound, ):
     start_timer = pygame.time.get_ticks()
     count_visit = 0
     enemy_list = ['enemy_raven', 'enemy_monkey', 'enemy_hedgehog', 'enemy_static_hedgehog', 'enemy_boar', 'enemy_bee',
-                  'enemy_mouse', 'enemy_static_mole']
+                  'enemy_mouse', 'enemy_static_mole', 'enemy_static_crab', 'bonus_coin', 'enemy_butterfly']
 
     def __init__(self, player_data, knight_data):
         self.state = 'intro'
@@ -89,6 +92,9 @@ class GameState(Sound, ):
         self.is_start_new_game = False
 
     def start_game(self):
+        # ------------------top display frame
+        table.update()
+
         # =============================================== RESET ALL DATA IF START NEW GAME
         if self.is_start_new_game:  # reset all old data
             self.is_start_new_game = False
@@ -107,8 +113,6 @@ class GameState(Sound, ):
         # -----------------------------------------------
         self.bonus_pts = 0  # reset pts
         player.is_boos_level = False  # set player walking border to 1/3 S_W
-        # top display frame
-        table.update()
 
         # developer utils
         text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
@@ -119,6 +123,8 @@ class GameState(Sound, ):
 
         # ================================ create enemy classes
         def enemy_creator(enemy_name):
+            if enemy_name == 'bonus_coin':
+                return Enemy(Bullet, asg, pic_bonus_coin, S_W, S_H - G_H_S - 52, 0, False, False, None, None, 6)
             if enemy_name == 'enemy_bee':
                 b1 = Enemy(Bullet, asg, pic_bee, S_W, S_H - (G_H_S + player.image.get_height() // 2), 2,
                            True, False, pic_bee, 0, 4)
@@ -139,14 +145,21 @@ class GameState(Sound, ):
                 return Enemy(Bullet, asg, pic_mouse, S_W, S_H - G_H_S - 2, 5, True, False, '', 0, 3)
             if enemy_name == 'enemy_static_mole':
                 return Enemy(Bullet, asg, pic_mole, S_W, S_H - G_H_S - 2, 0, True)
+            if enemy_name == 'enemy_static_crab':
+                return Enemy(Bullet, asg, pic_crab, S_W, S_H - G_H_S - 52, 0, True, False, None, None, 3)
+            if enemy_name == 'enemy_butterfly':
+                return Enemy(Bullet, asg, pic_butterfly, S_W, TOP_FRAME_SIZE + 100, 1, False, False, None, None, 6)
 
         # ================================ create cloud platform classes
-        def cloud_platform_creator(cloud_type):
-            pic = '../src/assets/images/cloud/static.png'
-            if cloud_type == 'cloud/static':
+        def water_platform_creator(v_type):
+            pic_cloud = '../src/assets/images/cloud/static.png'
+            if v_type == 'cloud/static':
                 return Cloud(self.player_data)
-            if cloud_type == 'cloud/up_down':
-                return Cloud(self.player_data, pic, S_W, S_H - 160, False, 2, 'left_right', 300)
+            if v_type == ('cloud/up_down' or 'cloud/left_right'):
+                return Cloud(self.player_data, pic_cloud, S_W, S_H - 160, False, 2, 'left_right', 200)
+            if v_type.split('/')[0] == 'logs':
+                pic_log = f'../src/assets/images/logs/{v_type.split("/")[1]}.png'
+                return Log(self.player_data, pic_log, S_W, S_H - 90, True)
 
         # function sprite creator
         def sprite_creator(dictionary, input_class=None, group_class=None):
@@ -161,13 +174,16 @@ class GameState(Sound, ):
                         new_enemy_class = enemy_creator(enemy_name=v)
                         # add to item group
                         group_class.add(new_enemy_class)
-                    elif v.split('/')[0] == 'cloud':  # ----------- create ground platform cloud
+                    elif v.split('/')[0] == 'cloud' or v.split('/')[0] == 'logs':  # -- create ground platforms
                         # create new class from cloud platform
-                        new_cloud_class = cloud_platform_creator(cloud_type=v)
+                        new_platform_class = water_platform_creator(v_type=v)
                         # add to item group
-                        group_class.add(new_cloud_class)
+                        group_class.add(new_platform_class)
                     else:
-                        new_item_class = input_class(f'../src/assets/images/{v}.png')  # create item class
+                        if v.split('/')[0] == 'ships':  # change item position
+                            new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, 250)
+                        else:
+                            new_item_class = input_class(f'../src/assets/images/{v}.png')  # create item class
                         group_class.add(new_item_class)  # add new class to item_group
                     self.background.distance_mt += 1  # prevent create double sp if player stay in same position
 
@@ -221,6 +237,7 @@ class GameState(Sound, ):
 
         # ========================================== START GAME  with Area 1; Level 1
         if self.area == 1:
+
             if not self.is_music_play:
                 self.current_music = Sound.forest_music_area_one(self)
                 self.is_music_play = True
@@ -259,11 +276,10 @@ class GameState(Sound, ):
 
         # ========================================== START GAME  with Area 2; Level 1
         if self.area == 2:
-            table.update()
-            # top display frames
+            self.player_data.jump_limit = 508  # prevent jump from water
 
             if not self.is_music_play:
-                # self.current_music = Sound.sea_music_area_two(self)
+                self.current_music = Sound.sea_music_area_two(self)
                 self.is_music_play = True
 
             if not self.is_bg_created:
@@ -272,7 +288,7 @@ class GameState(Sound, ):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 # add rock ground
                 ground_group.empty()
-                ground_rock = Ground('../src/assets/images/ground/rock.png', False, 0, S_H - 100)
+                ground_rock = Ground('../src/assets/images/ground/dock_middle.png', False, 0, S_H - 100)
                 ground_group.add(ground_rock)
                 self.is_bg_created = True
 
@@ -289,18 +305,18 @@ class GameState(Sound, ):
             # --------------------------- draw sprite group
             ground_group.draw(SCREEN)  # hide under bg
             bullets_group.draw(SCREEN)
-            player_group.draw(SCREEN)
             item_group.draw(SCREEN)
+            player_group.draw(SCREEN)
 
             # --------------------------- update sprite group
             ground_group.update()
-            player_group.update()
             bullets_group.update()
             item_group.update()
+            player_group.update()
 
             # ============== draw current area/level labels
             area_label()
-
+            text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 6, 24)
             # print('AREA 2 ; Level 1')
 
     def boss(self):

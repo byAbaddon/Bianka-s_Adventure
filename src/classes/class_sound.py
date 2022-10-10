@@ -79,7 +79,7 @@ class Sound:
     def grab_amulets(self):
         self.play_sound('../src/assets/sounds/player/grab_amulets.wav', 1)
 
-    # enemy sound
+    # -------------------------------------------   enemy sound
     def mouse_sound(self):
         self.play_sound('../src/assets/sounds/enemies/mouse.wav', 1,)
 
@@ -97,6 +97,9 @@ class Sound:
 
     def bee_sound(self):
         self.play_sound('../src/assets/sounds/enemies/bee/bee.wav', 1, 2)
+
+    def crab_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/crab/crab.wav', 0.2, 2)
 
     # player bullets hit something and kill enemy
     def bullet_ricochet(self):
@@ -156,6 +159,9 @@ class Sound:
 
     def player_lost_live_music(self):
         self.play_sound('../src/assets/sounds/dead_live/dead_live.mp3', 0.2, -1)
+
+    def fail_in_sea(self):
+        self.play_sound('../src/assets/sounds/splashes/splashes.wav', 1)
 
     def game_over_voice(self):
         self.play_sound('../src/assets/sounds/game_over/game-over_voice.wav', 1,)
