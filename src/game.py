@@ -82,8 +82,8 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 2
-        self.level = 1
+        self.area = 1
+        self.level = 4
         self.boss_number = 1
         self.level_reader_row = 1
         self.player_data = player_data
@@ -107,6 +107,7 @@ class GameState(Sound):
             [all_spite_groups_dict[group].empty() for group in all_spite_groups_dict]
             all_spite_groups_dict['player'].add(player)
             all_spite_groups_dict['knight'].add(knight)
+            all_spite_groups_dict['ground'].add(ground)
             self.is_music_play = False
             self.background = None
             self.is_bg_created = False
