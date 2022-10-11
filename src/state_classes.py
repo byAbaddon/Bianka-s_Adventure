@@ -81,8 +81,6 @@ class LevelStatistic(Sound):
         self.level = level
 
     def info_statistic(self):
-        text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 5)
-
         text_creator("CONGRATULATIONS", 'red', 200, 230, 55, None, None, True)
 
         if not self.player_data.is_player_kill_boss:

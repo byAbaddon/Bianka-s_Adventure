@@ -71,7 +71,7 @@ class Sound:
         self.play_sound('../src/assets/sounds/player/fart.mp3')
 
     def grab_coin(self):
-        self.play_sound('../src/assets/sounds/player/grab_coin.wav')
+        self.play_sound('../src/assets/sounds/player/grab_coin.wav', 1)
 
     def grab_statuette(self):
         self.play_sound('../src/assets/sounds/player/grab_statuette.wav', 1)

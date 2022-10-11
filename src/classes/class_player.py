@@ -229,47 +229,49 @@ class Player(pygame.sprite.Sprite, Sound):
     def check_item_collide(self):
         group_items = self.all_sprite_groups_dict['items']
         for sprite in pygame.sprite.spritecollide(self, group_items, False, pygame.sprite.collide_mask):
+            name = sprite.item_name[:-4]
+            print('pl ' , sprite.group_name, sprite.item_name)
             match sprite.group_name:
                 case 'enemies':
                     Sound.player_enemy_hit(self)  # sound if player hit with some enemy
-                    if sprite.item_name == 'mouse':
+                    if name == 'mouse':
                         self.energy_power -= 10
                         sprite.kill()
-                    if sprite.item_name == 'raven':
+                    if name == 'raven':
                         self.energy_power -= 20
                         sprite.kill()
-                    if sprite.item_name == 'hedgehog':
+                    if name == 'hedgehog':
                         self.energy_power -= 30
                         sprite.kill()
-                    if sprite.item_name == 'mole':
+                    if name == 'mole':
                         self.energy_power -= 30
                         sprite.kill()
-                    if sprite.item_name == 'monkey':
+                    if name == 'monkey':
                         self.energy_power -= 50
                         sprite.kill()
-                    if sprite.item_name == 'boar':
+                    if name == 'boar':
                         self.is_player_dead = True
                         Sound.player_dead(self)
                         sprite.kill()
                         self.kill()
                 case 'mushroom':
                     Sound.add_point(self)
-                    if sprite.item_name == 'grey':
+                    if name == 'grey':
                         self.points += 50
-                    if sprite.item_name == 'orange':
+                    if name == 'orange':
                         self.points += 100
-                    if sprite.item_name == 'red':
+                    if name == 'red':
                         self.points += 200
-                    if sprite.item_name == 'purple':
+                    if name == 'purple':
                         Sound.grab_poison_mushroom(self)
                         self.is_player_poisoned = True
                     sprite.kill()
                     Sound.grab_mushroom(self)
                 case 'bonus':
-                    if sprite.item_name == 'coin':
+                    if name == 'coin':
                         self.bonus_coins += 1
                         Sound.grab_coin(self)
-                    if sprite.item_name == 'statuette':
+                    if name == 'statuette':
                         self.bonus_statuette = 1
                         Sound.grab_statuette(self)
                     sprite.kill()
@@ -277,11 +279,11 @@ class Player(pygame.sprite.Sprite, Sound):
                     self.image = pygame.image.load('../src/assets/images/player/fail/fail_right.png')
                     Sound.player_stone_hit(self)
                     sprite.rect.x -= 10
-                    if sprite.item_name == 'big':
+                    if name == 'big':
                         self.energy_power -= 3  # X 2
-                    if sprite.item_name == 'medium':
+                    if name == 'medium':
                         self.energy_power -= 2
-                    if sprite.item_name == 'small':
+                    if name == 'small':
                         self.energy_power -= 1
                     return
 
@@ -289,11 +291,11 @@ class Player(pygame.sprite.Sprite, Sound):
             ignore_group_list = ['signs', 'stones']
             if sprite.group_name not in ignore_group_list:
                 if sprite.group_name not in self.statistics:  # add item to statistics dict if not have key
-                    self.statistics[sprite.group_name] = {sprite.item_name: 1}
+                    self.statistics[sprite.group_name] = {name: 1}
                 else:
-                    if sprite.item_name not in self.statistics[sprite.group_name]:
-                        self.statistics[sprite.group_name][sprite.item_name] = 0
-                    self.statistics[sprite.group_name][sprite.item_name] += 1
+                    if name not in self.statistics[sprite.group_name]:
+                        self.statistics[sprite.group_name][name] = 0
+                    self.statistics[sprite.group_name][name] += 1
             # print(self.statistics)
 
     def check_bullets_collide(self):
@@ -318,6 +320,7 @@ class Player(pygame.sprite.Sprite, Sound):
                     Sound.bullet_ricochet(self)
                     bullet.kill()
                 case 'bonus':
+
                     if 'coin' or 'statuette':
                         Sound.bullet_statuette_hit(self)
                         bullet.kill()
@@ -369,22 +372,20 @@ class Player(pygame.sprite.Sprite, Sound):
 
     def check_is_energy_player(self):
         if self.energy_power <= 0:
+            self.player_dead_x_pos = self.pos.x
             self.is_player_dead = True
-            self.lives -= 1
 
     def check_is_player_fail_out_of_screen(self):
         if self.pos.y > SCREEN_HEIGHT and not self.is_player_dead:
             self.player_dead_x_pos = self.pos.x
-            if not self.is_player_dead:
-                self.lives -= 1
-                pic = pygame.image.load('../src/assets/images/splashes/splashes.png')
-                SCREEN.blit(pic, [self.player_dead_x_pos - 70, 300])
-                Sound.stop_all_sounds()
-                Sound.fail_in_sea(self)
-                self.is_player_dead = True
+            self.is_player_dead = True
+            self.kill()
+            print(1)
+            return True
 
     def update(self):
         self.check_is_energy_player()
+        self.check_is_player_fail_out_of_screen()  # return True or False
         pygame.mask.from_surface(self.image)  # create mask image
         self.sprite_frames()  # don't change position !!!
         if not self.is_player_dead:
@@ -396,18 +397,21 @@ class Player(pygame.sprite.Sprite, Sound):
         self.check_enemy_bullets_collide()
         self.poisoned_player_energy_decrease()
         self.check_water_platform_collide()
-        self.check_is_player_fail_out_of_screen()  # return True or False
 
     # ============================================ RESET PLAYER DATA ====================================
-
     # reset For current game
     def reset_current_player_data(self):
         self.energy_power = 101  # add 1 to for fix full energy
         self.is_player_dead = False
         self.is_player_poisoned = False
         self.is_player_kill_boss = False
+        self.is_jump = False
         self.bonus_coins = 0
         self.bonus_statuette = 0
+        self.player_dead_x_pos = 0
+        self.rect.center = (SCREEN_WIDTH - 700, SCREEN_HEIGHT - (self.player_height_size - 124))
+        self.direction = vec(0, 1)  # stay 0
+        self.pos = vec(self.rect.x, self.rect.y)
 
     # RESET TO NEW GAME
     def reset_all_player_data_for_new_game(self):
@@ -425,3 +429,4 @@ class Player(pygame.sprite.Sprite, Sound):
         self.is_player_dead = False
         self.is_player_poisoned = False
         self.is_player_kill_boss = False
+        self.player_dead_x_pos = 0

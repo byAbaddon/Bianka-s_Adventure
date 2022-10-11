@@ -22,7 +22,6 @@ class Enemy(Player, Sound):
         self.bullet_speed = bullet_speed
         self.current_sprite = 0
         self.sprite_pic_num = sprite_pic_num
-        self.sprites_animate = None
         self.sprites_animate = [pygame.image.load(f'{pic[:-5]}{x}.png') for x in range(1, self.sprite_pic_num + 1)]
 
     def movement_enemy_current_pos(self):

@@ -1,3 +1,5 @@
+import pygame.scrap
+
 from settings import *
 from classes.class_background import Background
 from classes.class_table import Table
@@ -63,8 +65,8 @@ pic_mole = '../src/assets/images/enemies/mole/mole.png'
 pic_crab = '../src/assets/images/enemies/crab/1.png'
 pic_raven_bullet = '../src/assets/images/bullets/egg.png'
 pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
-pic_bonus_coin = '../src/assets/images/bonus/1.png'
 pic_butterfly = '../src/assets/images/enemies/butterfly/1.png'
+pic_bonus_coin = '../src/assets/images/bonus/coin/1.png'
 
 
 # Game State
@@ -73,7 +75,7 @@ class GameState(Sound, ):
     start_timer = pygame.time.get_ticks()
     count_visit = 0
     enemy_list = ['enemy_raven', 'enemy_monkey', 'enemy_hedgehog', 'enemy_static_hedgehog', 'enemy_boar', 'enemy_bee',
-                  'enemy_mouse', 'enemy_static_mole', 'enemy_static_crab', 'bonus_coin', 'enemy_butterfly']
+                  'enemy_mouse', 'enemy_static_mole', 'enemy_static_crab', 'enemy_butterfly']
 
     def __init__(self, player_data, knight_data):
         self.state = 'intro'
@@ -81,7 +83,7 @@ class GameState(Sound, ):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 2
+        self.area = 1
         self.level = 1
         self.boss_number = 1
         self.level_reader_row = 1
@@ -90,6 +92,8 @@ class GameState(Sound, ):
         self.bonus_pts = 0
         self.is_add_bonus = False
         self.is_start_new_game = False
+        self.is_in_water = False
+        self.count = 0
 
     def start_game(self):
         # ------------------top display frame
@@ -100,7 +104,9 @@ class GameState(Sound, ):
             self.is_start_new_game = False
             Sound.stop_all_sounds()
             self.player_data.reset_all_player_data_for_new_game()  # reset all player data
-            item_group.empty()
+            [all_spite_groups_dict[group].empty() for group in all_spite_groups_dict]
+            all_spite_groups_dict['player'].add(player)
+            all_spite_groups_dict['knight'].add(knight)
             self.is_music_play = False
             self.background = None
             self.is_bg_created = False
@@ -110,6 +116,8 @@ class GameState(Sound, ):
             self.level_reader_row = 1
             self.bonus_pts = 0
             self.is_add_bonus = False
+            self.is_in_water = False
+            self.count = 0
         # -----------------------------------------------
         self.bonus_pts = 0  # reset pts
         player.is_boos_level = False  # set player walking border to 1/3 S_W
@@ -120,11 +128,10 @@ class GameState(Sound, ):
         # text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
         # text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
         # text_creator(f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70, 22)
+        text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 5)
 
         # ================================ create enemy classes
         def enemy_creator(enemy_name):
-            if enemy_name == 'bonus_coin':
-                return Enemy(Bullet, asg, pic_bonus_coin, S_W, S_H - G_H_S - 52, 0, False, False, None, None, 6)
             if enemy_name == 'enemy_bee':
                 b1 = Enemy(Bullet, asg, pic_bee, S_W, S_H - (G_H_S + player.image.get_height() // 2), 2,
                            True, False, pic_bee, 0, 4)
@@ -182,6 +189,10 @@ class GameState(Sound, ):
                     else:
                         if v.split('/')[0] == 'ships':  # change item position
                             new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, 250)
+                        elif v.split('/')[0] == 'ground':  # change item position
+                            new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, S_H)
+                        elif v == 'bonus/coin':  # change item position
+                            new_item_class = input_class(f'../src/assets/images/{v}/1.png', S_W, S_H - G_H_S - 100, 6)
                         else:
                             new_item_class = input_class(f'../src/assets/images/{v}.png')  # create item class
                         group_class.add(new_item_class)  # add new class to item_group
@@ -214,16 +225,20 @@ class GameState(Sound, ):
 
         # ==================== # check is player ALIVE
         if self.player_data.is_player_dead:
-            Sound.stop_all_sounds()
-            if self.player_data.lives > 0:
-                Sound.player_lost_live_music(self)
-                self.player_data.reset_current_player_data()    # reset player data for current game
-                all_spite_groups_dict['items'].empty()   # clear item group
-                self.knight_data.reset_knife_data()
-                self.state = 'player_dead'
-            if self.player_data.lives == 0:
-                Sound.player_dead_funeral_march(self)
-                self.state = 'funeral_agency'   # - Game Over
+            time_now = pygame.time.get_ticks()
+            if time_now - self.start_timer > self.COOLDOWN:
+                self.start_timer = time_now
+                print(3)
+                self.count_visit += 1
+                if self.count_visit == 2:
+                    self.player_data.lives -= 1
+                    Sound.stop_all_sounds()
+                    if self.player_data.lives > 0:
+                        Sound.player_lost_live_music(self)
+                        self.state = 'player_dead'
+                    if self.player_data.lives == 0:
+                        Sound.player_dead_funeral_march(self)
+                        self.state = 'funeral_agency'  # - Game Over
 
         # ============== level manipulator
         if self.level > 4:
@@ -237,7 +252,6 @@ class GameState(Sound, ):
 
         # ========================================== START GAME  with Area 1; Level 1
         if self.area == 1:
-
             if not self.is_music_play:
                 self.current_music = Sound.forest_music_area_one(self)
                 self.is_music_play = True
@@ -317,6 +331,22 @@ class GameState(Sound, ):
             # ============== draw current area/level labels
             area_label()
             text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 6, 24)
+
+            if self.player_data.check_is_player_fail_out_of_screen():
+                pic = pygame.image.load('../src/assets/images/splashes/splashes.png')
+                SCREEN.blit(pic, [self.player_data.player_dead_x_pos - 70, 300])
+                Sound.stop_all_sounds()
+                Sound.fail_in_sea(self)
+                print(2)
+                self.is_in_water = True
+
+            if self.is_in_water:
+                pic = pygame.image.load('../src/assets/images/splashes/splashes.png')
+                self.count += 0.03
+                pic = pygame.transform.rotozoom(pic, 0, self.count)
+                pos = pic.get_rect(center=(self.player_data.player_dead_x_pos, S_H - 100))
+                SCREEN.blit(pic, pos)
+
             # print('AREA 2 ; Level 1')
 
     def boss(self):
@@ -370,12 +400,23 @@ class GameState(Sound, ):
         Score.event(self)
 
     def player_dead(self):
-        # reset part of game_state data
+        # ====================================== reset part of game_state data
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
+        self.is_in_water = False
+        self.count = 0
+        self.count_visit = 0
+        self.player_data.reset_current_player_data()  # reset player data for current game
+        self.knight_data.reset_knife_data()  # reset boss data for current game
+        # clear all group --------------
+        [all_spite_groups_dict[group].empty() for group in all_spite_groups_dict]
+        all_spite_groups_dict['player'].add(player)
+
+        # -------------------------------------- go to state
         PlayerDead(self.player_data, self.area, self.level)
         PlayerDead.event(self)
+        print(4)
 
     def funeral_agency(self):
         background_image('../src/assets/images/player/dead/bg/rip.png', 0, 0)
