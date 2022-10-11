@@ -368,9 +368,10 @@ class GameState(Sound):
         table.update()
         if self.boss_number == 1:
             text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 10, 25)
-            if not self.is_music_play:
-                # Sound.boss_music_area_one(self)
-                self.is_music_play = True
+            if self.is_music_play:
+                Sound.stop_all_sounds()
+                Sound.boss_music_area_one(self)
+                self.is_music_play = False
 
             if self.is_bg_created:  # todo remove not  only for test
                 # resize image
@@ -422,6 +423,7 @@ class GameState(Sound):
         # clear all group --------------
         [all_spite_groups_dict[group].empty() for group in all_spite_groups_dict if group != 'ground']
         all_spite_groups_dict['player'].add(player)
+        all_spite_groups_dict['knight'].add(knight)
         self.player_data.reset_current_player_data()  # reset player data for current game
         self.knight_data.reset_knife_data()  # reset boss data for current game
 

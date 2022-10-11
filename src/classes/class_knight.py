@@ -131,6 +131,8 @@ class Knight(pygame.sprite.Sprite, Sound,):
         self.check_players_and_boss_collide()
         if self.energy_power <= 0:
             self.knight_dead()
+            if self.energy_power < 0:
+                self.energy_power = 0
 
     # ======================================reset knight data
     def reset_knife_data(self):
@@ -144,3 +146,15 @@ class Knight(pygame.sprite.Sprite, Sound,):
         self.is_sound = False
         self.player_dead_x_pos = 0
         self.is_boss_level_complete = False
+        self.visited = False
+        self.image = pygame.image.load('../src/assets/images/boss_knight/idle/1.png')
+        self.sprites_knight = [pygame.image.load(f'../src/assets/images/boss_knight/idle/{x}.png') for x in range(1, 11)]
+        self.current_sprite = 0
+        self.rect = self.image.get_bounding_rect(min_alpha=1)
+        self.rect.midbottom = (SCREEN_WIDTH - 100, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE + 4)
+        self.direction = vec(-1, 1)  # stay/idle 0
+
+
+
+
+

@@ -32,7 +32,7 @@ class Sound:
 
     # ======================================   BOSS
     def boss_music_area_one(self):
-        self.play_sound('../src/assets/sounds/game_musics/boss/boss_2.mp3', 0.6, -1)
+        self.play_sound('../src/assets/sounds/game_musics/boss/boss_2.mp3', 0.5, -1)
 
     def statistic_music(self):
         self.play_sound('../src/assets/sounds/game_musics/statistic.mp3', 0.6, -1)
@@ -129,7 +129,7 @@ class Sound:
 
     # ==================================== BOSS KNIGHT
     def player_scream_die(self):
-        self.play_sound('../src/assets/sounds/boss_knight/player_scream_die.wav', 1)
+        self.play_sound('../src/assets/sounds/boss_knight/player_scream_die.wav', 0.5)
 
     def knight_scream(self):
         self.play_sound('../src/assets/sounds/boss_knight/knight_scream_time_to_kill.wav', 1)
