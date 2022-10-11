@@ -37,15 +37,13 @@ all_spite_groups_dict = {'player': player_group, 'knight': knight_group, 'bullet
 player = Player(Bullet, all_spite_groups_dict)
 knight = Knight(Bullet, all_spite_groups_dict, player)
 ground = Ground()
-
-
+background = Background
 # add to group
 # ground2 = Ground('../src/assets/images/cloud/static.png', SCREEN_WIDTH, SCREEN_HEIGHT - 150)
 # ground3 = Ground('../src/assets/images/ground/distance.png', 400, SCREEN_HEIGHT - 170)
 player_group.add(player)
 knight_group.add(knight)
 ground_group.add(ground)
-
 
 # ---------------------------------------------------------------------- create Enemies
 
@@ -55,6 +53,7 @@ S_W = SCREEN_WIDTH
 S_H = SCREEN_HEIGHT
 G_H_S = GROUND_HEIGHT_SIZE
 T_F_S = TOP_FRAME_SIZE
+
 pic_monkey = '../src/assets/images/enemies/monkey/monkey.png'
 pic_hedgehog = '../src/assets/images/enemies/hedgehog/hedgehog.png'
 pic_raven = '../src/assets/images/enemies/raven/1.png'
@@ -70,25 +69,26 @@ pic_bonus_coin = '../src/assets/images/bonus/coin/1.png'
 
 
 # Game State
-class GameState(Sound, ):
-    COOLDOWN = 3000  # milliseconds
+class GameState(Sound):
+    COOLDOWN = 2000  # milliseconds
     start_timer = pygame.time.get_ticks()
     count_visit = 0
     enemy_list = ['enemy_raven', 'enemy_monkey', 'enemy_hedgehog', 'enemy_static_hedgehog', 'enemy_boar', 'enemy_bee',
                   'enemy_mouse', 'enemy_static_mole', 'enemy_static_crab', 'enemy_butterfly']
 
-    def __init__(self, player_data, knight_data):
+    def __init__(self, player_data, knight_data, background_data):
         self.state = 'intro'
         self.current_music = Sound.intro_music(self)
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 1
+        self.area = 2
         self.level = 1
         self.boss_number = 1
         self.level_reader_row = 1
         self.player_data = player_data
         self.knight_data = knight_data
+        self.background_data = background_data
         self.bonus_pts = 0
         self.is_add_bonus = False
         self.is_start_new_game = False
@@ -121,8 +121,6 @@ class GameState(Sound, ):
         # -----------------------------------------------
         self.bonus_pts = 0  # reset pts
         player.is_boos_level = False  # set player walking border to 1/3 S_W
-
-
 
         # developer utils
         text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
@@ -227,12 +225,14 @@ class GameState(Sound, ):
 
         # ==================== # check is player ALIVE
         if self.player_data.is_player_dead:
-            time_now = pygame.time.get_ticks()
+            self.background_data.is_allowed_move = False  # stop move background if key pressed
+            time_now = pygame.time.get_ticks()  # 2sec time delay before go to state 'player_dead'
             if time_now - self.start_timer > self.COOLDOWN:
                 self.start_timer = time_now
                 print(3)
                 self.count_visit += 1
                 if self.count_visit == 2:
+                    self.background_data.is_allowed_move = True  # restore move background if key pressed
                     self.player_data.lives -= 1
                     Sound.stop_all_sounds()
                     if self.player_data.lives > 0:
@@ -264,12 +264,12 @@ class GameState(Sound, ):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 self.is_bg_created = True
 
-            # =================== check is player energy player/ dead
+            # =================== check is player energy player/ dead - and set image
             if self.player_data.check_is_energy_player():
-                pic = pygame.image.load('../src/assets/images/player/dead/dead.png')
+                [asg[group].empty() for group in asg if group != 'ground' and group != 'player']  # remove item/enemy
+                self.player_data.rect.center = [self.player_data.player_dead_x_pos, S_H - G_H_S + 10]
+                pic = self.player_data.image = pygame.image.load('../src/assets/images/player/dead/dead.png')
                 SCREEN.blit(pic, [self.player_data.player_dead_x_pos, S_H - GROUND_HEIGHT_SIZE + 10])
-                print(self.player_data.pos)
-                # self.player_data.pos.y = 222
                 print(2.2)
 
             # ============== create level: items, enemy, and more
@@ -418,11 +418,11 @@ class GameState(Sound, ):
         self.is_in_water = False
         self.count = 0
         self.count_visit = 0
-        self.player_data.reset_current_player_data()  # reset player data for current game
-        self.knight_data.reset_knife_data()  # reset boss data for current game
         # clear all group --------------
         [all_spite_groups_dict[group].empty() for group in all_spite_groups_dict if group != 'ground']
         all_spite_groups_dict['player'].add(player)
+        self.player_data.reset_current_player_data()  # reset player data for current game
+        self.knight_data.reset_knife_data()  # reset boss data for current game
 
         # -------------------------------------- go to state
         PlayerDead(self.player_data, self.area, self.level)
@@ -485,7 +485,7 @@ class GameState(Sound, ):
 
 
 #  ================================ create new GameState
-game_state = GameState(player, knight)
+game_state = GameState(player, knight, background)
 
 # ================================================================ create top Table for: score , energy and more
 table = Table(game_state, player, knight)

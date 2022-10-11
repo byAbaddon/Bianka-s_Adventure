@@ -9,6 +9,7 @@ class Background:
     BG_SPEED_INCREASE = 2.67
     distance_mt = 0
     bg_counter = 0
+    is_allowed_move = True
 
     def __init__(self, image=None, x=0, y=0, is_loop=False, speed=1, is_image_scaled=False):
         self.image = image
@@ -34,21 +35,22 @@ class Background:
                 SCREEN.blit(bg_image, (rel_x,  self.y))
 
             # ===============================================================   moving screen illusion
-            if key_pressed(pygame.K_RIGHT):
-                self.speed = self.BG_SPEED
-                self.speed = 3.33
-            elif key_pressed(pygame.K_LEFT) and not self.WALK_LEFT_SCREEN_BORDER:
-                self.speed.x = -self.BG_SPEED
-                self.speed = 3.33
-            else:
-                self.speed = 0
+            if self.is_allowed_move:
+                if key_pressed(pygame.K_RIGHT):
+                    self.speed = self.BG_SPEED
+                    self.speed = 3.33
+                elif key_pressed(pygame.K_LEFT) and not self.WALK_LEFT_SCREEN_BORDER:
+                    self.speed.x = -self.BG_SPEED
+                    self.speed = 3.33
+                else:
+                    self.speed = 0
 
-            # running screen illusion
-            if key_pressed(pygame.K_RIGHT) and key_pressed(pygame.K_a):
-                self.speed += self.BG_SPEED_INCREASE
+                # running screen illusion
+                if key_pressed(pygame.K_RIGHT) and key_pressed(pygame.K_a):
+                    self.speed += self.BG_SPEED_INCREASE
 
-        self.bg_counter -= self.speed
-        self.distance_mt += self.speed / 10
+                self.bg_counter -= self.speed
+                self.distance_mt += self.speed / 10
 
     def draw_label(self):
         # text_creator(f'BG_speed: {self.speed:.2f}', 'white', 290, 20)

@@ -28,8 +28,8 @@ class Player(pygame.sprite.Sprite, Sound):
     AMULETS_LIST = [f'../src/assets/images/amulets/small/{x}.png' for x in range(1, 10)]  # Boss append amulet in list
     bonus_coins = 0
     bonus_statuette = 0
-    is_player_kill_boss = False
     player_dead_x_pos = 0
+    is_player_kill_boss = False
 
     def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
@@ -222,7 +222,7 @@ class Player(pygame.sprite.Sprite, Sound):
     def check_item_collide(self):
         group_items = self.all_sprite_groups_dict['items']
         for sprite in pygame.sprite.spritecollide(self, group_items, False, pygame.sprite.collide_mask):
-            name = sprite.item_name  # only for items
+            name = sprite.item_name
             match sprite.group_name:
                 case 'enemies':
                     Sound.player_enemy_hit(self)  # sound if player hit with some enemy
@@ -367,7 +367,7 @@ class Player(pygame.sprite.Sprite, Sound):
         if self.energy_power <= 0 and not self.is_player_dead:
             self.player_dead_x_pos = self.pos.x
             Sound.player_dead(self)
-            self.kill()
+            # self.kill()
             self.is_player_dead = True
             print(1.1)
             return True
@@ -384,8 +384,8 @@ class Player(pygame.sprite.Sprite, Sound):
         self.check_is_energy_player()
         self.check_is_player_fail_out_of_screen()  # return True or False
         pygame.mask.from_surface(self.image)  # create mask image
-        self.sprite_frames()  # don't change position !!!
         if not self.is_player_dead:
+            self.sprite_frames()  # don't change position !!!
             self.movement_plyer()
             self.shooting_payer()
         self.check_ground_collide()
@@ -406,6 +406,7 @@ class Player(pygame.sprite.Sprite, Sound):
         self.bonus_coins = 0
         self.bonus_statuette = 0
         self.player_dead_x_pos = 0
+        self.image = pygame.image.load('../src/assets/images/player/stay/1.png')
         self.rect.center = (SCREEN_WIDTH - 700, SCREEN_HEIGHT - (self.player_height_size - GROUND_HEIGHT_SIZE))
         self.direction = vec(0, 1)  # stay 0
         self.pos = vec(self.rect.x, self.rect.y)
@@ -426,4 +427,9 @@ class Player(pygame.sprite.Sprite, Sound):
         self.is_player_dead = False
         self.is_player_poisoned = False
         self.is_player_kill_boss = False
+        self.is_jump = False
         self.player_dead_x_pos = 0
+        self.image = pygame.image.load('../src/assets/images/player/stay/1.png')
+        self.rect.center = (SCREEN_WIDTH - 700, SCREEN_HEIGHT - (self.player_height_size - GROUND_HEIGHT_SIZE))
+        self.direction = vec(0, 1)  # stay 0
+        self.pos = vec(self.rect.x, self.rect.y)

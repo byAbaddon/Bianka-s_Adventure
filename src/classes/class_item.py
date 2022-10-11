@@ -9,7 +9,6 @@ class Item(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.group_name = pic.split('/')[4]
         self.item_name = pic.split('/')[5][:-4]
-        print(self.group_name, self.item_name)
         self.image = pygame.image.load(pic).convert_alpha()
         self.image_height_size = self.image.get_height()
         self.rect = self.image.get_bounding_rect(min_alpha=1)
