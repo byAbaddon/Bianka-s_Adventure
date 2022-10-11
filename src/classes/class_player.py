@@ -1,12 +1,11 @@
 import pygame
-from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, vec
+from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT_SIZE, vec
 from src.classes.class_sound import Sound
 
 
 # ============================================= class Player===============================================
 class Player(pygame.sprite.Sprite, Sound):
-    COOLDOWN = 1000  # milliseconds
-    # milliseconds cooldown
+    COOLDOWN = 1000   # milliseconds cooldown
     WEAPONS_DICT = {'knife': {'cooldown_shooting': 600, 'power': 5},
                     'spear': {'cooldown_shooting': 1000, 'power': 7},
                     'axe': {'cooldown_shooting': 800, 'power': 10}
@@ -198,9 +197,6 @@ class Player(pygame.sprite.Sprite, Sound):
                         else:
                             self.image = pygame.image.load('../src/assets/images/player/stay/2.png')
                         self.is_jump = False
-                if self.is_player_dead:
-                    self.image = pygame.image.load('../src/assets/images/player/dead/dead.png')
-                    self.pos.y = SCREEN_HEIGHT
 
     def check_water_platform_collide(self):
         buffer = 7  # buffer image to improve collide
@@ -222,15 +218,11 @@ class Player(pygame.sprite.Sprite, Sound):
                             else:
                                 self.image = pygame.image.load('../src/assets/images/player/stay/2.png')
                             self.is_jump = False
-                    if self.is_player_dead:
-                        self.image = pygame.image.load('../src/assets/images/player/dead/dead.png')
-                        self.pos.y = SCREEN_HEIGHT
 
     def check_item_collide(self):
         group_items = self.all_sprite_groups_dict['items']
         for sprite in pygame.sprite.spritecollide(self, group_items, False, pygame.sprite.collide_mask):
-            name = sprite.item_name[:-4]
-            print('pl ' , sprite.group_name, sprite.item_name)
+            name = sprite.item_name  # only for items
             match sprite.group_name:
                 case 'enemies':
                     Sound.player_enemy_hit(self)  # sound if player hit with some enemy
@@ -364,6 +356,7 @@ class Player(pygame.sprite.Sprite, Sound):
     def check_enemy_bullets_collide(self):
         bullets_group = self.all_sprite_groups_dict['bullets']
         for sprite in pygame.sprite.spritecollide(self, bullets_group, False, pygame.sprite.collide_mask):
+
             match sprite.item_name:
                 case 'egg' | 'coconut':
                     sprite.kill()
@@ -371,15 +364,19 @@ class Player(pygame.sprite.Sprite, Sound):
                     self.energy_power -= 1
 
     def check_is_energy_player(self):
-        if self.energy_power <= 0:
+        if self.energy_power <= 0 and not self.is_player_dead:
             self.player_dead_x_pos = self.pos.x
+            Sound.player_dead(self)
+            self.kill()
             self.is_player_dead = True
+            print(1.1)
+            return True
 
     def check_is_player_fail_out_of_screen(self):
         if self.pos.y > SCREEN_HEIGHT and not self.is_player_dead:
             self.player_dead_x_pos = self.pos.x
-            self.is_player_dead = True
             self.kill()
+            self.is_player_dead = True
             print(1)
             return True
 
@@ -409,7 +406,7 @@ class Player(pygame.sprite.Sprite, Sound):
         self.bonus_coins = 0
         self.bonus_statuette = 0
         self.player_dead_x_pos = 0
-        self.rect.center = (SCREEN_WIDTH - 700, SCREEN_HEIGHT - (self.player_height_size - 124))
+        self.rect.center = (SCREEN_WIDTH - 700, SCREEN_HEIGHT - (self.player_height_size - GROUND_HEIGHT_SIZE))
         self.direction = vec(0, 1)  # stay 0
         self.pos = vec(self.rect.x, self.rect.y)
 

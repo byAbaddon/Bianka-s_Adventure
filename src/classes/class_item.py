@@ -8,14 +8,15 @@ class Item(pygame.sprite.Sprite):
     def __init__(self, pic='', x=SCREEN_WIDTH, y=SCREEN_HEIGHT - GROUND_HEIGHT_SIZE, sprite_pic_num=0):
         pygame.sprite.Sprite.__init__(self)
         self.group_name = pic.split('/')[4]
-        self.item_name = pic.split('/')[5]  #[:-4]
+        self.item_name = pic.split('/')[5][:-4]
+        print(self.group_name, self.item_name)
         self.image = pygame.image.load(pic).convert_alpha()
         self.image_height_size = self.image.get_height()
         self.rect = self.image.get_bounding_rect(min_alpha=1)
         self.rect.midtop = (x, y - self.image_height_size + 13)
         self.current_sprite = 0
         self.sprite_pic_num = sprite_pic_num
-        self.sprites_animate = [pygame.image.load(f'{pic[:-5]}{x}.png') for x in range(1, self.sprite_pic_num + 1)]
+        self.sprites_animate = [pygame.image.load(f'{pic[:-4]}/{x}.png') for x in range(1, self.sprite_pic_num + 1)]
         # print(self.group_name, 'g - i -> ' , self.item_name)
 
     def movement(self):

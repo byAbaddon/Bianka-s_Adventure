@@ -122,6 +122,8 @@ class GameState(Sound, ):
         self.bonus_pts = 0  # reset pts
         player.is_boos_level = False  # set player walking border to 1/3 S_W
 
+
+
         # developer utils
         text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
         # text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
@@ -192,7 +194,7 @@ class GameState(Sound, ):
                         elif v.split('/')[0] == 'ground':  # change item position
                             new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, S_H)
                         elif v == 'bonus/coin':  # change item position
-                            new_item_class = input_class(f'../src/assets/images/{v}/1.png', S_W, S_H - G_H_S - 100, 6)
+                            new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, S_H - G_H_S - 100, 6)
                         else:
                             new_item_class = input_class(f'../src/assets/images/{v}.png')  # create item class
                         group_class.add(new_item_class)  # add new class to item_group
@@ -262,6 +264,14 @@ class GameState(Sound, ):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 self.is_bg_created = True
 
+            # =================== check is player energy player/ dead
+            if self.player_data.check_is_energy_player():
+                pic = pygame.image.load('../src/assets/images/player/dead/dead.png')
+                SCREEN.blit(pic, [self.player_data.player_dead_x_pos, S_H - GROUND_HEIGHT_SIZE + 10])
+                print(self.player_data.pos)
+                # self.player_data.pos.y = 222
+                print(2.2)
+
             # ============== create level: items, enemy, and more
             items_dict = eval(file_operation('levels/levels_data.txt', 'r', self.level_reader_row))
             sprite_creator(items_dict, Item, item_group)
@@ -330,12 +340,13 @@ class GameState(Sound, ):
 
             # ============== draw current area/level labels
             area_label()
-            text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 6, 24)
 
+            text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 6, 24)
+            # =================== check is player dead
             if self.player_data.check_is_player_fail_out_of_screen():
                 pic = pygame.image.load('../src/assets/images/splashes/splashes.png')
                 SCREEN.blit(pic, [self.player_data.player_dead_x_pos - 70, 300])
-                Sound.stop_all_sounds()
+                # Sound.stop_all_sounds()
                 Sound.fail_in_sea(self)
                 print(2)
                 self.is_in_water = True
@@ -410,7 +421,7 @@ class GameState(Sound, ):
         self.player_data.reset_current_player_data()  # reset player data for current game
         self.knight_data.reset_knife_data()  # reset boss data for current game
         # clear all group --------------
-        [all_spite_groups_dict[group].empty() for group in all_spite_groups_dict]
+        [all_spite_groups_dict[group].empty() for group in all_spite_groups_dict if group != 'ground']
         all_spite_groups_dict['player'].add(player)
 
         # -------------------------------------- go to state
