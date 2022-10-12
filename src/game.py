@@ -82,8 +82,8 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 1
-        self.level = 4
+        self.area = 2
+        self.level = 1
         self.boss_number = 1
         self.level_reader_row = 1
         self.player_data = player_data
@@ -163,8 +163,10 @@ class GameState(Sound):
             pic_cloud = '../src/assets/images/cloud/static.png'
             if v_type == 'cloud/static':
                 return Cloud(self.player_data)
-            if v_type == ('cloud/up_down' or 'cloud/left_right'):
+            if v_type == 'cloud/left_right':
                 return Cloud(self.player_data, pic_cloud, S_W, S_H - 160, False, 2, 'left_right', 200)
+            if v_type == 'cloud/up_down':
+                return Cloud(self.player_data, pic_cloud, S_W, S_H - 160, False, 2, 'up_down', 200)
             if v_type.split('/')[0] == 'logs':
                 pic_log = f'../src/assets/images/logs/{v_type.split("/")[1]}.png'
                 return Log(self.player_data, pic_log, S_W, S_H - 90, True)
@@ -247,7 +249,7 @@ class GameState(Sound):
         if self.level > 4:
             if self.level == 5:
                 self.state = 'boss'
-                if self.knight_data.is_boss_level_complete:   #todo:
+                if self.knight_data.is_boss_level_complete:
                     self.level -= 1
             else:
                 self.level = 1
@@ -315,6 +317,8 @@ class GameState(Sound):
                 ground_group.empty()
                 ground_rock = Ground('../src/assets/images/ground/dock_middle.png', False, 0, S_H - 100)
                 ground_group.add(ground_rock)
+                # clear item group
+                asg['items'].empty()
                 self.is_bg_created = True
 
             # ============== create level: items, enemy, and more
@@ -363,7 +367,6 @@ class GameState(Sound):
 
     def boss(self):
         player.is_boos_level = True  # set player walking border to all SCREEN_WIDTH
-
         # top display frames
         table.update()
         if self.boss_number == 1:
@@ -413,6 +416,10 @@ class GameState(Sound):
         Score.event(self)
 
     def player_dead(self):
+        if self.player_data.lives <= 0:
+            Sound.stop_all_sounds()
+            Sound.player_dead_funeral_march(self)
+            self.state = 'funeral_agency'
         # ====================================== reset part of game_state data
         self.is_music_play = False
         self.background = None

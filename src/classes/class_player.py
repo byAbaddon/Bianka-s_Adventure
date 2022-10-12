@@ -24,12 +24,12 @@ class Player(pygame.sprite.Sprite, Sound):
     is_player_poisoned = False
     statistics = {}
     hit_enemy_counter = 0
-    boss_taken_amulets = 0
     AMULETS_LIST = [f'../src/assets/images/amulets/small/{x}.png' for x in range(1, 10)]  # Boss append amulet in list
     bonus_coins = 0
     bonus_statuette = 0
     player_dead_x_pos = 0
     is_player_kill_boss = False
+    boss_taken_amulets = 0
 
     def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
@@ -143,7 +143,6 @@ class Player(pygame.sprite.Sprite, Sound):
         # velocity is equal shooting window time
         if key[pygame.K_SPACE] and self.direction.x != 0 and abs(self.velocity.x) <= 3.0 and\
                 time_now - self.last_time > self.WEAPONS_DICT[self.current_weapon_name]['cooldown_shooting']:
-
             Sound.player_shoot(self)
             self.last_time = time_now
 

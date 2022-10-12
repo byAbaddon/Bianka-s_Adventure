@@ -1,5 +1,5 @@
 import pygame
-from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT_SIZE, screen_transition_animation ,vec, randrange
+from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT_SIZE, screen_transition_animation, vec, randrange
 from src.classes.class_sound import Sound
 
 
@@ -10,7 +10,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
     WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH - 20
     WALK_SPEED = 3
     JUMP_HEIGHT = -6
-    COOLDOWN = 3000  # milliseconds
+    COOLDOWN = 2000  # milliseconds
     last_time = pygame.time.get_ticks()
     time_counter = 0
     visited = False
@@ -67,7 +67,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
         self.rect.y = SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - self.image.get_height() // 2
 
         # create amulet after knight dead
-        amulet = pygame.image.load(f'../src/assets/images/amulets/small/{self.player.boss_taken_amulets}.png')
+        amulet = pygame.image.load(f'../src/assets/images/amulets/small/{ self.player.boss_taken_amulets}.png')
         img_rect = amulet.get_bounding_rect(min_alpha=1)
         img_rect.center = [SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 20]
         SCREEN.blit(amulet, img_rect.center)
@@ -75,7 +75,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
         # check collide player and amulet
         get_amulet = self.player.rect.colliderect(img_rect)
         if get_amulet:
-            self.reset_knife_data()  # RESET ALL KNIGHT DATA
+            # self.reset_knife_data()  # RESET ALL KNIGHT DATA
             Sound.grab_amulets(self)
             self.player.is_player_kill_boss = True  # return info to player class if boss death and take amulet
             self.is_boss_level_complete = True
@@ -117,10 +117,12 @@ class Knight(pygame.sprite.Sprite, Sound,):
             self.player.rect.center = [self.player_dead_x_pos, SCREEN_HEIGHT - GROUND_HEIGHT_SIZE + 10]
             self.player.image = pygame.image.load('../src/assets/images/player/dead/dead_back.png')
             time_now = pygame.time.get_ticks()
-            if time_now - self.last_time > 3000:  # pause after dead
+            if time_now - self.last_time > self.COOLDOWN:  # pause after dead
                 self.last_time = time_now
                 self.time_counter += 1
                 if self.time_counter == 2:
+                    Sound.stop_all_sounds()
+                    Sound.player_lost_live_music(self)
                     self.player.lives -= 1
                     self.player.is_player_dead = True
 

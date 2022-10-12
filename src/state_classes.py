@@ -1,3 +1,5 @@
+import pygame.time
+
 from src.settings import *
 from src.classes.class_sound import Sound
 
@@ -152,6 +154,7 @@ class PlayerDead(Sound):
         if key_pressed(pygame.K_SPACE):
             Sound.stop_all_sounds()
             Sound.btn_click(self)
+            pygame.time.delay(1000)
             self.state = 'start_game'
 
 

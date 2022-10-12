@@ -85,10 +85,10 @@ class Table:
         [pygame.draw.rect(SCREEN, (200, 220, 222), [326 + 40 * x, 15, 40, 40], 1, 1,) for x in range(0, 9)]
 
         # draw items
-        if self.player.is_player_kill_boss:
-            for x in range(0, self.player.boss_taken_amulets):
-                pic = pygame.image.load(self.player.AMULETS_LIST[x])
-                SCREEN.blit(pic, [332 + (41 * x - 1) - (x + 2), 18,  36, 36])
+        # if self.player.is_player_kill_boss:
+        for x in range(0, self.area - 1):
+            pic = pygame.image.load(self.player.AMULETS_LIST[x])
+            SCREEN.blit(pic, [332 + (41 * x - 1) - (x + 2), 18,  36, 36])
 
     def updated_player_data(self):
         self.area = self.game_state.area
@@ -112,7 +112,6 @@ class Table:
         self.draw_weapon()
         self.draw_amulet_bar()
         self.updated_player_data()
-
 
 
 
