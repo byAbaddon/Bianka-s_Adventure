@@ -225,6 +225,9 @@ class Player(pygame.sprite.Sprite, Sound):
             match sprite.group_name:
                 case 'enemies':
                     Sound.player_enemy_hit(self)  # sound if player hit with some enemy
+                    if name == 'fish':
+                        self.energy_power -= 10
+                        sprite.kill()
                     if name == 'mouse':
                         self.energy_power -= 10
                         sprite.kill()
@@ -245,6 +248,10 @@ class Player(pygame.sprite.Sprite, Sound):
                         Sound.player_dead(self)
                         sprite.kill()
                         self.kill()
+                    if name == 'octopus':
+                        self.is_player_dead = False
+                        sprite.kill()
+                        self.energy_power -= 20
                 case 'mushroom':
                     Sound.add_point(self)
                     if name == 'grey':
@@ -262,7 +269,7 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name == 'coin':
                         self.bonus_coins += 1
                         Sound.grab_coin(self)
-                    if name == 'statuette':
+                    if name == 'statuette' or name == 'balloon':
                         self.bonus_statuette = 1
                         Sound.grab_statuette(self)
                     sprite.kill()
@@ -293,7 +300,6 @@ class Player(pygame.sprite.Sprite, Sound):
         bullets_group = self.all_sprite_groups_dict['bullets']
         items_group = self.all_sprite_groups_dict['items']
         sprite = pygame.sprite.groupcollide(bullets_group, items_group, False, False, pygame.sprite.collide_mask)
-
         for bullet, item in sprite.items():
             # add bullet effect explosion
             hit_explosion = pygame.image.load('../src/assets/images/explosion/exp_1.png')
@@ -317,6 +323,11 @@ class Player(pygame.sprite.Sprite, Sound):
                         bullet.kill()
                         item.kill()
                 case 'enemies':
+                    if item.item_name == 'fish':
+                        self.points += 100
+                        Sound.bullet_kill_enemy(self)
+                        item.kill()
+                        bullet.kill()
                     if item.item_name == 'mole':
                         self.points += 100
                         Sound.bullet_kill_enemy(self)
@@ -351,6 +362,10 @@ class Player(pygame.sprite.Sprite, Sound):
                             bullet.kill()
                             item.kill()
                         Sound.bullet_kill_boar(self)
+                    if item.item_name == 'octopus':
+                        bullet.kill()
+                        item.kill()
+                        self.points += 300
 
     def check_enemy_bullets_collide(self):
         bullets_group = self.all_sprite_groups_dict['bullets']

@@ -154,7 +154,7 @@ class PlayerDead(Sound):
         if key_pressed(pygame.K_SPACE):
             Sound.stop_all_sounds()
             Sound.btn_click(self)
-            pygame.time.delay(1000)
+            pygame.time.delay(500)
             self.state = 'start_game'
 
 

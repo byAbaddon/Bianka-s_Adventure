@@ -53,7 +53,7 @@ class Sound:
         self.play_sound('../src/assets/sounds/player/jump_shoot.wav', 1)
 
     def player_dead(self):
-        self.play_sound('../src/assets/sounds/player/dead.wav', 1)
+        self.play_sound('../src/assets/sounds/player/dead.wav', 0.5)
 
     def sign_go(self):
         self.play_sound('../src/assets/sounds/sign/go.wav', 1)
@@ -83,6 +83,9 @@ class Sound:
     def mouse_sound(self):
         self.play_sound('../src/assets/sounds/enemies/mouse.wav', 1,)
 
+    def octopus_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/octopus.mp3', 1, )
+
     def mole_sound(self):
         self.play_sound('../src/assets/sounds/enemies/mole.wav', 1, )
 
@@ -100,6 +103,9 @@ class Sound:
 
     def crab_sound(self):
         self.play_sound('../src/assets/sounds/enemies/crab/crab.wav', 0.2, 2)
+
+    def fish_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/fish.wav', 0.5,)
 
     # player bullets hit something and kill enemy
     def bullet_ricochet(self):

@@ -1,10 +1,10 @@
 import pygame
-from src.settings import SCREEN_WIDTH, SCREEN_HEIGHT, key_pressed, BG_SPEED, vec
+from src.settings import SCREEN_WIDTH, SCREEN_HEIGHT, GROUND_HEIGHT_SIZE, key_pressed, BG_SPEED, vec
 
 
 class Log(pygame.sprite.Sprite):
-    def __init__(self, player_data, pic='../src/assets/images/cloud/static.png', x=SCREEN_WIDTH, y=SCREEN_HEIGHT // 3,
-                 is_static=True, speed=1, direction='left_right or up_down', distance=100):
+    def __init__(self, player_data, pic='../src/assets/images/cloud/static.png', x=SCREEN_WIDTH,
+                 y=SCREEN_HEIGHT - GROUND_HEIGHT_SIZE, is_static=True, speed=1, direction='left_right or up_down', distance=100):
         pygame.sprite.Sprite.__init__(self,)
         self.player_data = player_data
         self.group_name = pic.split('/')[4]
@@ -22,7 +22,8 @@ class Log(pygame.sprite.Sprite):
 
     def movement_log_in_screen_if_key_preset(self):
         if key_pressed(pygame.K_RIGHT):
-            self.rect.x -= self.speed + BG_SPEED
+            self.rect.x -= BG_SPEED # todo: fix logs in level and set new
+            # self.rect.x -= self.speed + BG_SPEED  # old
 
     def movement_log_left_right(self):
         if not self.is_distance_done:  # left

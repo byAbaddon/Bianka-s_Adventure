@@ -66,6 +66,8 @@ pic_raven_bullet = '../src/assets/images/bullets/egg.png'
 pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
 pic_butterfly = '../src/assets/images/enemies/butterfly/1.png'
 pic_bonus_coin = '../src/assets/images/bonus/coin/1.png'
+pic_fish = '../src/assets/images/enemies/fish/1.png'
+pic_octopus = '../src/assets/images/enemies/octopus/1.png'
 
 
 # Game State
@@ -74,7 +76,8 @@ class GameState(Sound):
     start_timer = pygame.time.get_ticks()
     count_visit = 0
     enemy_list = ['enemy_raven', 'enemy_monkey', 'enemy_hedgehog', 'enemy_static_hedgehog', 'enemy_boar', 'enemy_bee',
-                  'enemy_mouse', 'enemy_static_mole', 'enemy_static_crab', 'enemy_butterfly']
+                  'enemy_mouse', 'enemy_static_mole', 'enemy_static_crab', 'enemy_butterfly', 'enemy_fish',
+                  'enemy_octopus']
 
     def __init__(self, player_data, knight_data, background_data):
         self.state = 'intro'
@@ -97,7 +100,7 @@ class GameState(Sound):
 
     def start_game(self):
         # ------------------top display frame
-        table.update()
+        # table.update()
 
         # =============================================== RESET ALL DATA IF START NEW GAME
         if self.is_start_new_game:  # reset all old data
@@ -123,53 +126,59 @@ class GameState(Sound):
         self.bonus_pts = 0  # reset pts
         player.is_boos_level = False  # set player walking border to 1/3 S_W
 
-        # developer utils
+        # ++++++++++++++++++++++++++++++ developer utils +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
-        # text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
-        # text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
-        # text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
-        # text_creator(f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70, 22)
+        text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
+        text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
+        text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
+        text_creator(f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70, 22)
         text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 5)
 
         # ================================ create enemy classes
         def enemy_creator(enemy_name):
             if enemy_name == 'enemy_bee':
-                b1 = Enemy(Bullet, asg, pic_bee, S_W, S_H - (G_H_S + player.image.get_height() // 2), 2,
+                b1 = Enemy(Bullet, asg, background, pic_bee, S_W, S_H - (G_H_S + player.image.get_height() // 2), 2,
                            True, False, pic_bee, 0, 4)
-                b2 = Enemy(Bullet, asg, pic_bee, S_W + 40, S_H - (G_H_S + player.image.get_height() // 2 - 40), 2,
+                b2 = Enemy(Bullet, asg, background, pic_bee, S_W + 40, S_H - (G_H_S + player.image.get_height() // 2 - 40), 2,
                            True, False, pic_bee, 0, 4)
                 return b1, b2
             if enemy_name == 'enemy_raven':
-                return Enemy(Bullet, asg, pic_raven, S_W, T_F_S + 100, 3, True, True, pic_raven_bullet, 1.4, 5)
+                return Enemy(Bullet, asg, background, pic_raven, S_W, T_F_S + 100, 3, True, True, pic_raven_bullet, 1.4, 5)
             if enemy_name == 'enemy_monkey':
-                return Enemy(Bullet, asg, pic_monkey, S_W, 150, 5, True, True, pic_monkey_bullet, 1)
+                return Enemy(Bullet, asg, background, pic_monkey, S_W, 150, 5, True, True, pic_monkey_bullet, 1)
             if enemy_name == 'enemy_hedgehog':
-                return Enemy(Bullet, asg, pic_hedgehog, S_W, S_H - G_H_S - 5, 1)
+                return Enemy(Bullet, asg, background, pic_hedgehog, S_W, S_H - G_H_S - 5, 1)
             if enemy_name == 'enemy_static_hedgehog':
-                return Enemy(Bullet, asg, pic_hedgehog, S_W, S_H - G_H_S - 5, 0)
+                return Enemy(Bullet, asg, background, pic_hedgehog, S_W, S_H - G_H_S - 5, 0)
             if enemy_name == 'enemy_boar':
-                return Enemy(Bullet, asg, pic_boar, S_W, S_H - G_H_S - 32, 3, True, False, pic_boar, 0, 8)
+                return Enemy(Bullet, asg, background, pic_boar, S_W, S_H - G_H_S - 32, 3, True, False, pic_boar, 0, 8)
             if enemy_name == 'enemy_mouse':
-                return Enemy(Bullet, asg, pic_mouse, S_W, S_H - G_H_S - 2, 5, True, False, '', 0, 3)
+                return Enemy(Bullet, asg, background, pic_mouse, S_W, S_H - G_H_S - 2, 5, True, False, '', 0, 3)
             if enemy_name == 'enemy_static_mole':
-                return Enemy(Bullet, asg, pic_mole, S_W, S_H - G_H_S - 2, 0, True)
+                return Enemy(Bullet, asg, background, pic_mole, S_W, S_H - G_H_S - 2, 0, True)
             if enemy_name == 'enemy_static_crab':
-                return Enemy(Bullet, asg, pic_crab, S_W, S_H - G_H_S - 52, 0, True, False, None, None, 3)
+                return Enemy(Bullet, asg, background, pic_crab, S_W, S_H - G_H_S - 52, 0, True, False, None, None, 3)
             if enemy_name == 'enemy_butterfly':
-                return Enemy(Bullet, asg, pic_butterfly, S_W, TOP_FRAME_SIZE + 100, 1, False, False, None, None, 6)
+                return Enemy(Bullet, asg, background, pic_butterfly, S_W, T_F_S + 100, 1, False, False, None, None, 6)
+            if enemy_name == 'enemy_fish':
+                return Enemy(Bullet, asg, background, pic_fish, S_W, S_H - 200, 1, True, False, None, 0, 0)
+            if enemy_name == 'enemy_octopus':
+                return Enemy(Bullet, asg, background, pic_octopus, S_W // 2, S_H - 100, 3, True, False, None, None, 0, True)
 
         # ================================ create cloud platform classes
         def water_platform_creator(v_type):
             pic_cloud = '../src/assets/images/cloud/static.png'
             if v_type == 'cloud/static':
-                return Cloud(self.player_data)
+                return Cloud(self.player_data, pic_cloud, S_W, S_H - 280, True, 0, 'static', 0)
             if v_type == 'cloud/left_right':
                 return Cloud(self.player_data, pic_cloud, S_W, S_H - 160, False, 2, 'left_right', 200)
             if v_type == 'cloud/up_down':
                 return Cloud(self.player_data, pic_cloud, S_W, S_H - 160, False, 2, 'up_down', 200)
+
+            # ================================ create logs
             if v_type.split('/')[0] == 'logs':
                 pic_log = f'../src/assets/images/logs/{v_type.split("/")[1]}.png'
-                return Log(self.player_data, pic_log, S_W, S_H - 90, True)
+                return Log(self.player_data, pic_log, S_W, S_H - G_H_S, True)
 
         # function sprite creator
         def sprite_creator(dictionary, input_class=None, group_class=None):
@@ -195,7 +204,9 @@ class GameState(Sound):
                         elif v.split('/')[0] == 'ground':  # change item position
                             new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, S_H)
                         elif v == 'bonus/coin':  # change item position
-                            new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, S_H - G_H_S - 100, 6)
+                            new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, S_H - G_H_S - 120, 6)
+                        elif v == 'bonus/balloon':  # change item position
+                            new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, S_H // 2, 0)
                         else:
                             new_item_class = input_class(f'../src/assets/images/{v}.png')  # create item class
                         group_class.add(new_item_class)  # add new class to item_group
@@ -303,7 +314,7 @@ class GameState(Sound):
 
         # ========================================== START GAME  with Area 2; Level 1
         if self.area == 2:
-            self.player_data.jump_limit = 508  # prevent jump from water
+            self.player_data.jump_limit = 520  # prevent jump from water 508
 
             if not self.is_music_play:
                 self.current_music = Sound.sea_music_area_two(self)
