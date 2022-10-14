@@ -1,5 +1,5 @@
 import pygame
-from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT_SIZE, key_pressed, BG_SPEED
+from src.settings import SCREEN_HEIGHT, GROUND_HEIGHT_SIZE, key_pressed, BG_SPEED
 
 
 class Ground(pygame.sprite.Sprite):

@@ -30,6 +30,10 @@ class Sound:
     def sea_music_area_two(self):
         self.play_sound('../src/assets/sounds/game_musics/sea_1.mp3', 0.6, -1)
 
+    # Area 3 Volcano
+    def volcano_music_area_three(self):
+        self.play_sound('../src/assets/sounds/game_musics/level_3.mp3', 0.6, -1)
+
     # ======================================   BOSS
     def boss_music_area_one(self):
         self.play_sound('../src/assets/sounds/game_musics/boss/boss_2.mp3', 0.5, -1)

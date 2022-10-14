@@ -85,7 +85,7 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 2
+        self.area = 3
         self.level = 1
         self.boss_number = 1
         self.level_reader_row = 1
@@ -284,7 +284,6 @@ class GameState(Sound):
                 self.player_data.rect.center = [self.player_data.player_dead_x_pos, S_H - G_H_S + 10]
                 pic = self.player_data.image = pygame.image.load('../src/assets/images/player/dead/dead.png')
                 SCREEN.blit(pic, [self.player_data.player_dead_x_pos, S_H - GROUND_HEIGHT_SIZE + 10])
-                print(2.2)
 
             # ============== create level: items, enemy, and more
             items_dict = eval(file_operation('levels/levels_data.txt', 'r', self.level_reader_row))
@@ -322,7 +321,7 @@ class GameState(Sound):
 
             if not self.is_bg_created:
                 # resize image
-                scaled_img = scale_image('../src/assets/images/backgrounds/bg_sea.png', 800, 510)
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_2.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 # add rock ground
                 ground_group.empty()
@@ -357,14 +356,11 @@ class GameState(Sound):
             # ============== draw current area/level labels
             area_label()
 
-            text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 6, 24)
             # =================== check is player dead
             if self.player_data.check_is_player_fail_out_of_screen():
                 pic = pygame.image.load('../src/assets/images/splashes/splashes.png')
                 SCREEN.blit(pic, [self.player_data.player_dead_x_pos - 70, 300])
-                # Sound.stop_all_sounds()
                 Sound.fail_in_sea(self)
-                print(2)
                 self.is_in_water = True
 
             if self.is_in_water:
@@ -374,7 +370,52 @@ class GameState(Sound):
                 pos = pic.get_rect(center=(self.player_data.player_dead_x_pos, S_H - 100))
                 SCREEN.blit(pic, pos)
 
-            # print('AREA 2 ; Level 1')
+        # ========================================== START GAME  with Area 3; Level 1
+        if self.area == 3:
+            if not self.is_music_play:
+                self.current_music = Sound.volcano_music_area_three(self)
+                self.is_music_play = True
+
+            if not self.is_bg_created:
+                # resize image
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_3.png', 800, 510)
+                self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
+                self.is_bg_created = True
+
+            # =================== check is player energy player/ dead - and set image
+            if self.player_data.check_is_energy_player():
+                [asg[group].empty() for group in asg if group != 'ground' and group != 'player']  # remove item/enemy
+                self.player_data.rect.center = [self.player_data.player_dead_x_pos, S_H - G_H_S + 10]
+                pic = self.player_data.image = pygame.image.load('../src/assets/images/player/dead/dead.png')
+                SCREEN.blit(pic, [self.player_data.player_dead_x_pos, S_H - GROUND_HEIGHT_SIZE + 10])
+
+                # ============== create level: items, enemy, and more
+
+            # ============== create level: items, enemy, and more
+            items_dict = eval(file_operation('levels/levels_data.txt', 'r', self.level_reader_row))
+            sprite_creator(items_dict, Item, item_group)
+
+            # ============= level counter
+            distance_counter()
+            # print(len(item_group))
+
+            # =================================================== UPDATE
+            # update BG
+            self.background.update()
+            # --------------------------- draw sprite group
+            # ground_group.draw(SCREEN)  # hide under bg
+            bullets_group.draw(SCREEN)
+            player_group.draw(SCREEN)
+            item_group.draw(SCREEN)
+
+            # --------------------------- update sprite group
+            ground_group.update()
+            player_group.update()
+            bullets_group.update()
+            item_group.update()
+
+            # ============== draw current area/level labels
+            area_label()
 
     def boss(self):
         player.is_boos_level = True  # set player walking border to all SCREEN_WIDTH
