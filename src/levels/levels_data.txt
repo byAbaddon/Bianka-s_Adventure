@@ -1,5 +1,5 @@
 #AREA - 1  #Level - 1   READ FROM ROW 1 ,2, 3, 4
-{0: 'enemy_raven', 10: 'enemy_fish' , 25 : 'enemy_octopus'}
+{0: 'enemy_dragon',10: 'enemy_monster', 20: 'enemy_vulture',60: 'volcano/static',    25: 'enemy_turtle',   30: 'crystal/green',46: 'crystal/blue',   50: 'crystal/red', 55: 'crystal/purple' }
 
 
 {0: 'signs/start', 20: 'mushroom/grey',  40: 'mushroom/grey',  60: 'stones/small' ,  80: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 200: 'mushroom/grey', 230: 'stones/medium', 260: 'stones/medium', 290: 'mushroom/grey',320: 'stones/small', 350: 'stones/medium', 372: 'mushroom/red',  380: 'stones/big', 430: 'stones/small', 460: 'mushroom/grey', 500: 'signs/distance', 560: 'mushroom/grey', 570: 'mushroom/grey', 600: 'stones/medium', 640: 'mushroom/grey', 700 : 'stones/medium', 740  : 'mushroom/purple', 800: 'stones/medium', 840: 'mushroom/grey', 860: 'mushroom/grey', 870: 'mushroom/grey', 900: 'stones/medium', 940: 'bonus/statuette',  960: 'stones/big', 980: 'mushroom/red', 990: 'bonus/coin', 1020: 'signs/goal'}
@@ -21,7 +21,10 @@
  : 'enemy_static_mole'      |                        |  : 'logs/small'        | : ''                 | : ''                |
  : 'enemy_static_crab'      |                        |  : 'logs/extra_small'  | : ''                 | : ''                |
  : 'enemy_butterfly'        |                        |  : 'logs/hipper_small' | : ''                 | : ''                |
- : 'enemy_static_crab'
+ : 'enemy_static_crab'      |                        |                        |
+ : 'enemy_dragon'           |                        |  : 'volcano/static'    |                      |
+ : 'enemy_vulture'
+ : 'enemy_turtle'
 
 -------------------------------------------------------------------------------------------------------------------
 

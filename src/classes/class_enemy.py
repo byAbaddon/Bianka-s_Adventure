@@ -96,25 +96,10 @@ class Enemy(Player, Sound):
 
     def make_sound(self):
         if self.noise:
-            if self.item_name == 'monkey':
-                Sound.monkey_sound(self)
-            if self.item_name == 'raven':
-                Sound.raven_sound(self)
-            if self.item_name == 'boar':
-                Sound.boar_sound(self)
-            if self.item_name == 'bee':
-                Sound.bee_sound(self)
-            if self.item_name == 'mouse':
-                Sound.mouse_sound(self)
-            if self.item_name == 'mole':
-                Sound.mole_sound(self)
-            if self.item_name == 'crab':
-                Sound.crab_sound(self)
-            if self.item_name == 'fish':
-                Sound.fish_sound(self)
-            if self.item_name == 'octopus':
-                Sound.octopus_sound(self)
-        self.noise = False
+            if self.item_name in ['monkey', 'raven', 'turtle', 'boar', 'bee', 'mouse', 'mole', 'crab', 'fish',
+                                  'octopus', 'dragon', 'vulture', 'turtle', 'monster']:
+                self.noise = False
+                return eval(f'Sound.{self.item_name}_sound(self)')
 
     def update(self):
         self.sprite_frames()

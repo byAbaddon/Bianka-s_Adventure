@@ -54,20 +54,24 @@ S_H = SCREEN_HEIGHT
 G_H_S = GROUND_HEIGHT_SIZE
 T_F_S = TOP_FRAME_SIZE
 
-pic_monkey = '../src/assets/images/enemies/monkey/monkey.png'
-pic_hedgehog = '../src/assets/images/enemies/hedgehog/hedgehog.png'
-pic_raven = '../src/assets/images/enemies/raven/1.png'
-pic_boar = '../src/assets/images/enemies/boar/1.png'
-pic_bee = '../src/assets/images/enemies/bee/1.png'
-pic_mouse = '../src/assets/images/enemies/mouse/1.png'
-pic_mole = '../src/assets/images/enemies/mole/mole.png'
-pic_crab = '../src/assets/images/enemies/crab/1.png'
-pic_raven_bullet = '../src/assets/images/bullets/egg.png'
-pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
-pic_butterfly = '../src/assets/images/enemies/butterfly/1.png'
-pic_bonus_coin = '../src/assets/images/bonus/coin/1.png'
-pic_fish = '../src/assets/images/enemies/fish/1.png'
-pic_octopus = '../src/assets/images/enemies/octopus/1.png'
+# pic_hedgehog = '../src/assets/images/enemies/hedgehog/hedgehog.png'
+# pic_boar = '../src/assets/images/enemies/boar/1.png'
+# pic_bee = '../src/assets/images/enemies/bee/1.png'
+# pic_mouse = '../src/assets/images/enemies/mouse/1.png'
+# pic_mole = '../src/assets/images/enemies/mole/mole.png'
+# pic_crab = '../src/assets/images/enemies/crab/1.png'
+# pic_raven = '../src/assets/images/enemies/raven/1.png'
+# pic_raven_bullet = '../src/assets/images/bullets/egg.png'
+# pic_monkey = '../src/assets/images/enemies/monkey/monkey.png'
+# pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
+# pic_butterfly = '../src/assets/images/enemies/butterfly/1.png'
+# pic_bonus_coin = '../src/assets/images/bonus/coin/1.png'
+# pic_fish = '../src/assets/images/enemies/fish/1.png'
+# pic_octopus = '../src/assets/images/enemies/octopus/1.png'
+# pic_small_dragon = '../src/assets/images/enemies/small_dragon/1.png'
+# enemy_list = ['enemy_raven', 'enemy_monkey', 'enemy_hedgehog', 'enemy_static_hedgehog', 'enemy_boar', 'enemy_bee',
+#                   'enemy_mouse', 'enemy_static_mole', 'enemy_static_crab', 'enemy_butterfly', 'enemy_fish',
+#                   'enemy_octopus', 'enemy_dragon', 'enemy_vulture', 'enemy_turtle']
 
 
 # Game State
@@ -75,9 +79,6 @@ class GameState(Sound):
     COOLDOWN = 2000  # milliseconds
     start_timer = pygame.time.get_ticks()
     count_visit = 0
-    enemy_list = ['enemy_raven', 'enemy_monkey', 'enemy_hedgehog', 'enemy_static_hedgehog', 'enemy_boar', 'enemy_bee',
-                  'enemy_mouse', 'enemy_static_mole', 'enemy_static_crab', 'enemy_butterfly', 'enemy_fish',
-                  'enemy_octopus']
 
     def __init__(self, player_data, knight_data, background_data):
         self.state = 'intro'
@@ -137,33 +138,58 @@ class GameState(Sound):
         # ================================ create enemy classes
         def enemy_creator(enemy_name):
             if enemy_name == 'enemy_bee':
-                b1 = Enemy(Bullet, asg, background, pic_bee, S_W, S_H - (G_H_S + player.image.get_height() // 2), 2,
-                           True, False, pic_bee, 0, 4)
-                b2 = Enemy(Bullet, asg, background, pic_bee, S_W + 40, S_H - (G_H_S + player.image.get_height() // 2 - 40), 2,
-                           True, False, pic_bee, 0, 4)
+                b1 = Enemy(Bullet, asg, background, '../src/assets/images/enemies/bee/1.png',
+                           S_W, S_H - (G_H_S + player.image.get_height() // 2), 2, True, False,
+                           '../src/assets/images/enemies/bee/1.png', 0, 4)
+                b2 = Enemy(Bullet, asg, background, '../src/assets/images/enemies/bee/1.png',
+                           S_W + 40, S_H - (G_H_S + player.image.get_height() // 2 - 40), 2, True, False,
+                           '../src/assets/images/enemies/bee/1.png', 0, 4)
                 return b1, b2
             if enemy_name == 'enemy_raven':
-                return Enemy(Bullet, asg, background, pic_raven, S_W, T_F_S + 100, 3, True, True, pic_raven_bullet, 1.4, 5)
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/raven/1.png',
+                             S_W, T_F_S + 100, 3, True, True, '../src/assets/images/bullets/egg.png', 1.4, 5)
             if enemy_name == 'enemy_monkey':
-                return Enemy(Bullet, asg, background, pic_monkey, S_W, 150, 5, True, True, pic_monkey_bullet, 1)
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/monkey/monkey.png',
+                             S_W, 150, 5, True, True, '../src/assets/images/bullets/coconut.png', 1)
             if enemy_name == 'enemy_hedgehog':
-                return Enemy(Bullet, asg, background, pic_hedgehog, S_W, S_H - G_H_S - 5, 1)
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/hedgehog/hedgehog.png',
+                             S_W, S_H - G_H_S - 5, 1)
             if enemy_name == 'enemy_static_hedgehog':
-                return Enemy(Bullet, asg, background, pic_hedgehog, S_W, S_H - G_H_S - 5, 0)
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/hedgehog/hedgehog.png',
+                             S_W, S_H - G_H_S - 5, 0)
             if enemy_name == 'enemy_boar':
-                return Enemy(Bullet, asg, background, pic_boar, S_W, S_H - G_H_S - 32, 3, True, False, pic_boar, 0, 8)
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/boar/1.png',
+                             S_W, S_H - G_H_S - 32, 3, True, False, None, None, 8)
             if enemy_name == 'enemy_mouse':
-                return Enemy(Bullet, asg, background, pic_mouse, S_W, S_H - G_H_S - 2, 5, True, False, '', 0, 3)
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/mouse/1.png',
+                             S_W, S_H - G_H_S - 2, 5, True, False, '', 0, 3)
             if enemy_name == 'enemy_static_mole':
-                return Enemy(Bullet, asg, background, pic_mole, S_W, S_H - G_H_S - 2, 0, True)
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/mole/mole.png',
+                             S_W, S_H - G_H_S - 2, 0, True)
             if enemy_name == 'enemy_static_crab':
-                return Enemy(Bullet, asg, background, pic_crab, S_W, S_H - G_H_S - 52, 0, True, False, None, None, 3)
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/crab/1.png',
+                             S_W, S_H - G_H_S - 52, 0, True, False, None, None, 3)
             if enemy_name == 'enemy_butterfly':
-                return Enemy(Bullet, asg, background, pic_butterfly, S_W, T_F_S + 100, 1, False, False, None, None, 6)
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/butterfly/1.png',
+                             S_W, T_F_S + 100, 1, False, False, None, None, 6)
             if enemy_name == 'enemy_fish':
-                return Enemy(Bullet, asg, background, pic_fish, S_W, S_H - 200, 1, True, False, None, 0, 0)
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/fish/1.png',
+                             S_W, S_H - 200, 1, True, False, None, 0, 0)
             if enemy_name == 'enemy_octopus':
-                return Enemy(Bullet, asg, background, pic_octopus, S_W // 2, S_H - 100, 3, True, False, None, None, 0, True)
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/octopus/1.png',
+                             S_W // 2, S_H - 100, 3, True, False, None, None, 0, True)
+            if enemy_name == 'enemy_dragon':
+                return Enemy(Bullet, asg, background,  '../src/assets/images/enemies/dragon/1.png',
+                             S_W, S_H - G_H_S - 5, 2, True, False, None, None, 7)
+            if enemy_name == 'enemy_vulture':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/vulture/1.png',
+                             S_W, 150, 2, True, True, '../src/assets/images/bullets/bone.png', 1, 9)
+            if enemy_name == 'enemy_turtle':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/turtle/1.png',
+                             S_W, S_H - G_H_S - 15, 1, True, False, None, None, 8)
+            if enemy_name == 'enemy_monster':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/monster/1.png',
+                             S_W, S_H - G_H_S - 40, 1, True, False, None, None, 24)
 
         # ================================ create cloud platform classes
         def water_platform_creator(v_type):
@@ -182,14 +208,11 @@ class GameState(Sound):
 
         # function sprite creator
         def sprite_creator(dictionary, input_class=None, group_class=None):
-            # time_now = pygame.time.get_ticks()
             # ---------create
             for k, v in dictionary.items():  # t: 'item pic'
                 if k == int(self.background.distance_mt):
-                    # if time_now - self.START_TIMER > 0:  # timer prevent 300ms create double item in group
-                    #     self.START_TIMER = time_now
-                    if v in self.enemy_list:  # check is class
-                        # create new class from enemy_name
+                    if v.split('_')[0] == 'enemy':  # check is enemy
+                        # ---------------------------------------------------------- create new class from enemy_name
                         new_enemy_class = enemy_creator(enemy_name=v)
                         # add to item group
                         group_class.add(new_enemy_class)
@@ -199,17 +222,19 @@ class GameState(Sound):
                         # add to item group
                         group_class.add(new_platform_class)
                     else:
-                        if v.split('/')[0] == 'ships':  # change item position
-                            new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, 250)
+                        if v.split('/')[0] == 'ships':  # -------------------------- change item position
+                            new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, 250)
                         elif v.split('/')[0] == 'ground':  # change item position
                             new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, S_H)
                         elif v == 'bonus/coin':  # change item position
-                            new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, S_H - G_H_S - 120, 6)
+                            new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H - G_H_S - 120, 6)
+                        elif v == 'volcano/static':
+                            new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, 390 )
                         elif v == 'bonus/balloon':  # change item position
-                            new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, S_H // 2, 0)
+                            new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H // 2, 0)
                         else:
-                            new_item_class = input_class(f'../src/assets/images/{v}.png')  # create item class
-                        group_class.add(new_item_class)  # add new class to item_group
+                            new_item_class = input_class(f'../src/assets/images/items/{v}.png')  # create item class
+                        group_class.add(new_item_class)  # -----------------------  add new class to item_group
                     self.background.distance_mt += 1  # prevent create double sp if player stay in same position
 
         def distance_counter(*args):

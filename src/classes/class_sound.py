@@ -68,7 +68,7 @@ class Sound:
     def sign_finish(self):
         self.play_sound('../src/assets/sounds/sign/finish.wav')
 
-    def grab_mushroom(self):
+    def grab_item(self):
         self.play_sound('../src/assets/sounds/player/grab.wav')
 
     def grab_poison_mushroom(self):
@@ -110,6 +110,18 @@ class Sound:
 
     def fish_sound(self):
         self.play_sound('../src/assets/sounds/enemies/fish.wav', 0.5,)
+
+    def vulture_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/vulture.wav', 0.5, 1)
+
+    def dragon_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/dragon.mp3', 0.3, 1)
+
+    def turtle_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/turtle.wav', 1, 2)
+
+    def monster_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/monster.wav', 1, 2)
 
     # player bullets hit something and kill enemy
     def bullet_ricochet(self):

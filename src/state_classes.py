@@ -94,12 +94,12 @@ class LevelStatistic(Sound):
             image = pygame.image.load(f'../src/assets/images/frames/down_right.png')
             SCREEN.blit(image, [400, 300])
             # coin
-            image = pygame.image.load(f'../src/assets/images/bonus/coin_medium.png')
+            image = pygame.image.load(f'../src/assets/images/items/bonus/coin_medium.png')
             SCREEN.blit(image, [150, 400])
             text_creator(f'x {self.player_data.bonus_coins} = {self.player_data.bonus_coins * 1000}', 'yellow', 220, 430, 30)
             # idol
             text_creator(f'{self.player_data.bonus_statuette * 3000} = {self.player_data.bonus_statuette} x', 'yellow', 480, 430, 30)
-            image = pygame.image.load(f'../src/assets/images/bonus/statuette_medium.png')
+            image = pygame.image.load(f'../src/assets/images/items/bonus/statuette_medium.png')
             SCREEN.blit(image, [580, 360])
         else:
             # bonus point
