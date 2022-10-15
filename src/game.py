@@ -194,6 +194,10 @@ class GameState(Sound):
             if enemy_name == 'enemy_cockroach':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/cockroach/1.png',
                              S_W, S_H - G_H_S - 2, 2, True, None, None, 0, 8)
+            if enemy_name == 'enemy_ghost':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/ghost/1.png',
+                             S_W, 200, 1, True, None, None, 0, 6)
+
 
         # ================================ create cloud platform classes
         def water_platform_creator(v_type):

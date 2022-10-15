@@ -45,6 +45,12 @@ class Enemy(Player, Sound):
             self.octopus_action()
         if self.item_name == 'fireball':
             self.fireball_action()
+        if self.item_name == 'ghost':
+            self.ghost_action()
+
+    def ghost_action(self):
+        if self.rect.x <= SCREEN_WIDTH - 100:
+            self.rect.y += 2
 
     def fireball_action(self):
         if not self.is_visited:
@@ -104,7 +110,7 @@ class Enemy(Player, Sound):
 
     def make_sound(self):
         if self.noise:
-            if self.item_name in ['monkey', 'raven', 'turtle', 'boar', 'bee', 'mouse', 'mole', 'crab', 'fish',
+            if self.item_name in ['monkey', 'raven', 'turtle', 'boar', 'bee', 'mouse', 'mole', 'crab', 'fish', 'ghost',
                                   'octopus', 'dragon', 'vulture', 'turtle', 'monster', 'fireball', 'cockroach']:
                 self.noise = False
                 return eval(f'Sound.{self.item_name}_sound(self)')

@@ -91,6 +91,9 @@ class Sound:
     def mouse_sound(self):
         self.play_sound('../src/assets/sounds/enemies/mouse.wav', 1,)
 
+    def ghost_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/ghost.wav', 0.3, 2)
+
     def cockroach_sound(self):
         self.play_sound('../src/assets/sounds/enemies/cockroach.wav', 0.3,)
 

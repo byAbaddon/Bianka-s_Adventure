@@ -234,7 +234,7 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name in ['hedgehog', 'mole', 'turtle']:
                         self.energy_power -= 30
                         sprite.kill()
-                    if name == 'monkey':
+                    if name in ['monkey', 'ghost']:
                         self.energy_power -= 50
                         sprite.kill()
                     if name in ['boar', 'monster']:
@@ -253,15 +253,15 @@ class Player(pygame.sprite.Sprite, Sound):
                         self.is_player_poisoned = True
                     sprite.kill()
                     Sound.grab_item(self)
-                case 'crystal':
+                case 'crystal' | 'diamond':
                     Sound.add_point(self)
-                    if name == 'green':
+                    if name in ['green']:
                         self.points += 100
-                    if name == 'blue':
+                    if name in ['blue']:
                         self.points += 150
-                    if name == 'red':
+                    if name in ['red']:
                         self.points += 200
-                    if name == 'purple':
+                    if name in ['purple']:
                         self.points += 250
                     sprite.kill()
                     Sound.grab_item(self)
@@ -333,7 +333,7 @@ class Player(pygame.sprite.Sprite, Sound):
                         Sound.bullet_kill_enemy(self)
                         item.kill()
                         bullet.kill()
-                    if item.item_name in ['mouse', 'octopus', 'raven', 'butterfly', ]:
+                    if item.item_name in ['mouse', 'octopus', 'raven', 'butterfly', 'ghost']:
                         self.points += 300
                         Sound.bullet_kill_enemy(self)
                         item.kill()
