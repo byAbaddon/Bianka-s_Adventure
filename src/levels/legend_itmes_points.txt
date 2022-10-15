@@ -15,6 +15,7 @@
 'bee' : 100
 'hedgehog' : 200
 'dragon' : 200
+'cockroach' : 200
 'butterfly' : 300
 'mouse' : 300
 'raven' : 300

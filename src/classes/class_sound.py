@@ -18,21 +18,25 @@ class Sound:
         self.play_sound('../src/assets/sounds/buttons/click.wav')
 
     def intro_music(self):
-        self.play_sound('../src/assets/sounds/game_musics/intro_1.mp3')
+        self.play_sound('../src/assets/sounds/game_musics/intro.mp3')
 
     # =================================== areas bg music
 
     # Area 1 forest
     def forest_music_area_one(self):
-        self.play_sound('../src/assets/sounds/game_musics/forest_1.mp3', 0.6, -1)
+        self.play_sound('../src/assets/sounds/game_musics/level_1.mp3', 0.6, -1)
 
     # Area 2 See
     def sea_music_area_two(self):
-        self.play_sound('../src/assets/sounds/game_musics/sea_1.mp3', 0.6, -1)
+        self.play_sound('../src/assets/sounds/game_musics/level_2.mp3', 0.6, -1)
 
     # Area 3 Volcano
     def volcano_music_area_three(self):
         self.play_sound('../src/assets/sounds/game_musics/level_3.mp3', 0.6, -1)
+
+    # Area 9 Castle
+    def castle_music_area_nine(self):
+        self.play_sound('../src/assets/sounds/game_musics/level_9.mp3', 0.4, -1)
 
     # ======================================   BOSS
     def boss_music_area_one(self):
@@ -86,6 +90,9 @@ class Sound:
     # -------------------------------------------   enemy sound
     def mouse_sound(self):
         self.play_sound('../src/assets/sounds/enemies/mouse.wav', 1,)
+
+    def cockroach_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/cockroach.wav', 0.3,)
 
     def octopus_sound(self):
         self.play_sound('../src/assets/sounds/enemies/octopus.mp3', 1, )

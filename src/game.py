@@ -191,6 +191,9 @@ class GameState(Sound):
             if enemy_name == 'enemy_fireball':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/fireball/1.png',
                              S_W // 2, 115, 2, True, None, None, 0, 0, True)
+            if enemy_name == 'enemy_cockroach':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/cockroach/1.png',
+                             S_W, S_H - G_H_S - 2, 2, True, None, None, 0, 8)
 
         # ================================ create cloud platform classes
         def water_platform_creator(v_type):
@@ -455,7 +458,7 @@ class GameState(Sound):
         # ========================================== START GAME  with Area 9; Level 1
         if self.area == 9:
             if not self.is_music_play:
-                # self.current_music = Sound.volcano_music_area_three(self)
+                self.current_music = Sound.castle_music_area_nine(self)
                 self.is_music_play = True
 
             if not self.is_bg_created:

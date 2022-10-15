@@ -1,5 +1,5 @@
 #AREA - 1  #Level - 1   READ FROM ROW 1 ,2, 3, 4  #AREA - 2 #Lefel - 1.....
-{0: 'wall_decor/candle',  10: 'wall_decor/s2', 30: 'wall_decor/s3', 60: 'wall_decor/s4',  100: 'wall_decor/s5'}
+{0: 'wall_decor/candle',  10: 'enemy_cockroach', 30: 'diamond/red', 60: 'diamond/blue',  100: 'diamond/purple'}
 
 
 {0: 'signs/start', 20: 'mushroom/grey',  40: 'mushroom/grey',  60: 'stones/small' ,  80: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 200: 'mushroom/grey', 230: 'stones/medium', 260: 'stones/medium', 290: 'mushroom/grey',320: 'stones/small', 350: 'stones/medium', 372: 'mushroom/red',  380: 'stones/big', 430: 'stones/small', 460: 'mushroom/grey', 500: 'signs/distance', 560: 'mushroom/grey', 570: 'mushroom/grey', 600: 'stones/medium', 640: 'mushroom/grey', 700 : 'stones/medium', 740  : 'mushroom/purple', 800: 'stones/medium', 840: 'mushroom/grey', 860: 'mushroom/grey', 870: 'mushroom/grey', 900: 'stones/medium', 940: 'bonus/statuette',  960: 'stones/big', 980: 'mushroom/red', 990: 'bonus/coin', 1020: 'signs/goal'}
@@ -22,14 +22,26 @@
  : 'enemy_boar'             |  : 'crystal/blue',     |--------------------------|----------------------|
  : 'enemy_bee',             |  : 'crystal/green',    |  : 'logs/big'            | : ''                 | : 'ground/dock'     |
  : 'enemy_mouse',           |                        |  : 'logs/medium'         | : ''                 | : ''                |
- : 'enemy_static_mole',     |                        |  : 'logs/small'          | : ''                 | : ''                |
- : 'enemy_static_crab',     |                        |  : 'logs/extra_small'    | : ''                 | : ''                |
- : 'enemy_butterfly',       |                        |  : 'logs/hipper_small'   | : ''                 | : ''                |
- : 'enemy_static_crab',     |                        |                          |
+ : 'enemy_static_mole',     |  : 'diamond/red'       |  : 'logs/small'          | : ''                 | : ''                |
+ : 'enemy_static_crab',     |  : 'diamond/blue'      |  : 'logs/extra_small'    | : ''                 | : ''                |
+ : 'enemy_butterfly',       |  : 'diamond/green'     |  : 'logs/hipper_small'   | : ''                 | : ''                |
+ : 'enemy_static_crab',     |  : 'diamond/purple'    |                          |
  : 'enemy_fireball',        |                        |                          |
- : 'enemy_monster',         |
-
-
+ : 'enemy_monster',         |                        |                          |
+ : 'enemy_cockroach',       |                        |                          |
+                                                                                | : 'wall_decor/candle',
+                                                                                | : 'wall_decor/s1',
+                                                                                | : 'wall_decor/s2',
+                                                                                | : 'wall_decor/s3',
+                                                                                | : 'wall_decor/s4',
+                                                                                | : 'wall_decor/s5'
+                                                                                | : 'decor/k1',
+                                                                                | : 'decor/k2',
+                                                                                | : 'decor/k3',
+                                                                                | : 'decor/k4',
+                                                                                | : 'decor/k5'
+                                                                                  : 'decor/b1'
+                                                                                  : 'decor/b2'
 -------------------------------------------------------------------------------------------------------------------
 
 {0: 'logs/big', 40: 'logs/big', 80: 'logs/big', 120: 'logs/big', 160: 'logs/big', 200: 'logs/big',
