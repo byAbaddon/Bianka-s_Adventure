@@ -38,12 +38,20 @@ class Enemy(Player, Sound):
         else:
             if not self.is_static:
                 self.rect.x -= self.speed
-
         # ------  special enemies movement --------
         if self.item_name == 'fish':
             self.fish_action()
         if self.item_name == 'octopus':
             self.octopus_action()
+        if self.item_name == 'fireball':
+            self.fireball_action()
+
+    def fireball_action(self):
+        if not self.is_visited:
+            Sound.thunder_sound(self)
+            self.rect.x = randrange(SCREEN_WIDTH // 2, SCREEN_WIDTH)
+            self.is_visited = True
+        self.rect.y += self.speed
 
     def octopus_action(self):
         if not self.is_visited:
@@ -97,7 +105,7 @@ class Enemy(Player, Sound):
     def make_sound(self):
         if self.noise:
             if self.item_name in ['monkey', 'raven', 'turtle', 'boar', 'bee', 'mouse', 'mole', 'crab', 'fish',
-                                  'octopus', 'dragon', 'vulture', 'turtle', 'monster']:
+                                  'octopus', 'dragon', 'vulture', 'turtle', 'monster', 'fireball']:
                 self.noise = False
                 return eval(f'Sound.{self.item_name}_sound(self)')
 

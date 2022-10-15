@@ -301,12 +301,13 @@ class Player(pygame.sprite.Sprite, Sound):
         items_group = self.all_sprite_groups_dict['items']
         sprite = pygame.sprite.groupcollide(bullets_group, items_group, False, False, pygame.sprite.collide_mask)
         for bullet, item in sprite.items():
-            # add bullet effect explosion
-            hit_explosion = pygame.image.load('../src/assets/images/explosion/explosion.png')
-            SCREEN.blit(hit_explosion, bullet.rect.topleft)
             item = item[0]
+            # add bullet effect explosion
+            if item.group_name not in ['signs', 'decor', 'wall_decor']:  # ignore bullet collide
+                hit_explosion = pygame.image.load('../src/assets/images/explosion/explosion.png')
+                SCREEN.blit(hit_explosion, bullet.rect.topleft)
             match item.group_name:
-                case 'signs' | 'logs' | 'cloud':
+                case 'logs' | 'cloud':
                     Sound.bullet_hit(self)
                     bullet.kill()
                 case 'mushroom' | 'crystal':

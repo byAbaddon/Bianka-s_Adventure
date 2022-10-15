@@ -1,5 +1,3 @@
-import pygame.scrap
-
 from settings import *
 from classes.class_background import Background
 from classes.class_table import Table
@@ -86,7 +84,7 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 3
+        self.area = 9
         self.level = 1
         self.boss_number = 1
         self.level_reader_row = 1
@@ -101,7 +99,7 @@ class GameState(Sound):
 
     def start_game(self):
         # ------------------top display frame
-        # table.update()
+        table.update()
 
         # =============================================== RESET ALL DATA IF START NEW GAME
         if self.is_start_new_game:  # reset all old data
@@ -190,6 +188,9 @@ class GameState(Sound):
             if enemy_name == 'enemy_monster':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/monster/1.png',
                              S_W, S_H - G_H_S - 40, 1, True, False, None, None, 24)
+            if enemy_name == 'enemy_fireball':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/fireball/1.png',
+                             S_W // 2, 115, 2, True, None, None, 0, 0, True)
 
         # ================================ create cloud platform classes
         def water_platform_creator(v_type):
@@ -222,16 +223,25 @@ class GameState(Sound):
                         # add to item group
                         group_class.add(new_platform_class)
                     else:
+
                         if v.split('/')[0] == 'ships':  # -------------------------- change item position
+                            # test move to decoration !!!!!!!!!!
                             new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, 250)
                         elif v.split('/')[0] == 'ground':  # change item position
                             new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, S_H)
                         elif v == 'bonus/coin':  # change item position
                             new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H - G_H_S - 120, 6)
-                        elif v == 'volcano/static':
-                            new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, 390 )
                         elif v == 'bonus/balloon':  # change item position
+                            # test move to decoration !!!!!!!!!!
                             new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H // 2, 0)
+                        elif v.split('/')[0] == 'decor' or 'wall_decor':  # change item position
+                            y_pos = S_H - G_H_S - 42
+                            if v.split('/')[0] in ['wall_decor']:
+                                y_pos -= 200
+                            if v == 'wall_decor/candle':
+                                new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, y_pos, 9)
+                            else:
+                                new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, y_pos)
                         else:
                             new_item_class = input_class(f'../src/assets/images/items/{v}.png')  # create item class
                         group_class.add(new_item_class)  # -----------------------  add new class to item_group
@@ -323,9 +333,9 @@ class GameState(Sound):
             self.background.update()
             # --------------------------- draw sprite group
             # ground_group.draw(SCREEN)  # hide under bg
-            bullets_group.draw(SCREEN)
-            player_group.draw(SCREEN)
             item_group.draw(SCREEN)
+            player_group.draw(SCREEN)
+            bullets_group.draw(SCREEN)
 
             # --------------------------- update sprite group
             ground_group.update()
@@ -368,9 +378,9 @@ class GameState(Sound):
             self.background.update()
             # --------------------------- draw sprite group
             ground_group.draw(SCREEN)  # hide under bg
-            bullets_group.draw(SCREEN)
             item_group.draw(SCREEN)
             player_group.draw(SCREEN)
+            bullets_group.draw(SCREEN)
 
             # --------------------------- update sprite group
             ground_group.update()
@@ -429,9 +439,54 @@ class GameState(Sound):
             self.background.update()
             # --------------------------- draw sprite group
             # ground_group.draw(SCREEN)  # hide under bg
-            bullets_group.draw(SCREEN)
-            player_group.draw(SCREEN)
             item_group.draw(SCREEN)
+            player_group.draw(SCREEN)
+            bullets_group.draw(SCREEN)
+
+            # --------------------------- update sprite group
+            ground_group.update()
+            player_group.update()
+            bullets_group.update()
+            item_group.update()
+
+            # ============== draw current area/level labels
+            area_label()
+
+        # ========================================== START GAME  with Area 9; Level 1
+        if self.area == 9:
+            if not self.is_music_play:
+                # self.current_music = Sound.volcano_music_area_three(self)
+                self.is_music_play = True
+
+            if not self.is_bg_created:
+                # resize image
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_9.png', 800, 510)
+                self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
+                self.is_bg_created = True
+
+                # =================== check is player energy player/ dead - and set image
+            if self.player_data.check_is_energy_player():
+                [asg[group].empty() for group in asg if
+                 group != 'ground' and group != 'player']  # remove item/enemy
+                self.player_data.rect.center = [self.player_data.player_dead_x_pos, S_H - G_H_S + 10]
+                pic = self.player_data.image = pygame.image.load('../src/assets/images/player/dead/dead.png')
+                SCREEN.blit(pic, [self.player_data.player_dead_x_pos, S_H - GROUND_HEIGHT_SIZE + 10])
+
+            # ============== create level: items, enemy, and more
+            items_dict = eval(file_operation('levels/levels_data.txt', 'r', self.level_reader_row))
+            sprite_creator(items_dict, Item, item_group)
+
+            # ============= level counter
+            distance_counter()
+
+            # =================================================== UPDATE
+            # update BG
+            self.background.update()
+            # --------------------------- draw sprite group
+            # ground_group.draw(SCREEN)  # hide under bg
+            item_group.draw(SCREEN)
+            player_group.draw(SCREEN)
+            bullets_group.draw(SCREEN)
 
             # --------------------------- update sprite group
             ground_group.update()

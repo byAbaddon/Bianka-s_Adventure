@@ -123,6 +123,12 @@ class Sound:
     def monster_sound(self):
         self.play_sound('../src/assets/sounds/enemies/monster.wav', 1, 2)
 
+    def thunder_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/volcano/thunder.wav', 0.1)
+
+    def fireball_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/volcano/fireball.wav', 1)
+
     # player bullets hit something and kill enemy
     def bullet_ricochet(self):
         self.play_sound('../src/assets/sounds/bullet/ricochet.wav')
