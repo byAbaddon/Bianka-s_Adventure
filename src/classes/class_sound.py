@@ -88,8 +88,17 @@ class Sound:
         self.play_sound('../src/assets/sounds/player/grab_amulets.wav', 1)
 
     # -------------------------------------------   enemy sound
+    def snowmen_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/snowmen.wav', 1,)
+
     def mouse_sound(self):
         self.play_sound('../src/assets/sounds/enemies/mouse.wav', 1,)
+
+    def penguin_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/penguin.wav', 1,)
+
+    def seal_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/seal.wav', 1, )
 
     def ghost_sound(self):
         self.play_sound('../src/assets/sounds/enemies/ghost.wav', 0.3, 2)

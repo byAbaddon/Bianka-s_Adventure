@@ -48,6 +48,14 @@ class Enemy(Player, Sound):
         if self.item_name == 'ghost':
             self.ghost_action()
 
+    def make_sound(self):
+        if self.noise:
+            if self.item_name in ['monkey', 'raven', 'turtle', 'boar', 'bee', 'mouse', 'mole', 'crab', 'fish', 'ghost',
+                                  'octopus', 'dragon', 'vulture', 'turtle', 'monster', 'fireball', 'cockroach',
+                                  'penguin', 'seal', 'snowmen']:
+                self.noise = False
+                return eval(f'Sound.{self.item_name}_sound(self)')
+
     def ghost_action(self):
         if self.rect.x <= SCREEN_WIDTH - 100:
             self.rect.y += 2
@@ -95,11 +103,20 @@ class Enemy(Player, Sound):
 
     def shooting_enemy(self):  # shooting:
         if self.shooting:
-            if self.rect.x <= SCREEN_WIDTH - 100:
+            if self.item_name in ['snowmen']:   # enemies with shooting only right
+                Sound.bullet_fail(self)
+                shot_position = self.rect.midright
+                self.direction = vec(-1, 0)
+                x = shot_position[0] - self.image.get_width() - 10
+                y = SCREEN_HEIGHT - self.image.get_height()
+                bullet = self.class_bullet(self.pic_bullet, x, y, self.direction, self.bullet_speed, False)
+                self.all_sprite_groups_dict['bullets'].add(bullet)
+                self.shooting = False
+            elif self.rect.x <= SCREEN_WIDTH - 100:  # enemies shooting down + right
                 Sound.bullet_fail(self)
                 shot_position = self.rect.midbottom
                 x = shot_position[0] + self.image.get_width() // 4 - 30
-                y = shot_position[1] - 15  # get y pos form rect
+                y = shot_position[1] + 10  # get y pos form rect
                 bullet = self.class_bullet(self.pic_bullet, x, y, self.direction, self.bullet_speed, True)
                 self.all_sprite_groups_dict['bullets'].add(bullet)
                 self.shooting = False
@@ -107,13 +124,6 @@ class Enemy(Player, Sound):
     def prevent_overflow_item_group(self):  # remove old enemy from item_group if it out of screen
         if self.rect.x < -200 or self.rect.x > SCREEN_WIDTH + 100 or self.rect.y > SCREEN_HEIGHT + 100:
             self.kill()
-
-    def make_sound(self):
-        if self.noise:
-            if self.item_name in ['monkey', 'raven', 'turtle', 'boar', 'bee', 'mouse', 'mole', 'crab', 'fish', 'ghost',
-                                  'octopus', 'dragon', 'vulture', 'turtle', 'monster', 'fireball', 'cockroach']:
-                self.noise = False
-                return eval(f'Sound.{self.item_name}_sound(self)')
 
     def update(self):
         self.sprite_frames()

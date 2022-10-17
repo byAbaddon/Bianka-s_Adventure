@@ -42,9 +42,16 @@ class Table:
         SCREEN.blit(image, (20, 42))
 
     def draw_area_and_level(self):
-        text_creator(f'Area:  {self.area}', (255, 200, 0), SCREEN_WIDTH - 92, 24, 29)
+        # todo: draw original 4 levels before increase area
+        # text_creator(f'Area:  {self.area}', (255, 200, 0), SCREEN_WIDTH - 92, 24, 29)
+        # if not self.player.is_boos_level:
+        #     text_creator(f'Level: {self.level}', (255, 200, 0), SCREEN_WIDTH - 92, 44, 29)
+        # else:
+        #     text_creator(f'-BOSS-', (255, 200, 0), SCREEN_WIDTH - 92, 44, 29)
+        #
+        text_creator(f'Level: {self.level}', (255, 200, 0), SCREEN_WIDTH - 94, 24, 29)
         if not self.player.is_boos_level:
-            text_creator(f'Level: {self.level}', (255, 200, 0), SCREEN_WIDTH - 92, 44, 29)
+            text_creator(f'Area:  {self.area}', (255, 200, 0), SCREEN_WIDTH - 92, 44, 29)
         else:
             text_creator(f'-BOSS-', (255, 200, 0), SCREEN_WIDTH - 92, 44, 29)
 

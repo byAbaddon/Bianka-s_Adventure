@@ -1,11 +1,11 @@
 import pygame
-from src.settings import SCREEN_WIDTH, SCREEN_HEIGHT, BG_SPEED, key_pressed
+from src.settings import SCREEN_WIDTH, SCREEN_HEIGHT, GROUND_HEIGHT_SIZE, BG_SPEED, key_pressed
 
 
 class Bullet(pygame.sprite.Sprite):
     BULLED_SCALE = 1
 
-    def __init__(self, pic, x, y, direction, speed=6, falling_without_trajectory=False):
+    def __init__(self, pic, x, y, direction, speed=6, falling_without_trajectory=False, ):
         pygame.sprite.Sprite.__init__(self)
         self.group_name = pic.split('/')[4]
         self.item_name = pic.split('/')[5][:-4]
@@ -29,7 +29,7 @@ class Bullet(pygame.sprite.Sprite):
             self.speed = 5
 
     def direction_shooting(self):
-        # print(self.position)
+
         pygame.mask.from_surface(self.image)  # create mask image
         self.rect.y += self.BULLED_SCALE
         if self.falling_without_trajectory:
@@ -41,9 +41,15 @@ class Bullet(pygame.sprite.Sprite):
             if self.direction.x == 1:
                 self.rect.x += self.speed
             elif self.direction.x == -1:
-                flipped_image = pygame.image.load(self.pic)
-                self.image = pygame.transform.flip(flipped_image, True, False)
-                self.rect.x -= self.speed
+                if self.item_name in ['snowball']:  # ----- shooting  right
+                    self.rect.x -= self.speed
+                    self.rect.y = SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - self.image.get_height() - 25
+                    if key_pressed(pygame.K_RIGHT):  # if player movie right fix bullet position
+                        self.rect.x -= BG_SPEED
+                else:  # ---------------------------------- shooting down + right
+                    flipped_image = pygame.image.load(self.pic)
+                    self.image = pygame.transform.flip(flipped_image, True, False)
+                    self.rect.x -= self.speed
 
     def prevent_overflow_bullet_group(self):  # remove old shot from bullets_group if shoot out of screen
         if self.rect.x < -30 or self.rect.x > SCREEN_WIDTH + 100 or self.rect.y > SCREEN_HEIGHT:
