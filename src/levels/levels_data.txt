@@ -1,5 +1,5 @@
 #AREA - 1  #Level - 1   READ FROM ROW 1 ,2, 3, 4  #AREA - 2 #Lefel - 1.....
-{ 2: 'enemy_snowmen', 30: 'enemy_raven',  60: 'gnome/blue',         }
+{ 2: 'enemy_snowmen', 10: 'stones/medium_ice',   30: 'enemy_raven',  50: 'stones/small_ice',  60: 'gnome/blue', 80: 'stones/big_ice' }
 {0: 'signs/start', 20: 'mushroom/grey',  40: 'mushroom/grey',  60: 'stones/small' ,  80: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 200: 'mushroom/grey', 230: 'stones/medium', 260: 'stones/medium', 290: 'mushroom/grey',320: 'stones/small', 350: 'stones/medium', 372: 'mushroom/red',  380: 'stones/big', 430: 'stones/small', 460: 'mushroom/grey', 500: 'signs/distance', 560: 'mushroom/grey', 570: 'mushroom/grey', 600: 'stones/medium', 640: 'mushroom/grey', 700 : 'stones/medium', 740  : 'mushroom/purple', 800: 'stones/medium', 840: 'mushroom/grey', 860: 'mushroom/grey', 870: 'mushroom/grey', 900: 'stones/medium', 940: 'bonus/statuette',  960: 'stones/big', 980: 'mushroom/red', 990: 'bonus/coin', 1020: 'signs/goal'}
 {0: 'logs/big', 40: 'logs/big', 80: 'logs/big', 120: 'logs/big', 160 : 'logs/medium',  190 : 'logs/small', 220: 'logs/big', 250: 'logs/small', 270: 'logs/extra_small', 300: 'logs/small' , 330: 'logs/extra_small', 340: 'bonus/coin', 350: 'logs/extra_small' , 370: 'logs/extra_small', 380: 'bonus/coin' , 390: 'logs/extra_small',  410: 'logs/extra_small', 420: 'bonus/coin', 430: 'logs/extra_small',450: 'logs/extra_small',  470: 'logs/extra_small', 490: 'logs/small', 493: 'ships/airship', 520: 'logs/small' , 560: 'logs/big', 590: 'logs/small'  , 620: 'logs/extra_small', 640: 'logs/small', 624: 'enemy_butterfly', 670: 'logs/small', 700: 'logs/medium',  719: 'bonus/balloon',720: 'logs/hipper_small', 750: 'logs/medium', 780: 'logs/medium',  820: 'logs/medium' , 850: 'enemy_butterfly' , 860: 'logs/medium' , 900: 'logs/small' , 930: 'logs/big', 965: 'logs/big', 999: 'enemy_static_crab', 1000: 'logs/big', 1035: 'logs/extra_small', 1065: 'fake_ground/dock'}
 {0: 'signs/start', 30: 'stones/small_red', 60: 'stones/medium_red', 100: 'stones/big_red',  110: 'crystal/green', 120: 'enemy_fireball', 130: 'crystal/green', 150: 'stones/medium_red', 160: 'crystal/blue', 180 : 'crystal/blue', 200: 'stones/small_red' , 210 : 'crystal/blue', 240: 'enemy_turtle', 260: 'crystal/red', 280: 'stones/medium_red', 330: 'stones/medium_red', 340: 'enemy_fireball', 350: 'crystal/green',  360: 'crystal/red', 380: 'stones/medium_red', 410: 'stones/big_red',  430: 'crystal/red', 450:  'stones/small_red', 470: 'crystal/purple'  ,500: 'signs/distance',  530: 'stones/small_red', 560: 'stones/medium_red', 580: 'crystal/green', 600: 'enemy_turtle',  620: 'crystal/green',  630: 'crystal/red', 640: 'crystal/blue', 660: 'stones/small_red', 690: 'bonus/coin',  700: 'enemy_dragon', 720: 'crystal/blue',  750: 'stones/small_red', 780: 'stones/small_red', 820: 'crystal/blue',  840: 'crystal/blue', 880: 'stones/medium_red', 900: 'bonus/statuette', 910: 'enemy_vulture', 940: 'stones/medium_red' , 970: 'crystal/purple', 990: 'stones/small_red', 1100: 'crystal/purple' , 1060: 'signs/goal'}
@@ -36,12 +36,13 @@
  : 'enemy_static_crab',     |  : 'diamond/purple'    |                          |
  : 'enemy_fireball',        |                        |                          |
  : 'enemy_monster',         |                        |                          |
- : 'enemy_cockroach',       |                        |                          |
-                                                                                | : 'wall_decor/candle',
-                                                                                | : 'wall_decor/s1',
-                                                                                | : 'wall_decor/s2',
-                                                                                | : 'wall_decor/s3',
-                                                                                | : 'wall_decor/s4',
+ : 'enemy_cockroach',
+ : 'enemy_snowmen'          |                        |                          |
+ : 'enemy_seal'                                                                 | : 'wall_decor/candle',
+ : 'enemy_penguin'                                                              | : 'wall_decor/s1',
+ : 'enemy_ghost'                                                                | : 'wall_decor/s2',
+ : 'enemy_octopus'                                                              | : 'wall_decor/s3',
+ : 'enemy_fish'                                                                 | : 'wall_decor/s4',
                                                                                 | : 'wall_decor/s5'
                                                                                 | : 'decor/k1',
                                                                                 | : 'decor/k2',

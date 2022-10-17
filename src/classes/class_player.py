@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite, Sound):
         self.player_height_size = self.image.get_height()
         self.player_width_size = self.image.get_width()
         self.rect = self.image.get_bounding_rect(min_alpha=1)
-        self.rect.center = (SCREEN_WIDTH - 700, SCREEN_HEIGHT - (self.player_height_size - 124))
+        self.rect.center = (SCREEN_WIDTH - 650, SCREEN_HEIGHT - (self.player_height_size - 124))
         self.is_jump = False
         self.direction = vec(0, 1)  # stay 0
         self.pos = vec(self.rect.x, self.rect.y)
@@ -49,10 +49,10 @@ class Player(pygame.sprite.Sprite, Sound):
         self.acceleration = vec(0, 0)
         self.last_time = pygame.time.get_ticks()
         self.shot_position = self.pos
-        self.WALK_LEFT_SCREEN_BORDER = self.player_width_size - 14
+        self.WALK_LEFT_SCREEN_BORDER = self.player_width_size
         self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH // 3
-        self.is_boos_level = False
         self.jump_limit = SCREEN_HEIGHT  # allowed jump form all position
+        self.is_boos_level = False
 
     def movement_plyer(self):
         self.acceleration = vec(0, self.GRAVITY)  # fail gravity
@@ -62,6 +62,11 @@ class Player(pygame.sprite.Sprite, Sound):
             self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH - 60
 
         key = pygame.key.get_pressed()
+
+        # fix border walk and jump player
+        if self.pos.x < 25:
+            self.pos.x = self.WALK_LEFT_SCREEN_BORDER
+            self.direction = vec(1, 0)
 
         # jump up
         if key[pygame.K_UP] and self.direction.y == 1 and self.direction.x != 0 and self.rect.bottom < self.jump_limit:
@@ -103,7 +108,7 @@ class Player(pygame.sprite.Sprite, Sound):
         # go left
         if key[pygame.K_LEFT] and self.direction.y == 1 and self.pos.x >= self.WALK_LEFT_SCREEN_BORDER \
                 and not key[pygame.K_RIGHT]:
-            if self.pos.x <= 80:
+            if self.pos.x <= self.WALK_LEFT_SCREEN_BORDER:
                 self.direction.x = 1
             else:
                 self.direction.x = -1
@@ -277,11 +282,11 @@ class Player(pygame.sprite.Sprite, Sound):
                     self.image = pygame.image.load('../src/assets/images/player/fail/fail_right.png')
                     Sound.player_stone_hit(self)
                     sprite.rect.x -= 10
-                    if name in ['big', 'big_red']:
+                    if name in ['big', 'big_red', 'big_ice']:
                         self.energy_power -= 3  # X 2
-                    if name in ['medium', 'medium_red']:
+                    if name in ['medium', 'medium_red', 'medium_ice']:
                         self.energy_power -= 2
-                    if name in ['small', 'small_red']:
+                    if name in ['small', 'small_red', 'small_ice']:
                         self.energy_power -= 1
                     return
 
@@ -364,6 +369,9 @@ class Player(pygame.sprite.Sprite, Sound):
             # If len(sprite_collide) is 1 hit with self.
             if len(sprite_collide) > 1:
                 for sprite in sprite_collide:
+                    Sound.bullet_hit(self)
+                    hit_explosion = pygame.image.load('../src/assets/images/explosion/explosion.png')
+                    SCREEN.blit(hit_explosion, bullet.rect.topleft)
                     sprite.kill()
 
     def check_is_energy_player(self):

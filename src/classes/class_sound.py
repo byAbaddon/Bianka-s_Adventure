@@ -34,7 +34,11 @@ class Sound:
     def volcano_music_area_three(self):
         self.play_sound('../src/assets/sounds/game_musics/level_3.mp3', 0.6, -1)
 
-    # Area 9 Castle
+    # Level 3 Ice
+    def ice_music_area_four(self):
+        self.play_sound('../src/assets/sounds/game_musics/level_4.mp3', 0.5, -1)
+
+    # Level 9 Castle
     def castle_music_area_nine(self):
         self.play_sound('../src/assets/sounds/game_musics/level_9.mp3', 0.4, -1)
 

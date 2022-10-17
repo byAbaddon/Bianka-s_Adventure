@@ -93,7 +93,7 @@ class Table:
 
         # draw items
         # if self.player.is_player_kill_boss:
-        for x in range(0, self.area - 1):
+        for x in range(0, self.level - 1):
             pic = pygame.image.load(self.player.AMULETS_LIST[x])
             SCREEN.blit(pic, [332 + (41 * x - 1) - (x + 2), 18,  36, 36])
 

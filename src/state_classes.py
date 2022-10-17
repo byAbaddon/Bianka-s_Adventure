@@ -126,8 +126,7 @@ class LevelStatistic(Sound):
             Sound.stop_all_sounds()
             self.state = 'start_game'
             if not self.player_data.is_player_kill_boss:
-                # self.level += 1  # increase level   # todo: restore to original 4 level before increase area +1
-                self.area += 1  # increase area ------------------------  # todo: remove
+                self.area += 1  # increase area ------------------------  # todo:
 
 
 # =========================================== GameOver class

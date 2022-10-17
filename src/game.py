@@ -84,7 +84,7 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 1
+        self.area = 4
         self.level = 1
         self.boss_number = 1
         self.level_reader_row = 1
@@ -111,17 +111,16 @@ class GameState(Sound):
             all_spite_groups_dict['player'].add(player)
             all_spite_groups_dict['knight'].add(knight)
             all_spite_groups_dict['ground'].add(ground)
-            self.is_music_play = False
-            self.background = None
-            self.is_bg_created = False
-            self.area = 1
             self.level = 1
+            self.area = 1
             self.boss_number = 1
             self.level_reader_row = 1
             self.bonus_pts = 0
+            self.count = 0
             self.is_add_bonus = False
             self.is_in_water = False
-            self.count = 0
+            self.background = None
+            self.is_star_area = False
         # -----------------------------------------------
         self.bonus_pts = 0  # reset pts
         player.is_boos_level = False  # set player walking border to 1/3 S_W
@@ -288,6 +287,17 @@ class GameState(Sound):
                 text_creator(f'Level {self.level} - {self.area}', 'white', SCREEN_WIDTH // 2 - 58,
                              SCREEN_HEIGHT // 2, 36)
 
+        # ============================ level manipulator
+        if self.area > 8:
+            if self.area == 9:
+                self.state = 'boss'
+                if self.knight_data.is_boss_level_complete:
+                    self.area -= 1
+            else:
+                self.area = 1
+                self.level += 1
+            # ==============---------------level manipulator end
+
         # ==================== # check is player ALIVE
         if self.player_data.is_player_dead:
             self.background_data.is_allowed_move = False  # stop move background if key pressed
@@ -307,28 +317,17 @@ class GameState(Sound):
                         Sound.player_dead_funeral_march(self)
                         self.state = 'funeral_agency'  # - Game Over
 
-        # ============================ level manipulator
-        if self.area > 2:
-            if self.area == 3:
-                self.state = 'boss'
-                if self.knight_data.is_boss_level_complete:
-                    self.area -= 1
-            else:
-                self.area = 1
-                self.level += 1
-        # ==============---------------level manipulator end
-
-        # ========================================== START GAME  with Area 1; Level 1
+        # ========================================== START GAME  with Area 1; Level 1 / Wood
         if self.area == 1:
             if not self.is_star_area:
                 # set music
                 self.current_music = Sound.forest_music_area_one(self)
                 # resize image and set background
-                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_4.png', 800, 510)
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_1.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 self.is_star_area = True
 
-        # ========================================== START GAME  with Area 2; Level 1
+        # ========================================== START GAME  with Area 2; Level 1 / Sea
         if self.area == 2:
             if not self.is_star_area:
                 # set music
@@ -350,7 +349,7 @@ class GameState(Sound):
                 pos = pic.get_rect(center=(self.player_data.player_dead_x_pos, S_H - 100))
                 SCREEN.blit(pic, pos)
 
-        # ========================================== START GAME  with Area 3; Level 1
+        # ========================================== START GAME  with Area 3; Level 1 / Volcano
         if self.area == 3:
             if not self.is_star_area:
                 # set music
@@ -360,6 +359,18 @@ class GameState(Sound):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 ground_group.empty()
                 ground_group.add(ground)
+                self.is_star_area = True
+
+        # ========================================== START GAME  with Area 4; Level 1 / Ice
+        if self.area == 4:
+            if not self.is_star_area:
+                # set music
+                self.current_music = Sound.ice_music_area_four(self)
+                # resize image and set background
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_4.png', 800, 510)
+                self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
+                # change player friction
+                self.player_data.PLAYER_FRICTION = -0.07
                 self.is_star_area = True
 
         # ========================================== START GAME  with Area 9; Level 1
@@ -385,7 +396,6 @@ class GameState(Sound):
 
         # ============= level counter
         distance_counter()
-        # print(len(item_group))
 
         # =================================================== UPDATE
         # update BG
@@ -463,9 +473,8 @@ class GameState(Sound):
             Sound.player_dead_funeral_march(self)
             self.state = 'funeral_agency'
         # ====================================== reset part of game_state data
-        self.is_music_play = False
+        self.is_star_area = False
         self.background = None
-        self.is_bg_created = False
         self.is_in_water = False
         self.count = 0
         self.count_visit = 0
@@ -485,14 +494,14 @@ class GameState(Sound):
         background_image('../src/assets/images/player/dead/bg/rip.png', 0, 0)
         if key_pressed(pygame.K_RETURN):
             self.is_start_new_game = True  # for reset old game
+            Sound.stop_all_sounds()
             self.state = 'intro'
 
     def level_statistic(self):
         # reset part of game state
-        # self.is_music_play = False
-        # self.is_bg_created = False
         self.is_star_area = False
         self.background = None
+        self.player_data.PLAYER_FRICTION = -0.12
         self.player_data.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH // 3
         [asg[group].empty() for group in asg if group not in ['ground', 'player', 'knight']]  # remove all
         # ---------------------------------------------
