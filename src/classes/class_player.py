@@ -278,6 +278,12 @@ class Player(pygame.sprite.Sprite, Sound):
                         self.bonus_statuette = 1
                         Sound.grab_statuette(self)
                     sprite.kill()
+                case 'trap':
+                    if name == 'black':
+                        self.energy_power -= 20
+                        Sound.snapping_trap(self)
+                        Sound.player_injury(self)
+                        sprite.kill()
                 case 'stones':
                     self.image = pygame.image.load('../src/assets/images/player/fail/fail_right.png')
                     Sound.player_stone_hit(self)
@@ -322,6 +328,10 @@ class Player(pygame.sprite.Sprite, Sound):
                 case 'stones':
                     Sound.bullet_ricochet(self)
                     bullet.kill()
+                case 'trap':
+                    Sound.snapping_trap(self)
+                    bullet.kill()
+                    item.kill()
                 case 'bonus':
                     if 'coin' or 'statuette':
                         Sound.bullet_statuette_hit(self)

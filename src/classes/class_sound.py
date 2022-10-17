@@ -67,6 +67,9 @@ class Sound:
     def player_dead(self):
         self.play_sound('../src/assets/sounds/player/dead.wav', 0.5)
 
+    def player_injury(self):
+        self.play_sound('../src/assets/sounds/player/injury_trap.mp3', 1)
+
     def sign_go(self):
         self.play_sound('../src/assets/sounds/sign/go.wav', 1)
 
@@ -90,6 +93,9 @@ class Sound:
 
     def grab_amulets(self):
         self.play_sound('../src/assets/sounds/player/grab_amulets.wav', 1)
+
+    def snapping_trap(self):
+        self.play_sound('../src/assets/sounds/trap/snapping_trap.wav', 1)
 
     # -------------------------------------------   enemy sound
     def snowmen_sound(self):
