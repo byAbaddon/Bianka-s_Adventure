@@ -34,13 +34,21 @@ class Sound:
     def volcano_music_area_three(self):
         self.play_sound('../src/assets/sounds/game_musics/level_3.mp3', 0.6, -1)
 
-    # Level 3 Ice
+    # Level 3 Ice Age
     def ice_music_area_four(self):
         self.play_sound('../src/assets/sounds/game_musics/level_4.mp3', 0.5, -1)
 
-    # Level 6 Ice
+    # Level 5 Dark Forest
+    def dark_forest_music_area_five(self):
+        self.play_sound('../src/assets/sounds/game_musics/level_5.mp3', 0.5, -1)
+
+    # Level 6 Sea Two
     def sea_two_music_area_six(self):
         self.play_sound('../src/assets/sounds/game_musics/level_6.mp3', 0.5, -1)
+
+    # Level 7 Desert
+    def desert_music_area_seven(self):
+        self.play_sound('../src/assets/sounds/game_musics/level_7.mp3', 0.5, -1)
 
     # Level 9 Castle
     def castle_music_area_nine(self):

@@ -84,10 +84,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 6
+        self.area = 5
         self.level = 1
         self.boss_number = 1
-        self.level_reader_row = 6  # 1
+        self.level_reader_row = 5  # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -322,7 +322,7 @@ class GameState(Sound):
         if self.area == 1:
             if not self.is_star_area:
                 # set music
-                self.current_music = Sound.forest_music_area_one(self)
+                Sound.forest_music_area_one(self)
                 # resize image and set background
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_1.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
@@ -332,7 +332,7 @@ class GameState(Sound):
         if self.area == 2:
             if not self.is_star_area:
                 # set music
-                self.current_music = Sound.sea_music_area_two(self)
+                Sound.sea_music_area_two(self)
                 # resize image and set background
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_2.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
@@ -351,7 +351,7 @@ class GameState(Sound):
         if self.area == 3:
             if not self.is_star_area:
                 # set music
-                self.current_music = Sound.volcano_music_area_three(self)
+                Sound.volcano_music_area_three(self)
                 # resize image and set background
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_3.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
@@ -363,7 +363,7 @@ class GameState(Sound):
         if self.area == 4:
             if not self.is_star_area:
                 # set music
-                self.current_music = Sound.ice_music_area_four(self)
+                Sound.ice_music_area_four(self)
                 # resize image and set background
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_4.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
@@ -372,6 +372,15 @@ class GameState(Sound):
                 self.is_star_area = True
 
         # ========================================== START GAME  with Area 1; Level 5 / Wood Two - Dark
+        if self.area == 5:
+            if not self.is_star_area:
+                # set music
+                Sound.dark_forest_music_area_five(self)
+                # resize image and set background
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_5.png', 800, 510)
+                self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
+                self.is_star_area = True
+
         # ========================================== START GAME  with Area 1; Level 6 / Sea Two - Clouds
         if self.area == 6:
             if not self.is_star_area:
@@ -390,7 +399,16 @@ class GameState(Sound):
                 Sound.player_fail_in_water(self)
                 self.is_in_water = True
 
-        # ========================================== START GAME  with Area 1; Level 7 / Stone
+        # ========================================== START GAME  with Area 1; Level 7 / Desert
+        if self.area == 7:
+            if not self.is_star_area:
+                # set music
+                self.current_music = Sound.desert_music_area_seven(self)
+                # resize image and set background
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_7.png', 800, 510)
+                self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
+                self.is_star_area = True
+
         # ========================================== START GAME  with Area 1; Level 8 / ???
 
         # ========================================== START GAME  with Area 1; Level 9 / Castle
@@ -424,7 +442,7 @@ class GameState(Sound):
         # --------------------------- draw sprite group
         if self.area == 2 or self.area == 6:
             ground_group.draw(SCREEN)  # hide under bg or removed
-            if self.is_in_water:
+            if self.is_in_water:  # run splashes animation
                 pic = pygame.image.load('../src/assets/images/splashes/splashes.png')
                 self.count += 0.03
                 pic = pygame.transform.rotozoom(pic, 0, self.count)
