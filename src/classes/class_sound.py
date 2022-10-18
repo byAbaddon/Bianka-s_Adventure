@@ -38,6 +38,10 @@ class Sound:
     def ice_music_area_four(self):
         self.play_sound('../src/assets/sounds/game_musics/level_4.mp3', 0.5, -1)
 
+    # Level 6 Ice
+    def sea_two_music_area_six(self):
+        self.play_sound('../src/assets/sounds/game_musics/level_6.mp3', 0.5, -1)
+
     # Level 9 Castle
     def castle_music_area_nine(self):
         self.play_sound('../src/assets/sounds/game_musics/level_9.mp3', 0.4, -1)
@@ -69,6 +73,9 @@ class Sound:
 
     def player_injury(self):
         self.play_sound('../src/assets/sounds/player/injury_trap.mp3', 1)
+
+    def player_fail_in_water(self):
+        self.play_sound('../src/assets/sounds/splashes/splashes.wav', 1)
 
     def sign_go(self):
         self.play_sound('../src/assets/sounds/sign/go.wav', 1)

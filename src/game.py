@@ -84,10 +84,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 4
+        self.area = 6
         self.level = 1
         self.boss_number = 1
-        self.level_reader_row = 1
+        self.level_reader_row = 6  # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -100,7 +100,7 @@ class GameState(Sound):
 
     def start_game(self):
         # ------------------top display frame
-        table.update()
+        # table.update()
 
         # =============================================== RESET ALL DATA IF START NEW GAME
         if self.is_start_new_game:  # reset all old data
@@ -127,10 +127,10 @@ class GameState(Sound):
 
         # ++++++++++++++++++++++++++++++ developer utils +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
-        # text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
-        # text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
-        # text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
-        # text_creator(f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70, 22)
+        text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
+        text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
+        text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
+        text_creator(f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70, 22)
         text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 5)
 
         # ================================ create enemy classes
@@ -216,7 +216,8 @@ class GameState(Sound):
                 return Cloud(self.player_data, pic_cloud, S_W, S_H - 160, False, 2, 'left_right', 200)
             if v_type == 'cloud/up_down':
                 return Cloud(self.player_data, pic_cloud, S_W, S_H - 160, False, 2, 'up_down', 200)
-
+            if v_type == 'cloud/fail':
+                return Cloud(self.player_data, pic_cloud, S_W, S_H - 280, False, 1, 'fail', 0)
             # ================================ create logs
             if v_type.split('/')[0] == 'logs':
                 pic_log = f'../src/assets/images/logs/{v_type.split("/")[1]}.png'
@@ -249,14 +250,14 @@ class GameState(Sound):
                         elif v == 'bonus/balloon':  # change item position
                             # test move to decoration !!!!!!!!!!
                             new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H // 2, 0)
-                        # elif v.split('/')[0] == 'decor' or 'wall_decor':  # change item position
-                        #     y_pos = S_H - G_H_S - 42
-                        #     if v.split('/')[0] in ['wall_decor']:
-                        #         y_pos -= 200
-                        #     if v == 'wall_decor/candle':
-                        #         new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, y_pos, 9)
-                        #     else:
-                        #         new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, y_pos)
+                        elif v.split('/')[0] in ['decor', 'wall_decor']:  # change item position
+                            y_pos = S_H - G_H_S - 42
+                            if v.split('/')[0] in ['wall_decor']:
+                                y_pos -= 200
+                            if v == 'wall_decor/candle':
+                                new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, y_pos, 9)
+                            else:
+                                new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, y_pos)
                         else:
                             new_item_class = input_class(f'../src/assets/images/items/{v}.png')  # create item class
                         group_class.add(new_item_class)  # -----------------------  add new class to item_group
@@ -317,7 +318,7 @@ class GameState(Sound):
                         Sound.player_dead_funeral_march(self)
                         self.state = 'funeral_agency'  # - Game Over
 
-        # ========================================== START GAME  with Area 1; Level 1 / Wood
+        # ========================================== START GAME  with Area 1; Level 1 / Wood One
         if self.area == 1:
             if not self.is_star_area:
                 # set music
@@ -327,7 +328,7 @@ class GameState(Sound):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 self.is_star_area = True
 
-        # ========================================== START GAME  with Area 2; Level 1 / Sea
+        # ========================================== START GAME  with Area 1; Level 2 / Sea One - Logs
         if self.area == 2:
             if not self.is_star_area:
                 # set music
@@ -341,15 +342,12 @@ class GameState(Sound):
                 ground_group.add(ground_rock)
                 self.is_star_area = True
             self.player_data.jump_limit = 520  # prevent jump from water 508
+            # check is player in the Sea and allowed animation
+            if self.player_data.check_is_player_fail_out_of_screen():
+                Sound.player_fail_in_water(self)
+                self.is_in_water = True
 
-            if self.is_in_water:
-                pic = pygame.image.load('../src/assets/images/splashes/splashes.png')
-                self.count += 0.03
-                pic = pygame.transform.rotozoom(pic, 0, self.count)
-                pos = pic.get_rect(center=(self.player_data.player_dead_x_pos, S_H - 100))
-                SCREEN.blit(pic, pos)
-
-        # ========================================== START GAME  with Area 3; Level 1 / Volcano
+        # ========================================== START GAME  with Area 1; Level 3 / Volcano
         if self.area == 3:
             if not self.is_star_area:
                 # set music
@@ -361,7 +359,7 @@ class GameState(Sound):
                 ground_group.add(ground)
                 self.is_star_area = True
 
-        # ========================================== START GAME  with Area 4; Level 1 / Ice
+        # ========================================== START GAME  with Area 1; Level 4 / Ice
         if self.area == 4:
             if not self.is_star_area:
                 # set music
@@ -373,7 +371,29 @@ class GameState(Sound):
                 self.player_data.PLAYER_FRICTION = -0.07
                 self.is_star_area = True
 
-        # ========================================== START GAME  with Area 9; Level 1
+        # ========================================== START GAME  with Area 1; Level 5 / Wood Two - Dark
+        # ========================================== START GAME  with Area 1; Level 6 / Sea Two - Clouds
+        if self.area == 6:
+            if not self.is_star_area:
+                # set music
+                self.current_music = Sound.sea_two_music_area_six(self)
+                # resize image and set background
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_6.png', 800, 510)
+                self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True,)
+                # add rock ground
+                ground_group.empty()
+                ground_rock = Ground('../src/assets/images/ground/dock_middle.png', False, 0, S_H - 100)
+                ground_group.add(ground_rock)
+                self.is_star_area = True
+            # check is player in the Sea and allowed animation
+            if self.player_data.check_is_player_fail_out_of_screen():
+                Sound.player_fail_in_water(self)
+                self.is_in_water = True
+
+        # ========================================== START GAME  with Area 1; Level 7 / Stone
+        # ========================================== START GAME  with Area 1; Level 8 / ???
+
+        # ========================================== START GAME  with Area 1; Level 9 / Castle
         if self.area == 9:
             if not self.is_star_area:
                 # set music
@@ -400,9 +420,16 @@ class GameState(Sound):
         # =================================================== UPDATE
         # update BG
         self.background.update()
+
         # --------------------------- draw sprite group
-        if self.area == 2:
-            ground_group.draw(SCREEN)  # hide under bg
+        if self.area == 2 or self.area == 6:
+            ground_group.draw(SCREEN)  # hide under bg or removed
+            if self.is_in_water:
+                pic = pygame.image.load('../src/assets/images/splashes/splashes.png')
+                self.count += 0.03
+                pic = pygame.transform.rotozoom(pic, 0, self.count)
+                pos = pic.get_rect(center=(self.player_data.player_dead_x_pos, S_H - 100))
+                SCREEN.blit(pic, pos)
         item_group.draw(SCREEN)
         player_group.draw(SCREEN)
         bullets_group.draw(SCREEN)
@@ -415,6 +442,8 @@ class GameState(Sound):
 
         # ============== draw current area/level labels
         area_label()
+
+
 
     def boss(self):
         player.is_boos_level = True  # set player walking border to all SCREEN_WIDTH
@@ -474,8 +503,8 @@ class GameState(Sound):
             self.state = 'funeral_agency'
         # ====================================== reset part of game_state data
         self.is_star_area = False
-        self.background = None
         self.is_in_water = False
+        self.background = None
         self.count = 0
         self.count_visit = 0
         # clear all group --------------

@@ -1,5 +1,5 @@
 import pygame
-from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, key_pressed, vec, text_creator, CLOCK
+from src.settings import SCREEN, TOP_FRAME_SIZE, SCREEN_WIDTH, key_pressed, vec, text_creator, CLOCK
 
 
 class Background:
@@ -11,7 +11,7 @@ class Background:
     bg_counter = 0
     is_allowed_move = True
 
-    def __init__(self, image=None, x=0, y=0, is_loop=False, speed=1, is_image_scaled=False):
+    def __init__(self, image=None, x=0, y=0, is_loop=False, speed=1, is_image_scaled=False,):
         self.image = image
         self.x = x
         self.y = y
@@ -53,8 +53,8 @@ class Background:
                 self.distance_mt += self.speed / 10
 
     def draw_label(self):
-        # text_creator(f'BG_speed: {self.speed:.2f}', 'white', 290, 20)
         text_creator(f'BG_distance: {int(self.distance_mt)}', 'white', 290, 5)
+        # text_creator(f'BG_speed: {self.speed:.2f}', 'white', 290, 20)
 
     def update(self):
         self.create_bg()

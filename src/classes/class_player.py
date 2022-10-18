@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite, Sound):
     JUMP_HEIGHT = -6
     PLAYER_FRICTION = -0.12
     PLAYER_SPEED = 0.4
-    lives = 3
+    lives = 13
     points = 0
     energy_power = 100
     is_player_dead = False
@@ -30,6 +30,7 @@ class Player(pygame.sprite.Sprite, Sound):
     player_dead_x_pos = 0
     is_player_kill_boss = False
     boss_taken_amulets = 0
+    is_jump_allowed = True
 
     def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
@@ -67,43 +68,44 @@ class Player(pygame.sprite.Sprite, Sound):
         if self.pos.x < 25:
             self.pos.x = self.WALK_LEFT_SCREEN_BORDER
             self.direction = vec(1, 0)
+        if self.is_jump_allowed:
+            # jump up
+            if key[pygame.K_UP] and self.direction.y == 1 and self.direction.x != 0 and self.rect.bottom < self.jump_limit:
+                Sound.player_jump(self)
+                self.is_jump = True
+                self.direction.y = -1
+                self.velocity.y = self.JUMP_HEIGHT
+                if self.direction.x == 1:
+                    self.image = pygame.image.load('../src/assets/images/player/jump/1.png')
+                else:
+                    self.image = pygame.transform.flip(
+                        pygame.image.load('../src/assets/images/player/jump/2.png'), True, False)
+                # change image if player jump in Right Border
+                if self.pos.x >= self.WALK_LEFT_SCREEN_BORDER and key[pygame.K_RIGHT]:
+                    self.image = pygame.image.load('../src/assets/images/player/walking/5.png')
 
-        # jump up
-        if key[pygame.K_UP] and self.direction.y == 1 and self.direction.x != 0 and self.rect.bottom < self.jump_limit:
-            Sound.player_jump(self)
-            self.is_jump = True
-            self.direction.y = -1
-            self.velocity.y = self.JUMP_HEIGHT
-            if self.direction.x == 1:
-                self.image = pygame.image.load('../src/assets/images/player/jump/1.png')
-            else:
-                self.image = pygame.transform.flip(
-                    pygame.image.load('../src/assets/images/player/jump/2.png'), True, False)
-            # change image if player jump in Right Border
-            if self.pos.x >= self.WALK_LEFT_SCREEN_BORDER and key[pygame.K_RIGHT]:
+            # jump up right
+            if key[pygame.K_UP] and key[pygame.K_RIGHT] and self.pos.x < self.WALK_RIGHT_SCREEN_BORDER:
+                if not self.is_jump:
+                    self.velocity.y = self.JUMP_HEIGHT
+                self.direction = vec(1, -1)
+                self.acceleration.x = self.PLAYER_SPEED
+                self.is_jump = True
                 self.image = pygame.image.load('../src/assets/images/player/walking/5.png')
 
-        # jump up right
-        if key[pygame.K_UP] and key[pygame.K_RIGHT] and self.pos.x < self.WALK_RIGHT_SCREEN_BORDER:
-            if not self.is_jump:
-                self.velocity.y = self.JUMP_HEIGHT
-            self.direction = vec(1, 0)
-            self.acceleration.x = self.PLAYER_SPEED
-            self.is_jump = True
-            self.image = pygame.image.load('../src/assets/images/player/walking/5.png')
-
-        # jump up left
-        if key[pygame.K_UP] and key[pygame.K_LEFT] and self.pos.x >= self.WALK_LEFT_SCREEN_BORDER:
-            if self.pos.x <= 80:
-                self.direction.x = 1
-            else:
-                self.direction.x = -1
-            if not self.is_jump:
-                self.velocity.y = self.JUMP_HEIGHT
-            self.acceleration.x = -self.PLAYER_SPEED
-            self.is_jump = True
-            self.image = pygame.transform.flip(
-                pygame.image.load('../src/assets/images/player/walking/5.png'), True, False)
+            # jump up left
+            if key[pygame.K_UP] and key[pygame.K_LEFT] and self.pos.x >= self.WALK_LEFT_SCREEN_BORDER:
+                self.direction = vec(-1, -1)
+                if self.pos.x <= 80:
+                    self.direction.x = 1
+                else:
+                    self.direction.x = -1
+                if not self.is_jump:
+                    self.velocity.y = self.JUMP_HEIGHT
+                self.acceleration.x = -self.PLAYER_SPEED
+                self.is_jump = True
+                self.image = pygame.transform.flip(
+                    pygame.image.load('../src/assets/images/player/walking/5.png'), True, False)
 
         # go left
         if key[pygame.K_LEFT] and self.direction.y == 1 and self.pos.x >= self.WALK_LEFT_SCREEN_BORDER \
@@ -121,7 +123,7 @@ class Player(pygame.sprite.Sprite, Sound):
             self.direction.x = 1
             self.acceleration.x = self.PLAYER_SPEED
 
-                    # running
+        # running
         # if key[pygame.K_a] and self.pos.x > self.WALK_LEFT_SCREEN_BORDER:
         #     if not self.direction.y == -1 and not self.direction.y == 0:
         #         if self.direction.x == 1:
@@ -203,14 +205,14 @@ class Player(pygame.sprite.Sprite, Sound):
                         self.is_jump = False
 
     def check_water_platform_collide(self):
-        buffer = 7  # buffer image to improve collide
+        buffer = 6  # buffer image to improve collide
         group_items = self.all_sprite_groups_dict['items']
         for sprite in pygame.sprite.spritecollide(self, group_items, False, pygame.sprite.collide_mask):
             # print(sprite.group_name)
             if sprite.group_name == 'cloud' or sprite.group_name == 'logs':
-                if not (sprite.rect.left > self.pos.x or self.pos.x > sprite.rect.right):
-                    # check is player head hits in bottom platform
-                    if self.pos.y < sprite.rect.bottom:
+                # check is player head hits in bottom platform
+                if self.pos.y < sprite.rect.bottom:
+                    if not (sprite.rect.left > self.pos.x or self.pos.x > sprite.rect.right):
                         # ground collide
                         self.pos.y = sprite.rect.top + buffer  # buffer after collide for removing player trembling
                         self.velocity.y = 0
@@ -222,6 +224,8 @@ class Player(pygame.sprite.Sprite, Sound):
                             else:
                                 self.image = pygame.image.load('../src/assets/images/player/stay/2.png')
                             self.is_jump = False
+                else:
+                    self.is_jump_allowed = False  # if plyer body collide cloud  disallow JUMP
 
     def check_item_collide(self):
         group_items = self.all_sprite_groups_dict['items']
@@ -436,6 +440,7 @@ class Player(pygame.sprite.Sprite, Sound):
         self.pos = vec(self.rect.x, self.rect.y)
         self.jump_limit = SCREEN_HEIGHT  # allowed jump form all position
         self.is_boos_level = False
+        self.is_jump_allowed = True
 
     # RESET TO NEW GAME
     def reset_all_player_data_for_new_game(self):
@@ -461,3 +466,4 @@ class Player(pygame.sprite.Sprite, Sound):
         self.direction = vec(0, 1)  # stay 0
         self.pos = vec(self.rect.x, self.rect.y)
         self.jump_limit = SCREEN_HEIGHT  # allowed jump form all position
+        self.is_jump_allowed = True

@@ -1,102 +1,94 @@
 #AREA - 1  #Level - 1   READ FROM ROW 1 ,2, 3, 4  #AREA - 2 #Lefel - 1.....
-{ 2: 'enemy_snowmen', 10: 'trap/black',   30: 'enemy_raven',  50: 'stones/small_ice',  60: 'gnome/blue', 80: 'stones/big_ice' }
 {0: 'signs/start', 20: 'mushroom/grey',  40: 'mushroom/grey',  60: 'stones/small' ,  80: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 200: 'mushroom/grey', 230: 'stones/medium', 260: 'stones/medium', 290: 'mushroom/grey',320: 'stones/small', 350: 'stones/medium', 372: 'mushroom/red',  380: 'stones/big', 430: 'stones/small', 460: 'mushroom/grey', 500: 'signs/distance', 560: 'mushroom/grey', 570: 'mushroom/grey', 600: 'stones/medium', 640: 'mushroom/grey', 700 : 'stones/medium', 740  : 'mushroom/purple', 800: 'stones/medium', 840: 'mushroom/grey', 860: 'mushroom/grey', 870: 'mushroom/grey', 900: 'stones/medium', 940: 'bonus/statuette',  960: 'stones/big', 980: 'mushroom/red', 990: 'bonus/coin', 1020: 'signs/goal'}
-{0: 'logs/big', 40: 'logs/big', 80: 'logs/big', 120: 'logs/big', 160 : 'logs/medium',  190 : 'logs/small', 220: 'logs/big', 250: 'logs/small', 270: 'logs/extra_small', 300: 'logs/small' , 330: 'logs/extra_small', 340: 'bonus/coin', 350: 'logs/extra_small' , 370: 'logs/extra_small', 380: 'bonus/coin' , 390: 'logs/extra_small',  410: 'logs/extra_small', 420: 'bonus/coin', 430: 'logs/extra_small',450: 'logs/extra_small',  470: 'logs/extra_small', 490: 'logs/small', 493: 'ships/airship', 520: 'logs/small' , 560: 'logs/big', 590: 'logs/small'  , 620: 'logs/extra_small', 640: 'logs/small', 624: 'enemy_butterfly', 670: 'logs/small', 700: 'logs/medium',  719: 'bonus/balloon',720: 'logs/hipper_small', 750: 'logs/medium', 780: 'logs/medium',  820: 'logs/medium' , 850: 'enemy_butterfly' , 860: 'logs/medium' , 900: 'logs/small' , 930: 'logs/big', 965: 'logs/big', 999: 'enemy_static_crab', 1000: 'logs/big', 1035: 'logs/extra_small', 1065: 'fake_ground/dock'}
-{0: 'signs/start', 30: 'stones/small_red', 60: 'stones/medium_red', 100: 'stones/big_red',  110: 'crystal/green', 120: 'enemy_fireball', 130: 'crystal/green', 150: 'stones/medium_red', 160: 'crystal/blue', 180 : 'crystal/blue', 200: 'stones/small_red' , 210 : 'crystal/blue', 240: 'enemy_turtle', 260: 'crystal/red', 280: 'stones/medium_red', 330: 'stones/medium_red', 340: 'enemy_fireball', 350: 'crystal/green',  360: 'crystal/red', 380: 'stones/medium_red', 410: 'stones/big_red',  430: 'crystal/red', 450:  'stones/small_red', 470: 'crystal/purple'  ,500: 'signs/distance',  530: 'stones/small_red', 560: 'stones/medium_red', 580: 'crystal/green', 600: 'enemy_turtle',  620: 'crystal/green',  630: 'crystal/red', 640: 'crystal/blue', 660: 'stones/small_red', 690: 'bonus/coin',  700: 'enemy_dragon', 720: 'crystal/blue',  750: 'stones/small_red', 780: 'stones/small_red', 820: 'crystal/blue',  840: 'crystal/blue', 880: 'stones/medium_red', 900: 'bonus/statuette', 910: 'enemy_vulture', 940: 'stones/medium_red' , 970: 'crystal/purple', 990: 'stones/small_red', 1100: 'crystal/purple' , 1060: 'signs/goal'}
 {0: 'logs/big', 40: 'logs/big', 80: 'logs/big', 120: 'logs/big', 160 : 'logs/medium',  190 : 'logs/small', 220: 'logs/big', 250: 'logs/small', 270: 'logs/extra_small', 300: 'logs/small' , 330: 'logs/extra_small', 340: 'bonus/coin', 350: 'logs/extra_small' , 370: 'logs/extra_small', 380: 'bonus/coin' , 390: 'logs/extra_small',  410: 'logs/extra_small', 420: 'bonus/coin', 430: 'logs/extra_small',450: 'logs/extra_small',  470: 'logs/extra_small', 490: 'logs/small', 493: 'ships/airship', 520: 'logs/small' , 560: 'logs/big', 590: 'logs/small'  , 620: 'logs/extra_small', 640: 'logs/small', 624: 'enemy_butterfly', 670: 'logs/small', 700: 'logs/medium',  719: 'bonus/balloon',720: 'logs/hipper_small', 750: 'logs/medium', 780: 'logs/medium',  820: 'logs/medium' , 850: 'enemy_butterfly' , 860: 'logs/medium' , 900: 'logs/small' , 930: 'logs/big', 965: 'logs/big', 999: 'enemy_static_crab', 1000: 'logs/big', 1035: 'logs/extra_small',  1055: 'ground/dock_2_re', 1060: 'signs/goal'}
 {0: 'signs/start', 30: 'stones/small_red', 60: 'stones/medium_red', 100: 'stones/big_red',  110: 'crystal/green', 120: 'enemy_fireball', 130: 'crystal/green', 150: 'stones/medium_red', 160: 'crystal/blue', 180 : 'crystal/blue', 200: 'stones/small_red' , 210 : 'crystal/blue', 240: 'enemy_turtle', 260: 'crystal/red', 280: 'stones/medium_red', 330: 'stones/medium_red', 340: 'enemy_fireball', 350: 'crystal/green',  360: 'crystal/red', 380: 'stones/medium_red', 410: 'stones/big_red',  430: 'crystal/red', 450:  'stones/small_red', 470: 'crystal/purple'  ,500: 'signs/distance',  530: 'stones/small_red', 560: 'stones/medium_red', 580: 'crystal/green', 600: 'enemy_turtle',  620: 'crystal/green',  630: 'crystal/red', 640: 'crystal/blue', 660: 'stones/small_red', 690: 'bonus/coin',  700: 'enemy_dragon', 720: 'crystal/blue',  750: 'stones/small_red', 780: 'stones/small_red', 820: 'crystal/blue',  840: 'crystal/blue', 880: 'stones/medium_red', 900: 'bonus/statuette', 910: 'enemy_vulture', 940: 'stones/medium_red' , 970: 'crystal/purple', 990: 'stones/small_red', 1100: 'crystal/purple' , 1060: 'signs/goal'}
-{1: 'signs/start', 30: 'mushroom/grey', 40: 'mushroom/grey', 60 : 'stones/small', 80: 'mushroom/orange', 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 180: 'enemy_static_hedgehog', 200: 'mushroom/grey', 230: 'stones/big', 250: 'stones/medium', 290: 'mushroom/grey', 320: 'stones/medium', 360: 'enemy_static_hedgehog', 380: 'stones/medium', 440: 'mushroom/orange', 460: 'mushroom/grey', 470: 'mushroom/purple', 500: 'signs/distance',  530: 'enemy_hedgehog',  560: 'mushroom/grey', 570: 'stones/big', 600: 'stones/medium', 640: 'mushroom/orange', 660: 'stones/small', 680: 'enemy_monkey', 700 : 'stones/big', 730  : 'mushroom/red', 740: 'stones/big', 760: 'stones/big', 800: 'stones/medium', 840: 'mushroom/orange', 860: 'stones/small', 870: 'mushroom/grey', 900: 'stones/medium', 930: 'bonus/statuette',  960: 'stones/big', 980: 'mushroom/grey', 1020: 'signs/goal'}
+4
+5
+{0: 'cloud/left_right', 20: 'cloud/up_down', 60: 'enemy_octopus',   50: 'cloud/fail' , 70: 'cloud/static', 90: 'cloud/static',   120: 'cloud/up_down', 150: 'cloud/fail',  180: 'cloud/static', }
 
 
 
-
+Level 1 Forest
 {0: 'signs/start', 20: 'mushroom/grey',  40: 'mushroom/grey',  60: 'stones/small' ,  80: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 200: 'mushroom/grey', 230: 'stones/medium', 260: 'stones/medium', 290: 'mushroom/grey',320: 'stones/small', 350: 'stones/medium', 372: 'mushroom/red',  380: 'stones/big', 430: 'stones/small', 460: 'mushroom/grey', 500: 'signs/distance', 560: 'mushroom/grey', 570: 'mushroom/grey', 600: 'stones/medium', 640: 'mushroom/grey', 700 : 'stones/medium', 740  : 'mushroom/purple', 800: 'stones/medium', 840: 'mushroom/grey', 860: 'mushroom/grey', 870: 'mushroom/grey', 900: 'stones/medium', 940: 'bonus/statuette',  960: 'stones/big', 980: 'mushroom/red', 990: 'bonus/coin', 1020: 'signs/goal'}
 {1: 'signs/start', 30: 'mushroom/grey', 40: 'mushroom/grey', 60 : 'stones/small', 80: 'mushroom/orange', 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 180: 'enemy_static_hedgehog', 200: 'mushroom/grey', 230: 'stones/big', 250: 'stones/medium', 290: 'mushroom/grey', 320: 'stones/medium', 360: 'enemy_static_hedgehog', 380: 'stones/medium', 440: 'mushroom/orange', 460: 'mushroom/grey', 470: 'mushroom/purple', 500: 'signs/distance',  530: 'enemy_hedgehog',  560: 'mushroom/grey', 570: 'stones/big', 600: 'stones/medium', 640: 'mushroom/orange', 660: 'stones/small', 680: 'enemy_monkey', 700 : 'stones/big', 730  : 'mushroom/red', 740: 'stones/big', 760: 'stones/big', 800: 'stones/medium', 840: 'mushroom/orange', 860: 'stones/small', 870: 'mushroom/grey', 900: 'stones/medium', 930: 'bonus/statuette',  960: 'stones/big', 980: 'mushroom/grey', 1020: 'signs/goal'}
 {2: 'signs/start', 25: 'stones/medium', 40: 'mushroom/grey', 45: 'mushroom/purple', 60 : 'stones/medium', 80: 'stones/big',110: 'stones/big', 120: 'mushroom/orange', 130: 'stones/medium', 150: 'enemy_static_hedgehog',170: 'enemy_static_hedgehog', 185: 'mushroom/grey', 190: 'mushroom/grey', 200: 'mushroom/orange', 230: 'stones/small', 250: 'stones/medium', 270: 'stones/big',  290: 'mushroom/grey', 300: 'enemy_monkey' ,320: 'stones/medium', 350: 'enemy_hedgehog',  360: 'mushroom/grey', 370: 'mushroom/orange', 380: 'stones/medium',400: 'mushroom/orange', 420: 'enemy_static_hedgehog', 440: 'stones/big', 460: 'stones/medium', 470: 'bonus/statuette', 490: 'enemy_monkey',500: 'signs/distance',  520: 'enemy_hedgehog', 540: 'enemy_hedgehog', 540: 'stones/small', 550: 'mushroom/grey', 555: 'mushroom/grey',  560: 'mushroom/grey', 565: 'mushroom/purple', 575: 'mushroom/red', 580: 'stones/big',600: 'stones/medium', 610: 'mushroom/orange', 620: 'stones/big', 630: 'mushroom/orange', 640: 'stones/small', 660: 'stones/small', 678: 'stones/small', 680: 'enemy_monkey',  720 : 'mushroom/orange', 730  : 'mushroom/grey', 740: 'stones/small', 760: 'stones/big', 770: 'enemy_raven', 780: 'bonus/coin', 790: 'stones/big', 796: 'mushroom/grey', 810: 'stones/small', 815: 'stones/small', 830: 'stones/big', 840: 'mushroom/orange', 845: 'mushroom/purple', 850: 'mushroom/orange', 860: 'stones/small', 870: 'mushroom/grey', 880: 'stones/small', 900: 'stones/medium', 910: 'mushroom/grey', 915: 'mushroom/grey', 920: 'mushroom/grey', 925: 'mushroom/orange',935: 'mushroom/grey', 940: 'mushroom/grey', 945: 'enemy_hedgehog', 965: 'enemy_hedgehog', 970: 'stones/big', 980: 'mushroom/grey', 1020: 'signs/goal'}
 {3: 'signs/start', 30: 'stones/medium', 40: 'mushroom/grey', 45: 'mushroom/grey', 55: 'mushroom/grey', 70 : 'stones/medium', 90: 'stones/medium', 110: 'mushroom/orange', 110: 'mushroom/orange', 130: 'stones/small', 150: 'stones/medium', 170: 'enemy_static_hedgehog', 180: 'mushroom/grey', 190: 'mushroom/purple', 195: 'mushroom/red', 200: 'stones/small', 220: 'stones/small', 240: 'stones/medium', 260: 'mushroom/grey', 270:  'mushroom/orange', 280: 'mushroom/grey', 290: 'stones/medium', 300: 'enemy_raven', 320: 'bonus/coin', 350: 'enemy_hedgehog',  360: 'mushroom/grey', 365: 'mushroom/grey', 370: 'mushroom/orange', 380: 'stones/medium',400: 'mushroom/grey', 420: 'enemy_static_hedgehog', 440: 'stones/medium', 450: 'mushroom/grey', 460: 'stones/medium', 470: 'mushroom/grey', 500: 'signs/distance' ,  520: 'enemy_hedgehog',540: 'enemy_hedgehog', 540: 'stones/small', 550: 'mushroom/grey', 560: 'mushroom/red', 570: 'mushroom/grey', 575: 'mushroom/grey', 580: 'stones/medium',600: 'stones/small', 620: 'stones/medium', 630: 'mushroom/red', 640: 'stones/small', 670: 'stones/medium', 680: 'enemy_bee', 690: 'stones/medium',700: 'enemy_bee',  720 : 'mushroom/red', 730  : 'mushroom/grey', 740: 'stones/medium', 760: 'stones/medium', 790: 'stones/small', 800: 'mushroom/grey', 820: 'enemy_static_mole', 840: 'mushroom/grey', 845: 'mushroom/purple', 850: 'mushroom/red', 850: 'mushroom/grey', 860: 'mushroom/grey', 870: 'stones/medium', 890: 'stones/small',900: 'enemy_static_mole', 910: 'stones/medium', 920: 'enemy_monkey', 920: 'bonus/statuette', 930: 'mushroom/grey', 940: 'mushroom/grey', 950: 'enemy_static_mole',960: 'mushroom/grey', 970: 'stones/medium', 980: 'mushroom/grey', 1020: 'signs/goal'}
+
+Level 2 Sea
 {0: 'logs/big', 40: 'logs/big', 80: 'logs/big', 120: 'logs/big', 160 : 'logs/medium',  190 : 'logs/small', 220: 'logs/big', 250: 'logs/small', 270: 'logs/extra_small', 300: 'logs/small' , 330: 'logs/extra_small', 340: 'bonus/coin', 350: 'logs/extra_small' , 370: 'logs/extra_small', 380: 'bonus/coin' , 390: 'logs/extra_small',  410: 'logs/extra_small', 420: 'bonus/coin', 430: 'logs/extra_small',450: 'logs/extra_small',  470: 'logs/extra_small', 490: 'logs/small', 493: 'ships/airship', 520: 'logs/small' , 560: 'logs/big', 590: 'logs/small'  , 620: 'logs/extra_small', 640: 'logs/small', 624: 'enemy_butterfly', 670: 'logs/small', 700: 'logs/medium',  719: 'bonus/balloon',720: 'logs/hipper_small', 750: 'logs/medium', 780: 'logs/medium',  820: 'logs/medium' , 850: 'enemy_butterfly' , 860: 'logs/medium' , 900: 'logs/small' , 930: 'logs/big', 965: 'logs/big', 999: 'enemy_static_crab', 1000: 'logs/big', 1035: 'logs/extra_small',  1055: 'ground/dock_2_re', 1060: 'signs/goal'}
-{1: 'cloud/left_right', 20: 'cloud/up_down', 60: 'enemy_octopus',   50: 'cloud/static' , 70: 'cloud/static', 90: 'cloud/static',   120: 'cloud/up_down', }
+
+Level 3 Volcano
 {0: 'signs/start', 30: 'stones/small_red', 60: 'stones/medium_red', 100: 'stones/big_red',  110: 'crystal/green', 120: 'enemy_fireball', 130: 'crystal/green', 150: 'stones/medium_red', 160: 'crystal/blue', 180 : 'crystal/blue', 200: 'stones/small_red' , 210 : 'crystal/blue', 240: 'enemy_turtle', 260: 'crystal/red', 280: 'stones/medium_red', 330: 'stones/medium_red', 340: 'enemy_fireball', 350: 'crystal/green',  360: 'crystal/red', 380: 'stones/medium_red', 410: 'stones/big_red',  430: 'crystal/red', 450:  'stones/small_red', 470: 'crystal/purple'  ,500: 'signs/distance',  530: 'stones/small_red', 560: 'stones/medium_red', 580: 'crystal/green', 600: 'enemy_turtle',  620: 'crystal/green',  630: 'crystal/red', 640: 'crystal/blue', 660: 'stones/small_red', 690: 'bonus/coin',  700: 'enemy_dragon', 720: 'crystal/blue',  750: 'stones/small_red', 780: 'stones/small_red', 820: 'crystal/blue',  840: 'crystal/blue', 880: 'stones/medium_red', 900: 'bonus/statuette', 910: 'enemy_vulture', 940: 'stones/medium_red' , 970: 'crystal/purple', 990: 'stones/small_red', 1100: 'crystal/purple' , 1060: 'signs/goal'}
 
+Level 4 Ice
+{ 2: 'enemy_snowmen', 10: 'trap/black', 15: 'decor/penguin_house' ,  30: 'enemy_raven',  50: 'stones/small_ice',  60: 'gnome/blue', 80: 'stones/big_ice' }
 
-------------------------------------------------------------------------------------------------------------------------------------------
- : 'enemy_monkey',          |  : 'mushroom/grey',    |  : 'stones/big',         | : 'bonus/coin',      | : 'signs/start',    | todo: add fire
- : 'enemy_hedgehog',        |  : 'mushroom/orange',  |  : 'stones/medium',      | : 'bonus/statuette', | : 'signs/distance'  |
- : 'enemy_static_hedgehog', |  : 'mushroom/red',     |  : 'stones/small',       | : 'bonus/balloon',   | : 'signs/goal',     |
- : 'enemy_raven',           |  : 'mushroom/purple',  |  :                       |                      |
- : 'enemy_vulture'          | ---------------------- |  : 'stones/big_red',     |                      |
- : 'enemy_turtle'           |  : 'crystal/purple',   |  : 'stones/medium_red',  |                      |
- : 'enemy_dragon'           |  : 'crystal/red',      |  : 'stones/small_red',   |                      |
- : 'enemy_boar'             |  : 'crystal/blue',     |--------------------------|----------------------|
- : 'enemy_bee',             |  : 'crystal/green',    |  : 'logs/big'            | : ''                 | : 'ground/dock'     |
- : 'enemy_mouse',           |                        |  : 'logs/medium'         | : ''                 | : ''                |
- : 'enemy_static_mole',     |  : 'diamond/red'       |  : 'logs/small'          | : ''                 | : ''                |
- : 'enemy_static_crab',     |  : 'diamond/blue'      |  : 'logs/extra_small'    | : ''                 | : ''                |
- : 'enemy_butterfly',       |  : 'diamond/green'     |  : 'logs/hipper_small'   | : ''                 | : ''                |
- : 'enemy_static_crab',     |  : 'diamond/purple'    |                          |
- : 'enemy_fireball',        |                        |                          |
- : 'enemy_monster',         |                        |                          |
- : 'enemy_cockroach',
- : 'enemy_snowmen'          |                        |                          |
- : 'enemy_seal'                                                                 | : 'wall_decor/candle',
- : 'enemy_penguin'                                                              | : 'wall_decor/s1',
- : 'enemy_ghost'                                                                | : 'wall_decor/s2',
- : 'enemy_octopus'                                                              | : 'wall_decor/s3',
- : 'enemy_fish'                                                                 | : 'wall_decor/s4',
-                                                                                | : 'wall_decor/s5'
-                                                                                | : 'decor/k1',
-                                                                                | : 'decor/k2',
-                                                                                | : 'decor/k3',
-                                                                                | : 'decor/k4',
-                                                                                | : 'decor/k5'
-                                                                                  : 'decor/b1'
-                                                                                  : 'decor/b2'
--------------------------------------------------------------------------------------------------------------------
+Level 6 Sea Two
+{0: 'cloud/left_right', 20: 'cloud/up_down', 60: 'enemy_octopus',   50: 'cloud/static' , 70: 'cloud/static', 90: 'cloud/static',   120: 'cloud/up_down', }
 
-{0: 'logs/big', 40: 'logs/big', 80: 'logs/big', 120: 'logs/big', 160: 'logs/big', 200: 'logs/big',
- 240: 'logs/medium', 270 : 'logs/medium' , 300: 'logs/small'
+---------------------------------------------------------------------------------------------------------------------
+ENEMIES:
+--------
+: 'enemy_monkey', : 'enemy_hedgehog', : 'enemy_static_hedgehog', : 'enemy_raven', : 'enemy_vulture', : 'enemy_turtle',
+: 'enemy_dragon', : 'enemy_fish', : 'enemy_octopus', : 'enemy_ghost', : 'enemy_penguin', : 'enemy_seal'  : 'enemy_boar',
+: 'enemy_bee', : 'enemy_mouse', : 'enemy_static_mole', : 'enemy_static_crab', : 'enemy_butterfly', : 'enemy_static_crab',
+: 'enemy_fireball', : 'enemy_monster', : 'enemy_cockroach',  : 'enemy_snowmen'
+---------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+ITEMS COLLECTION:
+----------------
+: 'mushroom/grey', : 'mushroom/red', : 'mushroom/orange',  : 'mushroom/purple'
+: 'star/red', : 'star/blue', : 'star/green', : 'star/purple'
+: 'crystal/purple', : 'crystal/red',  : 'crystal/blue', : 'crystal/green',
+: 'gnome/red', : 'gnome/blue', : 'gnome/green', : 'gnome/purple'
+: 'diamond/red', : 'diamond/blue', : 'diamond/green', : 'diamond/purple'
+---------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+STONES:
+-------
+: 'stones/big', : 'stones/medium', : 'stones/small',
+: 'stones/big_red', : 'stones/medium_red', : 'stones/small_red',
+: 'stones/big_ice', : 'stones/medium_ice', : 'stones/small_ice'
+----------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+lOGS:
+-------
+: 'logs/big', : 'logs/medium', : 'logs/small', : 'logs/extra_small', : 'logs/hipper_small',
+----------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+CLOUD:
+-------
+: 'cloud/static' , : 'cloud/up_down' , : 'cloud/left_right', : 'cloud/fail',
+----------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+SINGS:
+-------
+ : 'signs/start', : 'signs/distance', : 'signs/goal',
+----------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+BONUS:
+-------
+ : 'bonus/coin', : 'bonus/statuette', : 'bonus/balloon',
+----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+DECORATION:
+-----------
+: 'decor/k1', : 'decor/k2', : 'decor/k3', : 'decor/k4', : 'decor/k5',
+: 'decor/b1', : 'decor/b2',
+: 'decor/penguin_house',
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+WALL DECORATION:
+----------------
+: 'wall_decor/s1', : 'wall_decor/s2', : 'wall_decor/s3', : 'wall_decor/s4', : 'wall_decor/s5',
+: 'wall_decor/candle',
+-----------------------------------------------------------------------------------------------------------------------
 
-  }
-
-
- 10: 'enemy_static_crab'
-45: 'enemy_butterfly'
-
-
-
-
-
-{3: 'signs/start', 30: 'stones/medium', 40: 'mushroom/grey', 45: 'mushroom/grey', 55: 'mushroom/grey', 70 : 'stones/medium', 90: 'stones/medium',
-110: 'mushroom/orange', 110: 'mushroom/orange', 130: 'stones/small', 150: 'stones/medium', 160: 'enemy_static_hedgehog', 170: 'stones/big', 180: 'mushroom/grey', 190: 'mushroom/purple', 195: 'mushroom/red',
-200: 'stones/small', 220: 'stones/small', 240: 'stones/medium', 260: 'mushroom/grey', 270:  'mushroom/orange', 280: 'mushroom/grey', 290: 'stones/medium',
-300: 'enemy-raven', 320: 'bonus/coin', 350: 'enemy_hedgehog',  360: 'mushroom/grey', 365: 'mushroom/grey', 370: 'mushroom/orange', 380: 'stones/medium',
-400: 'mushroom/grey', 420: 'enemy_static_hedgehog', 440: 'stones/medium', 450: 'mushroom/grey, 460: 'stones/medium', 470: 'mushroom/grey', 490: 'stones/small',
-500: 'signs/distance',  520: 'enemy_hedgehog',540: 'enemy_hedgehog', 540: 'stones/small', 550: 'mushroom/grey', 560: 'mushroom/red', 570: 'mushroom/grey', 575: 'mushroom/grey', 580: 'stones/medium',
-600: 'stones/small', 620: 'stones/medium', 630: 'mushroom/red', 640: 'stones/small', 650: 'stones/big', 670: 'stones/medium', 680: 'enemy_bee', 690: 'stones/medium',
-700: 'enemy_bee',  720 : 'mushroom/red', 730  : 'mushroom/grey', 740: 'stones/medium', 760: 'stones/medium', 780: 'stones/big', 790: 'stones/small',
-700: 'enemy_bee',  720 : 'mushroom/red', 730  : 'mushroom/grey', 740: 'stones/medium', 760: 'stones/medium', 780: 'stones/big', 790: 'stones/small',
-800: 'mushroom/grey', 810: 'stones/medium', 820: 'enemy_mole', 840: 'mushroom/grey', 845: 'mushroom/purple', 850: 'mushroom/red', 850: 'mushroom/grey', 860: 'mushroom/grey', 870: 'stones/medium', 890: 'stones/small',
-900: 'enemy_static_mole', 910: 'stones/medium', 920: ''enemy_monkey'', 920: 'bonus/statuette', 930: 'mushroom/grey', 940: 'mushroom/grey', 950: 'enemy_static_mole',960: 'mushroom/grey', 970: 'stones/medium', 980: 'mushroom/grey', 1020: 'signs/goal'}
-
-
-
-
-
-
-
-{2: 'signs/start', 30: 'stones/medium',    40: 'mushroom/grey', 50: 'mushroom/purple', 60 : 'stones/big', 80: 'stones/big',
-110: 'stones/big', 120: 'mushroom/orange', 130: 'stones/medium', 150: 'enemy_static_hedgehog', 160: 'enemy_static_hedgehog',170: 'enemy_static_hedgehog', 180: 'enemy_static_hedgehog', 190: 'mushroom/grey',
-200: 'mushroom/orange', 230: 'stones/small', 250: 'stones/medium', 270: 'stones/big', 290: 'mushroom/grey',
-300: 'enemy-monkey' ,320: 'stones/medium', 350: 'enemy_hedgehog',  360: 'mushroom/grey', 370: 'mushroom/orange', 380: 'stones/medium',
-400: 'mushroom/orange', 420: 'enemy_static_hedgehog', 440: 'stones/big', 460: 'stones/medium', 470: 'mushroom/red', 490: 'enemy_monkey',
-500: 'signs/distance',  520: 'enemy_hedgehog', 540: 'enemy_hedgehog', 540: 'stones/small', 550: 'mushroom/grey', 555: 'mushroom/grey',  560: 'mushroom/grey', 565: 'mushroom/purple', 575: 'mushroom/red', 580: 'stones/big',
-600: 'stones/medium', 610: 'mushroom/orange', 620: 'stones/big', 630: 'mushroom/orange', 640: 'stones/small', 650: 'stones/big', 660: 'stones/small', 670: 'stones/small', 680: 'enemy_monkey', 690: 'stones/big',
-700: 'stones/big',  720 : 'mushroom/orange', 730  : 'mushroom/grey', 740: 'stones/small', 760: 'stones/big', 770: 'enemy_raven', 780: 'bonus/statuette', 790: 'stones/big', 796: 'mushroom/grey',
-800: 'stones/medium', 810: 'stones/medium', 820: 'stones/medium', 830: 'stones/big', 840: 'mushroom/orange', 845: 'mushroom/purple', 850: 'mushroom/orange', 860: 'stones/small', 870: 'mushroom/grey', 880: 'stones/small', 890: 'stones/big',
-900: 'stones/medium', 910: 'stones/small', 915: 'mushroom/grey', 920: 'mushroom/grey', 925: 'mushroom/orange',935: 'mushroom/grey', 940: 'mushroom/grey', 950: 'enemy_hedgehog', 960: 'enemy_hedgehog', 970: 'stones/big', 980: 'mushroom/grey', 1020: 'signs/goal'}
-
-
-
+-----------------------------------------------------------------------------------------------------------------------
+OTHER:
+------
+: 'ground/dock'
+-----------------------------------------------------------------------------------------------------------------------
 
 
 
