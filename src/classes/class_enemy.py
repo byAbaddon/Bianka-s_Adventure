@@ -12,6 +12,7 @@ class Enemy(Player, Sound):
         self.background = background
         self.group_name = pic.split('/')[4]
         self.item_name = pic.split('/')[5]
+        print(pic)
         self.image = pygame.image.load(pic).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]
@@ -47,14 +48,22 @@ class Enemy(Player, Sound):
             self.fireball_action()
         if self.item_name == 'ghost':
             self.ghost_action()
+        if self.item_name == 'eagle_attack':
+            self.eagle_attack_action()
 
     def make_sound(self):
         if self.noise:
             if self.item_name in ['monkey', 'raven', 'turtle', 'boar', 'bee', 'mouse', 'mole', 'crab', 'fish', 'ghost',
                                   'octopus', 'dragon', 'vulture', 'turtle', 'monster', 'fireball', 'cockroach',
-                                  'penguin', 'seal', 'snowmen']:
+                                  'penguin', 'seal', 'snowmen', 'eagle', 'eagle_attack']:
                 self.noise = False
                 return eval(f'Sound.{self.item_name}_sound(self)')
+
+    def eagle_attack_action(self):
+        if self.rect.x <= SCREEN_WIDTH - 100:
+            self.sprite_pic_num = 0
+            self.image = pygame.image.load('../src/assets/images/enemies/eagle/11.png')
+            self.rect.y += self.speed
 
     def ghost_action(self):
         if self.rect.x <= SCREEN_WIDTH - 100:

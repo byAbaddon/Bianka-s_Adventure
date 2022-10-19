@@ -162,6 +162,12 @@ class Sound:
     def vulture_sound(self):
         self.play_sound('../src/assets/sounds/enemies/vulture.wav', 0.5, 1)
 
+    def eagle_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/eagle.wav', 0.5)
+
+    def eagle_attack_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/eagle.wav', 0.5)
+
     def dragon_sound(self):
         self.play_sound('../src/assets/sounds/enemies/dragon.mp3', 0.3, 1)
 

@@ -240,7 +240,7 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name in ['raven', 'octopus', 'dragon', 'fireball', 'snowball', 'penguin']:
                         self.energy_power -= 20
                         sprite.kill()
-                    if name in ['hedgehog', 'mole', 'turtle', 'seal']:
+                    if name in ['hedgehog', 'mole', 'turtle', 'seal', 'eagle_attack']:
                         self.energy_power -= 30
                         sprite.kill()
                     if name in ['monkey', 'ghost', 'snowmen']:
@@ -352,12 +352,13 @@ class Player(pygame.sprite.Sprite, Sound):
                         Sound.bullet_kill_enemy(self)
                         item.kill()
                         bullet.kill()
-                    if item.item_name in ['mouse', 'octopus', 'raven', 'butterfly', 'ghost', 'penguin', 'seal']:
+                    if item.item_name in ['mouse', 'octopus', 'raven', 'butterfly', 'ghost', 'penguin', 'seal',
+                                          'eagle_attack']:
                         self.points += 300
                         Sound.bullet_kill_enemy(self)
                         item.kill()
                         bullet.kill()
-                    if item.item_name in ['boar', 'monkey', 'monster']:
+                    if item.item_name in ['boar', 'monkey', 'monster',]:
                         self.hit_enemy_counter += 1
                         bullet.kill()
                         if self.hit_enemy_counter == 2:
@@ -371,7 +372,7 @@ class Player(pygame.sprite.Sprite, Sound):
         bullets_group = self.all_sprite_groups_dict['bullets']
         for sprite in pygame.sprite.spritecollide(self, bullets_group, False, pygame.sprite.collide_mask):
             match sprite.item_name:
-                case 'egg' | 'coconut' | 'bone' | 'snowball':
+                case 'egg' | 'coconut' | 'bone' | 'snowball' | 'skull':
                     sprite.kill()
                     Sound.enemy_bullet_hit_player_head(self)
                     self.energy_power -= 10

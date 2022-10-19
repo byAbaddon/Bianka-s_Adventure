@@ -6,7 +6,7 @@
 {} # level 5
 {0: 'cloud/left_right', 20: 'cloud/up_down', 60: 'enemy_octopus',   50: 'cloud/fail' , 70: 'cloud/static', 90: 'cloud/static',   120: 'cloud/up_down', 150: 'cloud/fail',  180: 'cloud/static', }
 {}
-{} # level 8
+{10 : 'enemy_eagle', 50 : 'enemy_eagle_attack'} # level 8
 
 Level 1 Forest
 {0: 'signs/start', 20: 'mushroom/grey',  40: 'mushroom/grey',  60: 'stones/small' ,  80: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 200: 'mushroom/grey', 230: 'stones/medium', 260: 'stones/medium', 290: 'mushroom/grey',320: 'stones/small', 350: 'stones/medium', 372: 'mushroom/red',  380: 'stones/big', 430: 'stones/small', 460: 'mushroom/grey', 500: 'signs/distance', 560: 'mushroom/grey', 570: 'mushroom/grey', 600: 'stones/medium', 640: 'mushroom/grey', 700 : 'stones/medium', 740  : 'mushroom/purple', 800: 'stones/medium', 840: 'mushroom/grey', 860: 'mushroom/grey', 870: 'mushroom/grey', 900: 'stones/medium', 940: 'bonus/statuette',  960: 'stones/big', 980: 'mushroom/red', 990: 'bonus/coin', 1020: 'signs/goal'}
@@ -32,7 +32,8 @@ ENEMIES:
 : 'enemy_monkey', : 'enemy_hedgehog', : 'enemy_static_hedgehog', : 'enemy_raven', : 'enemy_vulture', : 'enemy_turtle',
 : 'enemy_dragon', : 'enemy_fish', : 'enemy_octopus', : 'enemy_ghost', : 'enemy_penguin', : 'enemy_seal'  : 'enemy_boar',
 : 'enemy_bee', : 'enemy_mouse', : 'enemy_static_mole', : 'enemy_static_crab', : 'enemy_butterfly', : 'enemy_static_crab',
-: 'enemy_fireball', : 'enemy_monster', : 'enemy_cockroach',  : 'enemy_snowmen'
+: 'enemy_fireball', : 'enemy_monster', : 'enemy_cockroach',  : 'enemy_snowmen', : 'enemy_eagle', : 'enemy_eagle_attack',
+
 ---------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------
 ITEMS COLLECTION:

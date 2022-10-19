@@ -182,6 +182,12 @@ class GameState(Sound):
             if enemy_name == 'enemy_vulture':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/vulture/1.png',
                              S_W, T_F_S + 50, 2, True, True, '../src/assets/images/bullets/bone.png', 1, 9)
+            if enemy_name == 'enemy_eagle':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/eagle/1.png',
+                             S_W, T_F_S + 150, 3, True, True, '../src/assets/images/bullets/skull.png', 1, 9)
+            if enemy_name == 'enemy_eagle_attack':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/eagle_attack/1.png',
+                             S_W, T_F_S + 150, 3, True, None, None, 0, 10)
             if enemy_name == 'enemy_turtle':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/turtle/1.png',
                              S_W, S_H - G_H_S - 15, 1, True, False, None, None, 8)
@@ -413,7 +419,7 @@ class GameState(Sound):
         if self.area == 8:
             if not self.is_star_area:
                 # set music
-                # Sound.front_castle_music_area_eight(self)
+                Sound.front_castle_music_area_eight(self)
                 # resize image and set background
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_8.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
