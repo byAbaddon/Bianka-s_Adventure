@@ -50,6 +50,10 @@ class Sound:
     def desert_music_area_seven(self):
         self.play_sound('../src/assets/sounds/game_musics/level_7.mp3', 0.5, -1)
 
+    # Level 8 Desert
+    def front_castle_music_area_eight(self):
+        self.play_sound('../src/assets/sounds/game_musics/level_8.mp3', 0.5, -1)
+
     # Level 9 Castle
     def castle_music_area_nine(self):
         self.play_sound('../src/assets/sounds/game_musics/level_9.mp3', 0.4, -1)

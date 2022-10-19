@@ -84,10 +84,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 5
+        self.area = 8
         self.level = 1
         self.boss_number = 1
-        self.level_reader_row = 5  # 1
+        self.level_reader_row = 8  # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -409,7 +409,15 @@ class GameState(Sound):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 self.is_star_area = True
 
-        # ========================================== START GAME  with Area 1; Level 8 / ???
+        # ========================================== START GAME  with Area 1; Level 8 /Front of the castle
+        if self.area == 8:
+            if not self.is_star_area:
+                # set music
+                # Sound.front_castle_music_area_eight(self)
+                # resize image and set background
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_8.png', 800, 510)
+                self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
+                self.is_star_area = True
 
         # ========================================== START GAME  with Area 1; Level 9 / Castle
         if self.area == 9:
@@ -460,8 +468,6 @@ class GameState(Sound):
 
         # ============== draw current area/level labels
         area_label()
-
-
 
     def boss(self):
         player.is_boos_level = True  # set player walking border to all SCREEN_WIDTH
