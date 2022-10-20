@@ -210,6 +210,8 @@ class Player(pygame.sprite.Sprite, Sound):
         for sprite in pygame.sprite.spritecollide(self, group_items, False, pygame.sprite.collide_mask):
             # print(sprite.group_name)
             if sprite.group_name == 'cloud' or sprite.group_name == 'logs':
+                if sprite.group_name == 'logs':  # fix flickering if player on the logs
+                    buffer = 9
                 # check is player head hits in bottom platform
                 if self.pos.y < sprite.rect.bottom:
                     if not (sprite.rect.left > self.pos.x or self.pos.x > sprite.rect.right):
@@ -237,10 +239,10 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name in ['fish', 'mouse', 'cockroach']:
                         self.energy_power -= 10
                         sprite.kill()
-                    if name in ['raven', 'octopus', 'dragon', 'fireball', 'snowball', 'penguin']:
+                    if name in ['raven', 'octopus', 'dragon', 'fireball', 'snowball', 'penguin', 'bird', 'crab']:
                         self.energy_power -= 20
                         sprite.kill()
-                    if name in ['hedgehog', 'mole', 'turtle', 'seal', 'eagle_attack']:
+                    if name in ['hedgehog', 'mole', 'turtle', 'seal', 'eagle_attack', 'medusa']:
                         self.energy_power -= 30
                         sprite.kill()
                     if name in ['monkey', 'ghost', 'snowmen']:
@@ -353,7 +355,7 @@ class Player(pygame.sprite.Sprite, Sound):
                         item.kill()
                         bullet.kill()
                     if item.item_name in ['mouse', 'octopus', 'raven', 'butterfly', 'ghost', 'penguin', 'seal',
-                                          'eagle_attack']:
+                                          'eagle_attack', 'medusa', 'birth']:
                         self.points += 300
                         Sound.bullet_kill_enemy(self)
                         item.kill()

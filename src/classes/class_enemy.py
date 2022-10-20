@@ -12,7 +12,6 @@ class Enemy(Player, Sound):
         self.background = background
         self.group_name = pic.split('/')[4]
         self.item_name = pic.split('/')[5]
-        print(pic)
         self.image = pygame.image.load(pic).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]
@@ -48,6 +47,8 @@ class Enemy(Player, Sound):
             self.fireball_action()
         if self.item_name == 'ghost':
             self.ghost_action()
+        if self.item_name == 'medusa':
+            self.medusa_action()
         if self.item_name == 'eagle_attack':
             self.eagle_attack_action()
 
@@ -55,9 +56,14 @@ class Enemy(Player, Sound):
         if self.noise:
             if self.item_name in ['monkey', 'raven', 'turtle', 'boar', 'bee', 'mouse', 'mole', 'crab', 'fish', 'ghost',
                                   'octopus', 'dragon', 'vulture', 'turtle', 'monster', 'fireball', 'cockroach',
-                                  'penguin', 'seal', 'snowmen', 'eagle', 'eagle_attack']:
+                                  'penguin', 'seal', 'snowmen', 'eagle', 'eagle_attack', 'bird', 'medusa']:
                 self.noise = False
                 return eval(f'Sound.{self.item_name}_sound(self)')
+
+    def medusa_action(self):
+        if self.rect.x <= SCREEN_WIDTH - 200:
+            self.image = pygame.image.load('../src/assets/images/enemies/medusa/1.png')
+            self.speed = 0
 
     def eagle_attack_action(self):
         if self.rect.x <= SCREEN_WIDTH - 100:
@@ -78,7 +84,7 @@ class Enemy(Player, Sound):
 
     def octopus_action(self):
         if not self.is_visited:
-            self.rect.x = SCREEN_WIDTH // 2
+            self.rect.x = SCREEN_WIDTH
             self.is_visited = True
         if self.rect.y > 120 and not self.half_position:
             self.rect.y -= self.speed

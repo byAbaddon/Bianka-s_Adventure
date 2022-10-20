@@ -32,9 +32,9 @@ class Sound:
 
     # Area 3 Volcano
     def volcano_music_area_three(self):
-        self.play_sound('../src/assets/sounds/game_musics/level_3.mp3', 0.6, -1)
+        self.play_sound('../src/assets/sounds/game_musics/level_3.mp3', 0.4, -1)
 
-    # Level 3 Ice Age
+    # Level 4 Ice Age
     def ice_music_area_four(self):
         self.play_sound('../src/assets/sounds/game_musics/level_4.mp3', 0.5, -1)
 
@@ -156,6 +156,9 @@ class Sound:
     def crab_sound(self):
         self.play_sound('../src/assets/sounds/enemies/crab/crab.wav', 0.2, 2)
 
+    def medusa_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/medusa.wav', 0.5)
+
     def fish_sound(self):
         self.play_sound('../src/assets/sounds/enemies/fish.wav', 0.5,)
 
@@ -167,6 +170,9 @@ class Sound:
 
     def eagle_attack_sound(self):
         self.play_sound('../src/assets/sounds/enemies/eagle.wav', 0.5)
+
+    def bird_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/bird.mp3', 1)
 
     def dragon_sound(self):
         self.play_sound('../src/assets/sounds/enemies/dragon.mp3', 0.3, 1)

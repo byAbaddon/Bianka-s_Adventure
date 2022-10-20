@@ -84,10 +84,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 8
+        self.area = 6
         self.level = 1
         self.boss_number = 1
-        self.level_reader_row = 8  # 1
+        self.level_reader_row = 6  # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -175,7 +175,7 @@ class GameState(Sound):
                              S_W, S_H - 200, 1, True, False, None, 0, 0)
             if enemy_name == 'enemy_octopus':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/octopus/1.png',
-                             S_W // 2, S_H - 100, 3, True, False, None, None, 0, True)
+                             S_W, S_H, 3, True, False, None, None, 0, True)
             if enemy_name == 'enemy_dragon':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/dragon/1.png',
                              S_W, S_H - G_H_S - 5, 2, True, False, None, None, 7)
@@ -188,6 +188,9 @@ class GameState(Sound):
             if enemy_name == 'enemy_eagle_attack':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/eagle_attack/1.png',
                              S_W, T_F_S + 150, 3, True, None, None, 0, 10)
+            if enemy_name == 'enemy_bird':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/bird/1.png',
+                             S_W, T_F_S + 50, 2, True, False, None, 0, 8)
             if enemy_name == 'enemy_turtle':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/turtle/1.png',
                              S_W, S_H - G_H_S - 15, 1, True, False, None, None, 8)
@@ -212,6 +215,12 @@ class GameState(Sound):
             if enemy_name == 'enemy_snowmen':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/snowmen/1.png', S_W,
                              S_H - G_H_S - 40, 0, True, True, '../src/assets/images/bullets/snowball.png', 2, 0)
+            if enemy_name == 'enemy_medusa':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/medusa/4.png',
+                             S_W, S_H - G_H_S - 50, 00.1, True, False, None, None, 4)
+            if enemy_name == 'enemy_medusa_attack':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/medusa_attack/6.png',
+                             S_W, S_H - G_H_S - 52, 2, True, False, None, None, 0, True)
 
         # ================================ create cloud platform classes
         def water_platform_creator(v_type):
@@ -219,9 +228,9 @@ class GameState(Sound):
             if v_type == 'cloud/static':
                 return Cloud(self.player_data, pic_cloud, S_W, S_H - 280, True, 0, 'static', 0)
             if v_type == 'cloud/left_right':
-                return Cloud(self.player_data, pic_cloud, S_W, S_H - 160, False, 2, 'left_right', 200)
+                return Cloud(self.player_data, pic_cloud, S_W, S_H - 200, False, 2, 'left_right', 200)
             if v_type == 'cloud/up_down':
-                return Cloud(self.player_data, pic_cloud, S_W, S_H - 160, False, 2, 'up_down', 200)
+                return Cloud(self.player_data, pic_cloud, S_W, S_H - 160, False, 2, 'up_down', 210)
             if v_type == 'cloud/fail':
                 return Cloud(self.player_data, pic_cloud, S_W, S_H - 280, False, 1, 'fail', 0)
             # ================================ create logs
@@ -251,15 +260,20 @@ class GameState(Sound):
                         elif v.split('/')[0] == 'ground':  # change item position
                             new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, S_H)
                         elif v == 'bonus/coin':  # change item position
-                            new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H - G_H_S - 120,
+                            new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H - G_H_S - 152,
                                                          6)
                         elif v == 'bonus/balloon':  # change item position
                             # test move to decoration !!!!!!!!!!
                             new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H // 2, 0)
-                        elif v.split('/')[0] in ['decor', 'wall_decor']:  # change item position
+                        elif v.split('/')[0] in ['decor', 'wall_decor', 'star']:  # change item position
                             y_pos = S_H - G_H_S - 42
                             if v.split('/')[0] in ['wall_decor']:
                                 y_pos -= 200
+                            if v.split('/')[0] in ['star']:
+                                if self.area == 2:
+                                    y_pos -= 150
+                                else:
+                                    y_pos -= 300
                             if v == 'wall_decor/candle':
                                 new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, y_pos, 9)
                             else:
@@ -397,7 +411,7 @@ class GameState(Sound):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True,)
                 # add rock ground
                 ground_group.empty()
-                ground_rock = Ground('../src/assets/images/ground/dock_middle.png', False, 0, S_H - 100)
+                ground_rock = Ground('../src/assets/images/ground/rock_see_two.png', False, 0, S_H - 200)
                 ground_group.add(ground_rock)
                 self.is_star_area = True
             # check is player in the Sea and allowed animation
