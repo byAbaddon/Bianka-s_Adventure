@@ -100,7 +100,7 @@ class GameState(Sound):
 
     def start_game(self):
         # ------------------top display frame
-        # table.update()
+        table.update()
 
         # =============================================== RESET ALL DATA IF START NEW GAME
         if self.is_start_new_game:  # reset all old data
@@ -127,11 +127,11 @@ class GameState(Sound):
 
         # ++++++++++++++++++++++++++++++ developer utils +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
-        text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
-        text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
-        text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
-        text_creator(f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70, 22)
-        text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 5)
+        # text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
+        # text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
+        # text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
+        # text_creator(f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70, 22)
+        # text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 5)
 
         # ================================ create enemy classes
         def enemy_creator(enemy_name):
@@ -224,9 +224,9 @@ class GameState(Sound):
             if enemy_name == 'enemy_camel':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/camel/1.png',
                              S_W, S_H - G_H_S - 35, 1, True, True, '../src/assets/images/bullets/spit.png', 2, 8)
-            if enemy_name == 'enemy_elf_1':
-                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/elf_1/1.png',
-                             S_W, S_H - G_H_S - 50, 1, True, False, None, 0, 4)
+            if enemy_name == 'enemy_cactus_ball':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/cactus_ball/1.png',
+                             S_W, S_H - G_H_S - 10, 2, False, False, None, None, 6)
 
         # ================================ create cloud platform classes
         def water_platform_creator(v_type):

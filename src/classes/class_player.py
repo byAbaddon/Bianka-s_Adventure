@@ -236,7 +236,7 @@ class Player(pygame.sprite.Sprite, Sound):
             match sprite.group_name:
                 case 'enemies':
                     Sound.player_enemy_hit(self)  # sound if player hit with some enemy
-                    if name in ['fish', 'mouse', 'cockroach']:
+                    if name in ['fish', 'mouse', 'cockroach', 'cactus_ball']:
                         self.energy_power -= 10
                         sprite.kill()
                     if name in ['raven', 'octopus', 'dragon', 'fireball', 'snowball', 'penguin', 'bird', 'crab']:
@@ -248,7 +248,7 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name in ['monkey', 'ghost', 'snowmen']:
                         self.energy_power -= 50
                         sprite.kill()
-                    if name in ['boar', 'monster']:
+                    if name in ['boar', 'monster', 'camel']:
                         self.energy_power -= 100
                         self.is_player_dead = True
                 case 'mushroom':
@@ -290,15 +290,15 @@ class Player(pygame.sprite.Sprite, Sound):
                         Sound.snapping_trap(self)
                         Sound.player_injury(self)
                         sprite.kill()
-                case 'stones':
+                case 'stones' | 'cactus':
                     self.image = pygame.image.load('../src/assets/images/player/fail/fail_right.png')
                     Sound.player_stone_hit(self)
                     sprite.rect.x -= 10
-                    if name in ['big', 'big_red', 'big_ice']:
+                    if name in ['big', 'big_red', 'big_ice', 'big_des']:
                         self.energy_power -= 3  # X 2
-                    if name in ['medium', 'medium_red', 'medium_ice']:
+                    if name in ['medium', 'medium_red', 'medium_ice', 'medium_des']:
                         self.energy_power -= 2
-                    if name in ['small', 'small_red', 'small_ice']:
+                    if name in ['small', 'small_red', 'small_ice', 'small_des']:
                         self.energy_power -= 1
                     return
 
@@ -327,14 +327,14 @@ class Player(pygame.sprite.Sprite, Sound):
                 case 'logs' | 'cloud':
                     Sound.bullet_hit(self)
                     bullet.kill()
-                case 'mushroom' | 'crystal' | 'diamond' | 'gnome' | 'star':
+                case 'mushroom' | 'crystal' | 'diamond' | 'gnome' | 'star' | 'cactus':
                     Sound.bullet_hit(self)
                     bullet.kill()
                     item.kill()
                 case 'stones':
                     Sound.bullet_ricochet(self)
                     bullet.kill()
-                case 'trap':
+                case 'trap' :
                     Sound.snapping_trap(self)
                     bullet.kill()
                     item.kill()
@@ -344,7 +344,7 @@ class Player(pygame.sprite.Sprite, Sound):
                         bullet.kill()
                         item.kill()
                 case 'enemies':
-                    if item.item_name in ['fish', 'mole',  'crab', 'bee', 'bird']:
+                    if item.item_name in ['fish', 'mole',  'crab', 'bee', 'bird', 'cactus_ball']:
                         self.points += 100
                         Sound.bullet_kill_enemy(self)
                         item.kill()
@@ -360,7 +360,7 @@ class Player(pygame.sprite.Sprite, Sound):
                         Sound.bullet_kill_enemy(self)
                         item.kill()
                         bullet.kill()
-                    if item.item_name in ['boar', 'monkey', 'monster',]:
+                    if item.item_name in ['boar', 'monkey', 'monster', 'camel']:
                         self.hit_enemy_counter += 1
                         bullet.kill()
                         if self.hit_enemy_counter == 2:
@@ -374,7 +374,7 @@ class Player(pygame.sprite.Sprite, Sound):
         bullets_group = self.all_sprite_groups_dict['bullets']
         for sprite in pygame.sprite.spritecollide(self, bullets_group, False, pygame.sprite.collide_mask):
             match sprite.item_name:
-                case 'egg' | 'coconut' | 'bone' | 'snowball' | 'skull':
+                case 'egg' | 'coconut' | 'bone' | 'snowball' | 'skull' | 'spit':
                     sprite.kill()
                     Sound.enemy_bullet_hit_player_head(self)
                     self.energy_power -= 10
