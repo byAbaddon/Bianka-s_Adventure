@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite, Sound):
     JUMP_HEIGHT = -6
     PLAYER_FRICTION = -0.12
     PLAYER_SPEED = 0.4
-    lives = 13
+    lives = 53
     points = 0
     energy_power = 100
     is_player_dead = False
@@ -344,7 +344,7 @@ class Player(pygame.sprite.Sprite, Sound):
                         bullet.kill()
                         item.kill()
                 case 'enemies':
-                    if item.item_name in ['fish', 'mole',  'crab', 'bee']:
+                    if item.item_name in ['fish', 'mole',  'crab', 'bee', 'bird']:
                         self.points += 100
                         Sound.bullet_kill_enemy(self)
                         item.kill()

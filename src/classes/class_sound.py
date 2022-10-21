@@ -48,7 +48,7 @@ class Sound:
 
     # Level 7 Desert
     def desert_music_area_seven(self):
-        self.play_sound('../src/assets/sounds/game_musics/level_7.mp3', 0.5, -1)
+        self.play_sound('../src/assets/sounds/game_musics/level_7.mp3', 0.4, -1)
 
     # Level 8 Desert
     def front_castle_music_area_eight(self):
@@ -119,6 +119,9 @@ class Sound:
     # -------------------------------------------   enemy sound
     def snowmen_sound(self):
         self.play_sound('../src/assets/sounds/enemies/snowmen.wav', 1,)
+
+    def elf_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/elf_one.mp3', 1, )
 
     def mouse_sound(self):
         self.play_sound('../src/assets/sounds/enemies/mouse.wav', 1,)

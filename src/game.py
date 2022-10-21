@@ -221,6 +221,11 @@ class GameState(Sound):
             if enemy_name == 'enemy_medusa_attack':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/medusa_attack/6.png',
                              S_W, S_H - G_H_S - 52, 2, True, False, None, None, 0, True)
+            if enemy_name == 'enemy_elf_1':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/elf_1/1.png',
+                             S_W, S_H - G_H_S - 50, 1, True, False, None, 0, 4)
+
+
 
         # ================================ create cloud platform classes
         def water_platform_creator(v_type):
@@ -427,6 +432,8 @@ class GameState(Sound):
                 # resize image and set background
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_7.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
+                ground_group.empty()
+                ground_group.add(ground)
                 self.is_star_area = True
 
         # ========================================== START GAME  with Area 1; Level 8 /Front of the castle
