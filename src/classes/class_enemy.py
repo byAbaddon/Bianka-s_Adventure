@@ -56,7 +56,8 @@ class Enemy(Player, Sound):
         if self.noise:
             if self.item_name in ['monkey', 'raven', 'turtle', 'boar', 'bee', 'mouse', 'mole', 'crab', 'fish', 'ghost',
                                   'octopus', 'dragon', 'vulture', 'turtle', 'monster', 'fireball', 'cockroach',
-                                  'penguin', 'seal', 'snowmen', 'eagle', 'eagle_attack', 'bird', 'medusa', 'elf']:
+                                  'penguin', 'seal', 'snowmen', 'eagle', 'eagle_attack', 'bird', 'medusa', 'camel',
+                                  'elf']:
                 self.noise = False
                 return eval(f'Sound.{self.item_name}_sound(self)')
 
@@ -118,7 +119,8 @@ class Enemy(Player, Sound):
 
     def shooting_enemy(self):  # shooting:
         if self.shooting:
-            if self.item_name in ['snowmen']:   # enemies with shooting only right
+            # Add bullet enemy to class bullet !!!
+            if self.item_name in ['snowmen', 'camel']:   # enemies with shooting only left
                 Sound.bullet_fail(self)
                 shot_position = self.rect.midright
                 self.direction = vec(-1, 0)
@@ -127,7 +129,7 @@ class Enemy(Player, Sound):
                 bullet = self.class_bullet(self.pic_bullet, x, y, self.direction, self.bullet_speed, False)
                 self.all_sprite_groups_dict['bullets'].add(bullet)
                 self.shooting = False
-            elif self.rect.x <= SCREEN_WIDTH - 100:  # enemies shooting down + right
+            elif self.rect.x <= SCREEN_WIDTH - 100:  # enemies shooting down + left
                 Sound.bullet_fail(self)
                 shot_position = self.rect.midbottom
                 x = shot_position[0] + self.image.get_width() // 4 - 30

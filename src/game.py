@@ -84,10 +84,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 6
+        self.area = 7
         self.level = 1
         self.boss_number = 1
-        self.level_reader_row = 6  # 1
+        self.level_reader_row = 7  # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -123,7 +123,7 @@ class GameState(Sound):
             self.is_star_area = False
         # -----------------------------------------------
         self.bonus_pts = 0  # reset pts
-        player.is_boos_level = False  # set player walking border to 1/3 S_W
+        player.is_boss_level = False  # set player walking border to 1/3 S_W
 
         # ++++++++++++++++++++++++++++++ developer utils +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
@@ -221,23 +221,24 @@ class GameState(Sound):
             if enemy_name == 'enemy_medusa_attack':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/medusa_attack/6.png',
                              S_W, S_H - G_H_S - 52, 2, True, False, None, None, 0, True)
+            if enemy_name == 'enemy_camel':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/camel/1.png',
+                             S_W, S_H - G_H_S - 35, 1, True, True, '../src/assets/images/bullets/spit.png', 2, 8)
             if enemy_name == 'enemy_elf_1':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/elf_1/1.png',
                              S_W, S_H - G_H_S - 50, 1, True, False, None, 0, 4)
-
-
 
         # ================================ create cloud platform classes
         def water_platform_creator(v_type):
             pic_cloud = '../src/assets/images/cloud/static.png'
             if v_type == 'cloud/static':
-                return Cloud(self.player_data, pic_cloud, S_W, S_H - 280, True, 0, 'static', 0)
+                return Cloud(self.player_data, self.background, pic_cloud, S_W, S_H - 280, True, 0, 'static', 0)
             if v_type == 'cloud/left_right':
-                return Cloud(self.player_data, pic_cloud, S_W, S_H - 200, False, 2, 'left_right', 200)
+                return Cloud(self.player_data, self.background, pic_cloud, S_W, S_H - 200, False, 2, 'left_right', 200)
             if v_type == 'cloud/up_down':
-                return Cloud(self.player_data, pic_cloud, S_W, S_H - 160, False, 2, 'up_down', 210)
+                return Cloud(self.player_data, self.background, pic_cloud, S_W, S_H - 160, False, 2, 'up_down', 210)
             if v_type == 'cloud/fail':
-                return Cloud(self.player_data, pic_cloud, S_W, S_H - 280, False, 1, 'fail', 0)
+                return Cloud(self.player_data, self.background, pic_cloud, S_W, S_H - 280, False, 1, 'fail', 0)
             # ================================ create logs
             if v_type.split('/')[0] == 'logs':
                 pic_log = f'../src/assets/images/logs/{v_type.split("/")[1]}.png'
@@ -497,7 +498,7 @@ class GameState(Sound):
         area_label()
 
     def boss(self):
-        player.is_boos_level = True  # set player walking border to all SCREEN_WIDTH
+        player.is_boss_level = True  # set player walking border to all SCREEN_WIDTH
         # top display frames
         table.update()
         if self.boss_number == 1:

@@ -53,13 +53,13 @@ class Player(pygame.sprite.Sprite, Sound):
         self.WALK_LEFT_SCREEN_BORDER = self.player_width_size
         self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH // 3
         self.jump_limit = SCREEN_HEIGHT  # allowed jump form all position
-        self.is_boos_level = False
+        self.is_boss_level = False
 
     def movement_plyer(self):
         self.acceleration = vec(0, self.GRAVITY)  # fail gravity
         self.direction = vec(self.direction.x, self.direction.y)
         # if boss leve walk in all SCREEN_WIDTH
-        if self.is_boos_level:
+        if self.is_boss_level:
             self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH - 60
 
         key = pygame.key.get_pressed()
@@ -442,7 +442,7 @@ class Player(pygame.sprite.Sprite, Sound):
         self.direction = vec(0, 1)  # stay 0
         self.pos = vec(self.rect.x, self.rect.y)
         self.jump_limit = SCREEN_HEIGHT  # allowed jump form all position
-        self.is_boos_level = False
+        self.is_boss_level = False
         self.is_jump_allowed = True
 
     # RESET TO NEW GAME
@@ -461,7 +461,7 @@ class Player(pygame.sprite.Sprite, Sound):
         self.is_player_dead = False
         self.is_player_poisoned = False
         self.is_player_kill_boss = False
-        self.is_boos_level = False
+        self.is_boss_level = False
         self.is_jump = False
         self.player_dead_x_pos = 0
         self.image = pygame.image.load('../src/assets/images/player/stay/1.png')
