@@ -242,7 +242,7 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name in ['raven', 'octopus', 'dragon', 'fireball', 'snowball', 'penguin', 'bird', 'crab']:
                         self.energy_power -= 20
                         sprite.kill()
-                    if name in ['hedgehog', 'mole', 'turtle', 'seal', 'eagle_attack', 'medusa']:
+                    if name in ['hedgehog', 'mole', 'turtle', 'seal', 'eagle_attack', 'medusa', 'lizard']:
                         self.energy_power -= 30
                         sprite.kill()
                     if name in ['monkey', 'ghost', 'snowmen']:
@@ -349,7 +349,7 @@ class Player(pygame.sprite.Sprite, Sound):
                         Sound.bullet_kill_enemy(self)
                         item.kill()
                         bullet.kill()
-                    if item.item_name in ['hedgehog', 'dragon', 'turtle', 'cockroach', 'snowmen']:
+                    if item.item_name in ['hedgehog', 'dragon', 'turtle', 'cockroach', 'snowmen', 'lizard']:
                         self.points += 200
                         Sound.bullet_kill_enemy(self)
                         item.kill()

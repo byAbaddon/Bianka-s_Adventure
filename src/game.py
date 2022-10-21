@@ -227,7 +227,9 @@ class GameState(Sound):
             if enemy_name == 'enemy_cactus_ball':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/cactus_ball/1.png',
                              S_W, S_H - G_H_S - 10, 2, False, False, None, None, 6)
-
+            if enemy_name == 'enemy_lizard':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/lizard/1.png',
+                             S_W, S_H - G_H_S - 10, 2, False, False, None, None, 8)
         # ================================ create cloud platform classes
         def water_platform_creator(v_type):
             pic_cloud = '../src/assets/images/cloud/static.png'
