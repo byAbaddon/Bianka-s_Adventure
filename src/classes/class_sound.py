@@ -126,6 +126,12 @@ class Sound:
     def camel_sound(self):
         self.play_sound('../src/assets/sounds/enemies/camel.wav', 1, )
 
+    def emu_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/emu.wav', 1, 3)
+
+    def lizard_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/lizard.wav', 1, )
+
     def mouse_sound(self):
         self.play_sound('../src/assets/sounds/enemies/mouse.wav', 1,)
 
