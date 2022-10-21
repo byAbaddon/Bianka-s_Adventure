@@ -248,7 +248,7 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name in ['monkey', 'ghost', 'snowmen', 'emu']:
                         self.energy_power -= 50
                         sprite.kill()
-                    if name in ['boar', 'monster', 'camel']:
+                    if name in ['boar', 'monster', 'camel', 'tiger']:
                         self.energy_power -= 100
                         # todo: player kill
                         self.is_player_dead = True
@@ -361,7 +361,7 @@ class Player(pygame.sprite.Sprite, Sound):
                         Sound.bullet_kill_enemy(self)
                         item.kill()
                         bullet.kill()
-                    if item.item_name in ['boar', 'monkey', 'monster', 'camel']:
+                    if item.item_name in ['boar', 'monkey', 'monster', 'camel', 'tiger']:
                         self.hit_enemy_counter += 1
                         bullet.kill()
                         if self.hit_enemy_counter == 2:

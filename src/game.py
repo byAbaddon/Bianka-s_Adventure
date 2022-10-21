@@ -84,10 +84,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 7
+        self.area = 8
         self.level = 1
         self.boss_number = 1
-        self.level_reader_row = 7  # 1
+        self.level_reader_row = 8  # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -233,6 +233,10 @@ class GameState(Sound):
             if enemy_name == 'enemy_emu':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/emu/1.png',
                              S_W, S_H - G_H_S - 10, 3, True, False, None, None, 6)
+            if enemy_name == 'enemy_tiger':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/tiger/1.png',
+                             S_W, S_H - G_H_S - 24, 1, True, False, None, None, 11)
+
         # ================================ create cloud platform classes
         def water_platform_creator(v_type):
             pic_cloud = '../src/assets/images/cloud/static.png'

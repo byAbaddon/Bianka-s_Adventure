@@ -57,7 +57,7 @@ class Enemy(Player, Sound):
             if self.item_name in ['monkey', 'raven', 'turtle', 'boar', 'bee', 'mouse', 'mole', 'crab', 'fish', 'ghost',
                                   'octopus', 'dragon', 'vulture', 'turtle', 'monster', 'fireball', 'cockroach',
                                   'penguin', 'seal', 'snowmen', 'eagle', 'eagle_attack', 'bird', 'medusa', 'camel',
-                                  'emu', 'lizard', 'elf']:
+                                  'emu', 'lizard', 'tiger', 'elf']:
                 self.noise = False
                 return eval(f'Sound.{self.item_name}_sound(self)')
 
