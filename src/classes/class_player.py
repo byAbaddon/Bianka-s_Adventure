@@ -265,7 +265,7 @@ class Player(pygame.sprite.Sprite, Sound):
                         self.is_player_poisoned = True
                     sprite.kill()
                     Sound.grab_item(self)
-                case 'crystal' | 'diamond' | 'gnome' | 'star' | 'plant':
+                case 'crystal' | 'diamond' | 'gnome' | 'star' | 'plant' | 'shield':
                     Sound.add_point(self)
                     if name in ['green']:
                         self.points += 100
@@ -328,7 +328,7 @@ class Player(pygame.sprite.Sprite, Sound):
                 case 'logs' | 'cloud':
                     Sound.bullet_hit(self)
                     bullet.kill()
-                case 'mushroom' | 'crystal' | 'diamond' | 'gnome' | 'star' | 'cactus' | 'plant':
+                case 'mushroom' | 'crystal' | 'diamond' | 'gnome' | 'star' | 'cactus' | 'plant' | 'shield':
                     Sound.bullet_hit(self)
                     bullet.kill()
                     item.kill()
@@ -379,7 +379,7 @@ class Player(pygame.sprite.Sprite, Sound):
         bullets_group = self.all_sprite_groups_dict['bullets']
         for sprite in pygame.sprite.spritecollide(self, bullets_group, False, pygame.sprite.collide_mask):
             match sprite.item_name:
-                case 'egg' | 'coconut' | 'bone' | 'snowball' | 'skull' | 'spit':
+                case 'egg' | 'coconut' | 'bone' | 'snowball' | 'skull' | 'spit' | 'fire_spit' | 'spear_min':
                     sprite.kill()
                     Sound.enemy_bullet_hit_player_head(self)
                     self.energy_power -= 10

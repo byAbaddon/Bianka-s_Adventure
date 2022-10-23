@@ -54,7 +54,6 @@ class Enemy(Player, Sound):
 
     def make_sound(self):
         if self.noise:
-            print(self.item_name)
             if self.item_name in ['monkey', 'raven', 'turtle', 'boar', 'bee', 'mouse', 'mole', 'crab', 'fish', 'ghost',
                                   'octopus', 'dragon', 'vulture', 'turtle', 'monster', 'fireball', 'cockroach',
                                   'penguin', 'seal', 'snowmen', 'eagle', 'eagle_attack', 'bird', 'medusa', 'camel',

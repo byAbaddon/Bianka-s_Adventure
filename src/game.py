@@ -84,10 +84,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 8
+        self.area = 10
         self.level = 1
         self.boss_number = 1
-        self.level_reader_row = 8  # 1
+        self.level_reader_row = 10  # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -245,9 +245,9 @@ class GameState(Sound):
             if enemy_name == 'enemy_dragon_big_attack':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/dragon_big_attack/5.png',
                              S_W, S_H - G_H_S - 46, 0, True, True, '../src/assets/images/bullets/fire_spit.png', 2, 0)
-            if enemy_name == 'enemy_elf_1':
-                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/elf_1/1.png',
-                             S_W, S_H - G_H_S - 34, 1, True, False, None, None, 4 )
+            if enemy_name == 'enemy_shooter':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/shooter/1.png',
+                             S_W, 120, 0, True, True, '../src/assets/images/bullets/spear_min.png', 2, 0, True)
 
         # ================================ create cloud platform classes
         def water_platform_creator(v_type):
@@ -292,8 +292,10 @@ class GameState(Sound):
                         elif v == 'bonus/balloon':  # change item position
                             # test move to decoration !!!!!!!!!!
                             new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H // 2, 0)
-                        elif v.split('/')[0] in ['decor', 'wall_decor', 'star']:  # change item position
+                        elif v.split('/')[0] in ['decor', 'wall_decor', 'star', 'lava']:  # change item position
                             y_pos = S_H - G_H_S - 42
+                            if v.split('/')[0] in ['lava']:
+                                y_pos = S_H - 5
                             if v.split('/')[0] in ['wall_decor']:
                                 y_pos -= 200
                             if v.split('/')[0] in ['star']:
@@ -336,15 +338,12 @@ class GameState(Sound):
                              SCREEN_HEIGHT // 2, 36)
 
         # ============================ level manipulator
-        if self.area > 8:
-            if self.area == 9:
-                self.state = 'boss'
-                if self.knight_data.is_boss_level_complete:
-                    self.area -= 1
-            else:
+        if self.area > 9:
+            if self.knight_data.is_boss_level_complete:
                 self.area = 1
                 self.level += 1
-            # ==============---------------level manipulator end
+
+        # ==============---------------level manipulator end
 
         # ==================== # check is player ALIVE
         if self.player_data.is_player_dead:
@@ -468,13 +467,18 @@ class GameState(Sound):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 self.is_star_area = True
 
-        # ========================================== START GAME  with Area 1; Level 9 / Castle
+        # ==========================================    *** BOSS ***
         if self.area == 9:
+            self.state = 'boss'
+            return
+
+        # ========================================== START GAME  with Area 10;Level 9 / Castle FINAL
+        if self.area == 10:
             if not self.is_star_area:
                 # set music
-                self.current_music = Sound.castle_music_area_nine(self)
+                self.current_music = Sound.in_the_castle_music_area_then(self)
                 # resize image and set background
-                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_9.png', 800, 510)
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_10_1.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 self.is_star_area = True
 
@@ -524,17 +528,16 @@ class GameState(Sound):
         table.update()
         if self.boss_number == 1:
             text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 10, 25)
-            if self.is_music_play:
+            if not self.is_music_play:
                 Sound.stop_all_sounds()
                 Sound.boss_music_area_one(self)
-                self.is_music_play = False
+                self.is_music_play = True
 
-            if self.is_bg_created:  # todo remove not  only for test
-                print('boss')
+            if not self.is_bg_created:  # todo remove not  only for test
                 # resize image
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_boss/bg_area_one_forest_boss.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
-                self.is_bg_created = False  # todo must be False
+                self.is_bg_created = True  # todo must be False
 
             if self.player_data.is_player_kill_boss:
                 self.state = 'level_statistic'
