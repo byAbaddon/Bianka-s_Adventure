@@ -239,16 +239,16 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name in ['fish', 'mouse', 'cockroach', 'cactus_ball']:
                         self.energy_power -= 10
                         sprite.kill()
-                    if name in ['raven', 'octopus', 'dragon', 'fireball', 'snowball', 'penguin', 'bird', 'crab']:
+                    if name in ['raven', 'octopus', 'dragon', 'fireball', 'snowball', 'penguin', 'bird', 'crab', 'stone']:
                         self.energy_power -= 20
                         sprite.kill()
                     if name in ['hedgehog', 'mole', 'turtle', 'seal', 'eagle_attack', 'medusa', 'lizard']:
                         self.energy_power -= 30
                         sprite.kill()
-                    if name in ['monkey', 'ghost', 'snowmen', 'emu']:
+                    if name in ['monkey', 'ghost', 'snowmen', 'emu', 'dragon_big']:
                         self.energy_power -= 50
                         sprite.kill()
-                    if name in ['boar', 'monster', 'camel', 'tiger']:
+                    if name in ['boar', 'monster', 'camel', 'tiger', 'dragon_big_attack']:
                         self.energy_power -= 100
                         # todo: player kill
                         self.is_player_dead = True
@@ -335,7 +335,7 @@ class Player(pygame.sprite.Sprite, Sound):
                 case 'stones':
                     Sound.bullet_ricochet(self)
                     bullet.kill()
-                case 'trap' :
+                case 'trap':
                     Sound.snapping_trap(self)
                     bullet.kill()
                     item.kill()
@@ -345,6 +345,9 @@ class Player(pygame.sprite.Sprite, Sound):
                         bullet.kill()
                         item.kill()
                 case 'enemies':
+                    if item.item_name == 'stone_ball':
+                        Sound.bullet_ricochet(self)
+                        bullet.kill()
                     if item.item_name in ['fish', 'mole',  'crab', 'bee', 'bird', 'cactus_ball']:
                         self.points += 100
                         Sound.bullet_kill_enemy(self)
@@ -361,7 +364,8 @@ class Player(pygame.sprite.Sprite, Sound):
                         Sound.bullet_kill_enemy(self)
                         item.kill()
                         bullet.kill()
-                    if item.item_name in ['boar', 'monkey', 'monster', 'camel', 'tiger']:
+                    if item.item_name in ['boar', 'monkey', 'monster', 'camel', 'tiger', 'dragon_big',
+                                          'dragon_big_attack']:
                         self.hit_enemy_counter += 1
                         bullet.kill()
                         if self.hit_enemy_counter == 2:

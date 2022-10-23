@@ -54,10 +54,11 @@ class Enemy(Player, Sound):
 
     def make_sound(self):
         if self.noise:
+            print(self.item_name)
             if self.item_name in ['monkey', 'raven', 'turtle', 'boar', 'bee', 'mouse', 'mole', 'crab', 'fish', 'ghost',
                                   'octopus', 'dragon', 'vulture', 'turtle', 'monster', 'fireball', 'cockroach',
                                   'penguin', 'seal', 'snowmen', 'eagle', 'eagle_attack', 'bird', 'medusa', 'camel',
-                                  'emu', 'lizard', 'tiger', 'elf']:
+                                  'emu', 'lizard', 'tiger', 'stone_ball', 'dragon_big', 'dragon_big_attack', 'elf']:
                 self.noise = False
                 return eval(f'Sound.{self.item_name}_sound(self)')
 
@@ -119,8 +120,8 @@ class Enemy(Player, Sound):
 
     def shooting_enemy(self):  # shooting:
         if self.shooting:
-            # Add bullet enemy to class bullet !!!
-            if self.item_name in ['snowmen', 'camel']:   # enemies with shooting only left
+            # Add bullet name enemy to class bullet !!!
+            if self.item_name in ['snowmen', 'camel', 'dragon_big_attack']:   # enemies with shooting only left
                 Sound.bullet_fail(self)
                 shot_position = self.rect.midright
                 self.direction = vec(-1, 0)

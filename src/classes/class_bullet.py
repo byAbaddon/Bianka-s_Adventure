@@ -41,11 +41,13 @@ class Bullet(pygame.sprite.Sprite):
             if self.direction.x == 1:
                 self.rect.x += self.speed
             elif self.direction.x == -1:
-                if self.item_name in ['snowball', 'spit']:  # ----- shooting  left
+                if self.item_name in ['snowball', 'spit', 'fire_spit']:  # ----- shooting  left
                     self.rect.x -= self.speed
                     self.rect.y = SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - self.image.get_height() - 25
                     if self.item_name == 'spit':
                         self.rect.y -= 35
+                    elif self.item_name == 'fire_spit':
+                        self.rect.y -= 50
                     if key_pressed(pygame.K_RIGHT):  # if player movie right fix bullet position
                         self.rect.x -= BG_SPEED
                 else:  # ---------------------------------- shooting down + right

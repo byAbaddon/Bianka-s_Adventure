@@ -120,6 +120,9 @@ class Sound:
     def snowmen_sound(self):
         self.play_sound('../src/assets/sounds/enemies/snowmen.wav', 1,)
 
+    def stone_ball_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/stone.mp3', 1, )
+
     def elf_sound(self):
         self.play_sound('../src/assets/sounds/enemies/elf_one.mp3', 1, )
 
@@ -191,6 +194,12 @@ class Sound:
 
     def dragon_sound(self):
         self.play_sound('../src/assets/sounds/enemies/dragon.mp3', 0.3, 1)
+
+    def dragon_big_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/dragon_big.mp3', 1, )
+
+    def dragon_big_attack_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/dragon_big.mp3', 0.3, 1)
 
     def turtle_sound(self):
         self.play_sound('../src/assets/sounds/enemies/turtle.wav', 1, 2)

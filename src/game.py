@@ -227,6 +227,9 @@ class GameState(Sound):
             if enemy_name == 'enemy_cactus_ball':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/cactus_ball/1.png',
                              S_W, S_H - G_H_S - 10, 2, False, False, None, None, 6)
+            if enemy_name == 'enemy_stone_ball':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/stone_ball/1.png',
+                             S_W, S_H - G_H_S - 10, 2, True, None, None, 0, 5)
             if enemy_name == 'enemy_lizard':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/lizard/1.png',
                              S_W, S_H - G_H_S - 10, 2, True, False, None, None, 8)
@@ -236,6 +239,15 @@ class GameState(Sound):
             if enemy_name == 'enemy_tiger':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/tiger/1.png',
                              S_W, S_H - G_H_S - 24, 1, True, False, None, None, 11)
+            if enemy_name == 'enemy_dragon_big':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/dragon_big/1.png',
+                             S_W, S_H - G_H_S - 20, 2, True, False, None, None, 6)
+            if enemy_name == 'enemy_dragon_big_attack':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/dragon_big_attack/5.png',
+                             S_W, S_H - G_H_S - 46, 0, True, True, '../src/assets/images/bullets/fire_spit.png', 2, 0)
+            if enemy_name == 'enemy_elf_1':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/elf_1/1.png',
+                             S_W, S_H - G_H_S - 34, 1, True, False, None, None, 4 )
 
         # ================================ create cloud platform classes
         def water_platform_creator(v_type):
