@@ -61,6 +61,7 @@ class Sound:
     # Level 10 In the Castle
     def in_the_castle_music_area_then(self):
         self.play_sound('../src/assets/sounds/game_musics/level_10.mp3', 0.5, -1)
+
     # ======================================   BOSS
     def boss_music_area_one(self):
         self.play_sound('../src/assets/sounds/game_musics/boss/boss_2.mp3', 0.5, -1)
@@ -122,6 +123,12 @@ class Sound:
     # -------------------------------------------   enemy sound
     def snowmen_sound(self):
         self.play_sound('../src/assets/sounds/enemies/snowmen.wav', 1,)
+
+    def bat_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/bat.wav', 1, )
+
+    def bat_attack_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/bat.wav', 1,)
 
     def stone_ball_sound(self):
         self.play_sound('../src/assets/sounds/enemies/stone.mp3', 1, )

@@ -39,6 +39,7 @@ class Enemy(Player, Sound):
             if not self.is_static:
                 self.rect.x -= self.speed
         # ------  special enemies movement --------
+        # print(self.item_name)
         if self.item_name == 'fish':
             self.fish_action()
         if self.item_name == 'octopus':
@@ -51,13 +52,16 @@ class Enemy(Player, Sound):
             self.medusa_action()
         if self.item_name == 'eagle_attack':
             self.eagle_attack_action()
+        if self.item_name == 'bat_attack':
+            self.bat_attack_action()
 
     def make_sound(self):
         if self.noise:
             if self.item_name in ['monkey', 'raven', 'turtle', 'boar', 'bee', 'mouse', 'mole', 'crab', 'fish', 'ghost',
                                   'octopus', 'dragon', 'vulture', 'turtle', 'monster', 'fireball', 'cockroach',
                                   'penguin', 'seal', 'snowmen', 'eagle', 'eagle_attack', 'bird', 'medusa', 'camel',
-                                  'emu', 'lizard', 'tiger', 'stone_ball', 'dragon_big', 'dragon_big_attack', 'elf']:
+                                  'emu', 'lizard', 'tiger', 'stone_ball', 'dragon_big', 'dragon_big_attack', 'elf',
+                                  'bat', 'bat_attack']:
                 self.noise = False
                 return eval(f'Sound.{self.item_name}_sound(self)')
 
@@ -70,6 +74,12 @@ class Enemy(Player, Sound):
         if self.rect.x <= SCREEN_WIDTH - 100:
             self.sprite_pic_num = 0
             self.image = pygame.image.load('../src/assets/images/enemies/eagle/11.png')
+            self.rect.y += self.speed
+
+    def bat_attack_action(self):
+        if self.rect.x <= SCREEN_WIDTH - 200:
+            self.sprite_pic_num = 0
+            self.image = pygame.image.load('../src/assets/images/enemies/bat_attack/5.png')
             self.rect.y += self.speed
 
     def ghost_action(self):

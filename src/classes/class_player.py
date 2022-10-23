@@ -1,5 +1,5 @@
 import pygame
-from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT_SIZE, vec
+from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT_SIZE, vec, check_key_pressed
 from src.classes.class_sound import Sound
 
 
@@ -31,6 +31,7 @@ class Player(pygame.sprite.Sprite, Sound):
     is_player_kill_boss = False
     boss_taken_amulets = 0
     is_jump_allowed = True
+    is_player_squat = False
 
     def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
@@ -122,6 +123,27 @@ class Player(pygame.sprite.Sprite, Sound):
                 and not key[pygame.K_LEFT]:
             self.direction.x = 1
             self.acceleration.x = self.PLAYER_SPEED
+
+        # squat
+        if key[pygame.K_DOWN] and not key[pygame.K_RIGHT] and not key[pygame.K_LEFT] and not key[pygame.K_UP] and\
+                self.direction.y == 1:
+            self.is_player_squat = True
+            self.pos.y = 572
+            self.acceleration.x = 0
+            if self.direction.x == 1:
+                self.image = pygame.image.load('../src/assets/images/player/squat/1.png')
+            else:
+                self.image = pygame.transform.flip(
+                    pygame.image.load('../src/assets/images/player/squat/1.png'), True, False)
+
+        # restore image after squat
+        if self.is_player_squat and not check_key_pressed(pygame.K_DOWN):
+            if self.direction.x == 1:
+                self.image = pygame.image.load('../src/assets/images/player/stay/1.png')
+            else:
+                self.image = pygame.transform.flip(
+                    pygame.image.load('../src/assets/images/player/stay/1.png'), True, False)
+            self.is_player_squat = False
 
         # running
         # if key[pygame.K_a] and self.pos.x > self.WALK_LEFT_SCREEN_BORDER:
@@ -239,10 +261,11 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name in ['fish', 'mouse', 'cockroach', 'cactus_ball']:
                         self.energy_power -= 10
                         sprite.kill()
-                    if name in ['raven', 'octopus', 'dragon', 'fireball', 'snowball', 'penguin', 'bird', 'crab', 'stone']:
+                    if name in ['raven', 'octopus', 'dragon', 'fireball', 'snowball', 'penguin', 'bird', 'crab', 'stone'
+                                , 'bat']:
                         self.energy_power -= 20
                         sprite.kill()
-                    if name in ['hedgehog', 'mole', 'turtle', 'seal', 'eagle_attack', 'medusa', 'lizard']:
+                    if name in ['hedgehog', 'mole', 'turtle', 'seal', 'eagle_attack', 'medusa', 'lizard', 'bat_attack']:
                         self.energy_power -= 30
                         sprite.kill()
                     if name in ['monkey', 'ghost', 'snowmen', 'emu', 'dragon_big']:
@@ -291,13 +314,13 @@ class Player(pygame.sprite.Sprite, Sound):
                         Sound.snapping_trap(self)
                         Sound.player_injury(self)
                         sprite.kill()
-                case 'stones' | 'cactus':
+                case 'stones' | 'cactus' | 'head':
                     self.image = pygame.image.load('../src/assets/images/player/fail/fail_right.png')
                     Sound.player_stone_hit(self)
                     sprite.rect.x -= 10
-                    if name in ['big', 'big_red', 'big_ice', 'big_des']:
+                    if name in ['big', 'big_red', 'big_ice', 'big_des', ]:
                         self.energy_power -= 3  # X 2
-                    if name in ['medium', 'medium_red', 'medium_ice', 'medium_des']:
+                    if name in ['medium', 'medium_red', 'medium_ice', 'medium_des', 'k1', 'k2', 'k3', 'k4']:
                         self.energy_power -= 2
                     if name in ['small', 'small_red', 'small_ice', 'small_des']:
                         self.energy_power -= 1
@@ -332,7 +355,7 @@ class Player(pygame.sprite.Sprite, Sound):
                     Sound.bullet_hit(self)
                     bullet.kill()
                     item.kill()
-                case 'stones':
+                case 'stones' | 'head':
                     Sound.bullet_ricochet(self)
                     bullet.kill()
                 case 'trap':
@@ -359,7 +382,7 @@ class Player(pygame.sprite.Sprite, Sound):
                         item.kill()
                         bullet.kill()
                     if item.item_name in ['mouse', 'octopus', 'raven', 'butterfly', 'ghost', 'penguin', 'seal',
-                                          'eagle_attack', 'medusa', 'birth', 'emu']:
+                                          'eagle_attack', 'medusa', 'birth', 'emu', 'bat', 'bat_attack']:
                         self.points += 300
                         Sound.bullet_kill_enemy(self)
                         item.kill()

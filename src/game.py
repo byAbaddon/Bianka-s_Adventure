@@ -87,7 +87,7 @@ class GameState(Sound):
         self.area = 10
         self.level = 1
         self.boss_number = 1
-        self.level_reader_row = 10  # 1
+        self.level_reader_row = 11  # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -126,7 +126,7 @@ class GameState(Sound):
         player.is_boss_level = False  # set player walking border to 1/3 S_W
 
         # ++++++++++++++++++++++++++++++ developer utils +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
+        # text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
         # text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
         # text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
         # text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
@@ -188,6 +188,12 @@ class GameState(Sound):
             if enemy_name == 'enemy_eagle_attack':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/eagle_attack/1.png',
                              S_W, T_F_S + 150, 3, True, None, None, 0, 10)
+            if enemy_name == 'enemy_bat_attack':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/bat_attack/1.png',
+                             S_W, T_F_S + 170, 2, True, None, None, 0, 5)
+            if enemy_name == 'enemy_bat':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/bat/1.png',
+                             S_W, S_H - G_H_S - 120, 3, True, None, None, 0, 4)
             if enemy_name == 'enemy_bird':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/bird/1.png',
                              S_W, T_F_S + 50, 2, True, False, None, 0, 8)

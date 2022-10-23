@@ -91,6 +91,15 @@ def file_operation(file_path, option="['r' or 'w' or 'a']", row_number_to_read=0
             return file.write(text_to_write + '\n')
 
 
+# check key pressed
+def check_key_pressed(input_key):
+    keysPressed = pygame.key.get_pressed()
+    if keysPressed[input_key]:
+        return True
+    else:
+        return False
+
+
 # keyboard events for exit
 def exit_game():
     for event in pygame.event.get():
