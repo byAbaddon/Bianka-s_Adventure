@@ -87,7 +87,7 @@ class GameState(Sound):
         self.area = 10
         self.level = 1
         self.boss_number = 1
-        self.level_reader_row = 11  # 1
+        self.level_reader_row = 11 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -256,7 +256,7 @@ class GameState(Sound):
                              S_W, 120, 0, True, True, '../src/assets/images/bullets/spear_min.png', 2, 0, True)
 
         # ================================ create cloud platform classes
-        def water_platform_creator(v_type):
+        def platform_creator(v_type):
             pic_cloud = '../src/assets/images/cloud/static.png'
             if v_type == 'cloud/static':
                 return Cloud(self.player_data, self.background, pic_cloud, S_W, S_H - 280, True, 0, 'static', 0)
@@ -270,6 +270,10 @@ class GameState(Sound):
             if v_type.split('/')[0] == 'logs':
                 pic_log = f'../src/assets/images/logs/{v_type.split("/")[1]}.png'
                 return Log(self.player_data, pic_log, S_W, S_H - G_H_S, True)
+            # ================================ create stone platform
+            if v_type.split('/')[0] == 'platform':
+                pic_log = f'../src/assets/images/platform/{v_type.split("/")[1]}.png'
+                return Log(self.player_data, pic_log, S_W, S_H - G_H_S, True)
 
         # function sprite creator
         def sprite_creator(dictionary, input_class=None, group_class=None):
@@ -281,9 +285,9 @@ class GameState(Sound):
                         new_enemy_class = enemy_creator(enemy_name=v)
                         # add to item group
                         group_class.add(new_enemy_class)
-                    elif v.split('/')[0] == 'cloud' or v.split('/')[0] == 'logs':  # -- create ground platforms
+                    elif v.split('/')[0] == 'cloud' or v.split('/')[0] == 'logs' or v.split('/')[0] == 'platform':
                         # create new class from cloud platform
-                        new_platform_class = water_platform_creator(v_type=v)
+                        new_platform_class = platform_creator(v_type=v)
                         # add to item group
                         group_class.add(new_platform_class)
                     else:
@@ -481,12 +485,26 @@ class GameState(Sound):
         # ========================================== START GAME  with Area 10;Level 9 / Castle FINAL
         if self.area == 10:
             if not self.is_star_area:
-                # set music
-                self.current_music = Sound.in_the_castle_music_area_then(self)
-                # resize image and set background
-                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_10_1.png', 800, 510)
-                self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
+                if self.level_reader_row == 10:  # 57
+                    # set music
+                    self.current_music = Sound.in_the_castle_music_area_then(self)
+                    # resize image and set background
+                    scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_10_1.png', 800, 510)
+                    self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
+                elif self.level_reader_row == 11:  # 58
+                    # set music
+                    self.current_music = Sound.in_the_castle_music_area_then_two(self)
+                    # resize image and set background
+                    scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_10_2.png', 800, 510)
+                    self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
+                    ground_group.empty()
+                    ground_rock = Ground('../src/assets/images/ground/stone_platform.png', False, 0, S_H - 90)
+                    ground_group.add(ground_rock)
                 self.is_star_area = True
+            # check is player in the Lava and allowed animation
+            if self.player_data.check_is_player_fail_out_of_screen():
+                Sound.player_fail_in_water(self)
+                self.is_in_water = True
 
         # =================== check is player energy player/ dead - and set image
         if self.player_data.check_is_energy_player():
@@ -507,10 +525,13 @@ class GameState(Sound):
         self.background.update()
 
         # --------------------------- draw sprite group
-        if self.area == 2 or self.area == 6:
+        if self.area == 2 or 6 or (10 and self.level_reader_row == 11):  # 58
             ground_group.draw(SCREEN)  # hide under bg or removed
             if self.is_in_water:  # run splashes animation
-                pic = pygame.image.load('../src/assets/images/splashes/splashes.png')
+                if self.area < 10:
+                    pic = pygame.image.load('../src/assets/images/splashes/splashes.png')
+                else:
+                    pic = pygame.image.load('../src/assets/images/splashes/splashes_fire.png')
                 self.count += 0.03
                 pic = pygame.transform.rotozoom(pic, 0, self.count)
                 pos = pic.get_rect(center=(self.player_data.player_dead_x_pos, S_H - 100))

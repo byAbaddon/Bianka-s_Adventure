@@ -3,8 +3,9 @@ from src.settings import SCREEN_WIDTH, SCREEN_HEIGHT, key_pressed, BG_SPEED, vec
 
 
 class Cloud(pygame.sprite.Sprite):
-    def __init__(self, player_data, background_data, pic='../src/assets/images/cloud/static.png', x=SCREEN_WIDTH,
-                 y=SCREEN_HEIGHT - 350, is_static=True, speed=int(1), direction='left_right or up_down', distance=100):
+    def __init__(self, player_data, background_data, pic='../src/assets/images/cloud/static.png',
+                 x=SCREEN_WIDTH, y=SCREEN_HEIGHT - 350, is_static=True, speed=int(1), direction='left_right or up_down',
+                 distance=100):
         pygame.sprite.Sprite.__init__(self,)
         self.player_data = player_data
         self.background_data = background_data

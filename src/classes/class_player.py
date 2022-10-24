@@ -226,14 +226,16 @@ class Player(pygame.sprite.Sprite, Sound):
                             self.image = pygame.image.load('../src/assets/images/player/stay/2.png')
                         self.is_jump = False
 
-    def check_water_platform_collide(self):
+    def check_platform_collide(self):
         buffer = 6  # buffer image to improve collide
         group_items = self.all_sprite_groups_dict['items']
         for sprite in pygame.sprite.spritecollide(self, group_items, False, pygame.sprite.collide_mask):
             # print(sprite.group_name)
-            if sprite.group_name == 'cloud' or sprite.group_name == 'logs':
+            if sprite.group_name in ['cloud', 'logs', 'platform']:
                 if sprite.group_name == 'logs':  # fix flickering if player on the logs
                     buffer = 9
+                elif sprite.group_name == 'platform':
+                    buffer = 1
                 # check is player head hits in bottom platform
                 if self.pos.y < sprite.rect.bottom:
                     if not (sprite.rect.left > self.pos.x or self.pos.x > sprite.rect.right):
@@ -451,7 +453,7 @@ class Player(pygame.sprite.Sprite, Sound):
         self.check_bullets_collide()
         self.check_enemy_bullets_collide()
         self.poisoned_player_energy_decrease()
-        self.check_water_platform_collide()
+        self.check_platform_collide()
         self.check_player_and_enemy_bullets_collide()
 
     # ============================================ RESET PLAYER DATA ====================================

@@ -58,7 +58,7 @@ class Log(pygame.sprite.Sprite):
     def check_collide(self):
         group_items = self.player_data.all_sprite_groups_dict['items']
         for sprite in pygame.sprite.spritecollide(self.player_data,  group_items,  False, pygame.sprite.collide_mask):
-            if sprite.group_name == 'logs':
+            if sprite.group_name == 'logs' or 'stone':
                 if self.current_direction.x == 1:
                     self.player_data.pos.x += self.speed
                 if self.current_direction.x == -1:
