@@ -194,7 +194,7 @@ class GameState(Sound):
                              S_W, T_F_S + 170, 2, True, None, None, 0, 5)
             if enemy_name == 'enemy_bat':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/bat/1.png',
-                             S_W, S_H - G_H_S - 120, 3, True, None, None, 0, 4)
+                             S_W, S_H - G_H_S - 130, 3, True, None, None, 0, 4)
             if enemy_name == 'enemy_bird':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/bird/1.png',
                              S_W, T_F_S + 50, 2, True, False, None, 0, 8)
