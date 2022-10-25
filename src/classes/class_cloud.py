@@ -72,9 +72,21 @@ class Cloud(pygame.sprite.Sprite):
         if self.is_player_and_cloud_collide:
             self.rect.y += self.speed_cloud + 2
 
+    def movement_player_squat(self, sprite):
+        if key_pressed(pygame.K_DOWN):
+            if self.player_data.direction.x == 1:
+                self.player_data.image = pygame.image.load('../src/assets/images/player/squat/1.png')
+            elif self.player_data.direction.x == -1:
+                self.player_data.image = pygame.transform.flip(
+                    pygame.image.load('../src/assets/images/player/squat/1.png'), True, False)
+            self.player_data.acceleration = vec(0, 0)
+            self.player_data.pos.y = sprite.rect.top + 36
+
     def check_collide(self):
         group_items = self.player_data.all_sprite_groups_dict['items']
         for sprite in pygame.sprite.spritecollide(self.player_data,  group_items,  False, pygame.sprite.collide_mask):
+            print(sprite.item_name, 'collide')
+            self.movement_player_squat(sprite)
             if sprite.group_name == 'cloud':
                 if self.player_data.pos.y < sprite.rect.bottom:
                     # # ------------------------------fix position after jump right on cloud
@@ -91,8 +103,8 @@ class Cloud(pygame.sprite.Sprite):
                     #     print( self.player_data.pos.x , ' x   bor  ',  self.player_data.WALK_RIGHT_SCREEN_BORDER)
                     #     if self.player_data.pos.x > self.player_data.WALK_RIGHT_SCREEN_BORDER:
                     #         self.background_data.bg_counter -= self.speed_cloud
-                        # else:
-                        #     self.is_background_fixed_if_player_on_platform = False
+                    # else:
+                    #     self.is_background_fixed_if_player_on_platform = False
 
     def prevent_overflow_item_group(self):  # remove old item from item_group if it out of screen
         if self.rect.x < -200 or self.rect.x > SCREEN_WIDTH + 100 or self.rect.y > SCREEN_HEIGHT:
@@ -101,14 +113,14 @@ class Cloud(pygame.sprite.Sprite):
     def update(self):
         self.movement_could_in_screen_if_key_preset()
         self.prevent_overflow_item_group()
-        if not self.is_static:
-            self.check_collide()
-            if self.direction == 'left_right':  # left/right
-                self.movement_could_left_right()
-            elif self.direction == 'up_down':  # up/down
-                self.movement_could_up_down()
-            elif self.direction == 'fail':  # fail:
-                self.movement_could_fail()
+        # if not self.is_static:
+        self.check_collide()
+        if self.direction == 'left_right':  # left/right
+            self.movement_could_left_right()
+        elif self.direction == 'up_down':  # up/down
+            self.movement_could_up_down()
+        elif self.direction == 'fail':  # fail:
+            self.movement_could_fail()
 
 
 

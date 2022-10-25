@@ -84,10 +84,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 10
+        self.area = 6
         self.level = 1
         self.boss_number = 1
-        self.level_reader_row = 11 # 1
+        self.level_reader_row = 6 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -100,7 +100,7 @@ class GameState(Sound):
 
     def start_game(self):
         # ------------------top display frame
-        table.update()
+        # table.update()
 
         # =============================================== RESET ALL DATA IF START NEW GAME
         if self.is_start_new_game:  # reset all old data
@@ -126,12 +126,12 @@ class GameState(Sound):
         player.is_boss_level = False  # set player walking border to 1/3 S_W
 
         # ++++++++++++++++++++++++++++++ developer utils +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        # text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
-        # text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
-        # text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
-        # text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
-        # text_creator(f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70, 22)
-        # text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 5)
+        text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
+        text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
+        text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
+        text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
+        text_creator(f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70, 22)
+        text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 5)
 
         # ================================ create enemy classes
         def enemy_creator(enemy_name):
@@ -269,11 +269,11 @@ class GameState(Sound):
             # ================================ create logs
             if v_type.split('/')[0] == 'logs':
                 pic_log = f'../src/assets/images/logs/{v_type.split("/")[1]}.png'
-                return Log(self.player_data, pic_log, S_W, S_H - G_H_S, True)
+                return Log(self.player_data, pic_log, S_W, S_H - 55, True)
             # ================================ create stone platform
             if v_type.split('/')[0] == 'platform':
                 pic_log = f'../src/assets/images/platform/{v_type.split("/")[1]}.png'
-                return Log(self.player_data, pic_log, S_W, S_H - G_H_S, True)
+                return Log(self.player_data, pic_log, S_W, S_H - 48, True)
 
         # function sprite creator
         def sprite_creator(dictionary, input_class=None, group_class=None):
@@ -394,10 +394,10 @@ class GameState(Sound):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 # add rock ground
                 ground_group.empty()
-                ground_rock = Ground('../src/assets/images/ground/dock_middle.png', False, 0, S_H - 100)
+                ground_rock = Ground('../src/assets/images/ground/dock_middle.png', False, 0, S_H - 75)
                 ground_group.add(ground_rock)
                 self.is_star_area = True
-            self.player_data.jump_limit = 520  # prevent jump from water 508
+            self.player_data.jump_limit = S_H - 50  # prevent jump from water
             # check is player in the Sea and allowed animation
             if self.player_data.check_is_player_fail_out_of_screen():
                 Sound.player_fail_in_water(self)
@@ -454,6 +454,9 @@ class GameState(Sound):
             if self.player_data.check_is_player_fail_out_of_screen():
                 Sound.player_fail_in_water(self)
                 self.is_in_water = True
+            # prevent squat player in could level
+            self.player_data.is_water_level = True
+
 
         # ========================================== START GAME  with Area 1; Level 7 / Desert
         if self.area == 7:
@@ -498,8 +501,9 @@ class GameState(Sound):
                     scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_10_2.png', 800, 510)
                     self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                     ground_group.empty()
-                    ground_rock = Ground('../src/assets/images/ground/stone_platform.png', False, 0, S_H - 90)
+                    ground_rock = Ground('../src/assets/images/ground/stone_platform.png', False, 0, S_H - 62)
                     ground_group.add(ground_rock)
+                    self.player_data.jump_limit = S_H - 50  # prevent jump from water
                 self.is_star_area = True
             # check is player in the Lava and allowed animation
             if self.player_data.check_is_player_fail_out_of_screen():
@@ -525,7 +529,7 @@ class GameState(Sound):
         self.background.update()
 
         # --------------------------- draw sprite group
-        if self.area == 2 or 6 or (10 and self.level_reader_row == 11):  # 58
+        if self.area == 2 or self.area == 6 or (self.area == 10 and self.level_reader_row == 11):  # 58
             ground_group.draw(SCREEN)  # hide under bg or removed
             if self.is_in_water:  # run splashes animation
                 if self.area < 10:

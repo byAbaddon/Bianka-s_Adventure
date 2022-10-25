@@ -1,5 +1,5 @@
 import pygame
-from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT_SIZE, vec, check_key_pressed
+from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT_SIZE, vec, check_key_pressed, key_pressed
 from src.classes.class_sound import Sound
 
 
@@ -32,6 +32,7 @@ class Player(pygame.sprite.Sprite, Sound):
     boss_taken_amulets = 0
     is_jump_allowed = True
     is_player_squat = False
+    is_water_level = False
 
     def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
@@ -128,13 +129,14 @@ class Player(pygame.sprite.Sprite, Sound):
         if key[pygame.K_DOWN] and not key[pygame.K_RIGHT] and not key[pygame.K_LEFT] and not key[pygame.K_UP] and\
                 self.direction.y == 1:
             self.is_player_squat = True
-            self.pos.y = 572
-            self.acceleration.x = 0
-            if self.direction.x == 1:
-                self.image = pygame.image.load('../src/assets/images/player/squat/1.png')
-            else:
-                self.image = pygame.transform.flip(
-                    pygame.image.load('../src/assets/images/player/squat/1.png'), True, False)
+            if not self.is_water_level:  # squat only not water level
+                self.acceleration = vec(0, 0)
+                self.pos.y = SCREEN_HEIGHT - (GROUND_HEIGHT_SIZE - self.player_height_size // 3)
+                if self.direction.x == 1:
+                    self.image = pygame.image.load('../src/assets/images/player/squat/1.png')
+                else:
+                    self.image = pygame.transform.flip(
+                        pygame.image.load('../src/assets/images/player/squat/1.png'), True, False)
 
         # restore image after squat
         if self.is_player_squat and not check_key_pressed(pygame.K_DOWN):
@@ -176,14 +178,22 @@ class Player(pygame.sprite.Sprite, Sound):
             self.last_time = time_now
 
             self.shot_position = self.rect.midright
-            y = self.shot_position[1] - 26  # get y pos form rect
+
+            if self.acceleration.y <= 0:
+                action = 'squat'
+                y = self.shot_position[1] - 10  # get y pos form rect
+            else:
+                action = 'angry'
+                y = self.shot_position[1] - 26  # get y pos form rect
 
             if self.direction.x == 1:
-                x = self.shot_position[0] + 30  # get x pos form rect
-                self.image = pygame.image.load('../src/assets/images/player/angry/1.png')
+                x = self.shot_position[0] + 20  # get x pos form rect
+                self.image = pygame.image.load(f'../src/assets/images/player/{action}/1.png')
             else:
-                self.image = pygame.image.load('../src/assets/images/player/angry/2.png')
-                x = self.shot_position[0] - 104
+                self.image = pygame.image.load(f'../src/assets/images/player/{action}/2.png')
+                x = self.shot_position[0] - 100
+                if self.acceleration.y <= 0:
+                    x += 30
             bullet = self.class_bullet(self.current_weapon, x, y, self.direction)
             self.all_sprite_groups_dict['bullets'].add(bullet)
 
