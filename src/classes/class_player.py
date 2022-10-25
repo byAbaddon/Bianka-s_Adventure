@@ -274,7 +274,7 @@ class Player(pygame.sprite.Sprite, Sound):
                         self.energy_power -= 10
                         sprite.kill()
                     if name in ['raven', 'octopus', 'dragon', 'fireball', 'snowball', 'penguin', 'bird', 'crab', 'stone'
-                                , 'bat']:
+                                , 'bat', 'vamp']:
                         self.energy_power -= 20
                         sprite.kill()
                     if name in ['hedgehog', 'mole', 'turtle', 'seal', 'eagle_attack', 'medusa', 'lizard', 'bat_attack']:
@@ -283,7 +283,7 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name in ['monkey', 'ghost', 'snowmen', 'emu', 'dragon_big']:
                         self.energy_power -= 50
                         sprite.kill()
-                    if name in ['boar', 'monster', 'camel', 'tiger', 'dragon_big_attack']:
+                    if name in ['boar', 'monster', 'camel', 'tiger', 'dragon_big_attack', 'knight_sword']:
                         self.energy_power -= 100
                         # todo: player kill
                         self.is_player_dead = True
@@ -388,7 +388,7 @@ class Player(pygame.sprite.Sprite, Sound):
                         Sound.bullet_kill_enemy(self)
                         item.kill()
                         bullet.kill()
-                    if item.item_name in ['hedgehog', 'dragon', 'turtle', 'cockroach', 'snowmen', 'lizard']:
+                    if item.item_name in ['hedgehog', 'dragon', 'turtle', 'cockroach', 'snowmen', 'lizard', 'vamp']:
                         self.points += 200
                         Sound.bullet_kill_enemy(self)
                         item.kill()
@@ -409,6 +409,19 @@ class Player(pygame.sprite.Sprite, Sound):
                             bullet.kill()
                             item.kill()
                         Sound.bullet_kill_boar(self)
+                    if item.item_name == 'knight_sword':
+                        sprite = pygame.sprite.spritecollide(item, bullets_group, True, pygame.sprite.collide_mask)
+                        if sprite:
+                            for hit_point in sprite:
+                                if 400 <= hit_point.rect.topleft[1] <= 442:  # head shoot
+                                    Sound.bullet_player_hit_knight_face(self)
+                                    self.points += 1000
+                                    Sound.knight_dead_sound(self)
+                                    item.kill()
+                                    bullet.kill()
+                                else:
+                                    Sound.bullet_player_hit_knight_armor(self)  # body soot
+
 
     def check_enemy_bullets_collide(self):
         bullets_group = self.all_sprite_groups_dict['bullets']

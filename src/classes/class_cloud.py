@@ -23,7 +23,7 @@ class Cloud(pygame.sprite.Sprite):
         self.is_distance_done = False
         self.is_firs_hit = False
         self.is_player_and_cloud_collide = False
-        self.is_background_fixed_if_player_on_platform = True
+        self.is_background_fixed = False
 
     def movement_could_in_screen_if_key_preset(self):
         if key_pressed(pygame.K_RIGHT):
@@ -85,7 +85,14 @@ class Cloud(pygame.sprite.Sprite):
     def check_collide(self):
         group_items = self.player_data.all_sprite_groups_dict['items']
         for sprite in pygame.sprite.spritecollide(self.player_data,  group_items,  False, pygame.sprite.collide_mask):
-            print(sprite.item_name, 'collide')
+            # if sprite.item_name == 'static': # todo:
+            #     if self.player_data.pos.x > self.player_data.WALK_RIGHT_SCREEN_BORDER:
+            #         print(self.player_data.pos.x)
+            #         # self.player_data.pos.x -= 1
+            #         if self.player_data.pos.x != self.player_data.WALK_RIGHT_SCREEN_BORDER:
+            #             self.background_data.speed -= self.speed_cloud
+            #             self.background_data.bg_counter -= self.speed_cloud
+            #             self.player_data.pos.x =
             self.movement_player_squat(sprite)
             if sprite.group_name == 'cloud':
                 if self.player_data.pos.y < sprite.rect.bottom:
@@ -98,13 +105,6 @@ class Cloud(pygame.sprite.Sprite):
                     # ------------------------------------
                     if sprite.item_name == 'left_right' or sprite.item_name == 'fail':
                         self.is_player_and_cloud_collide = True
-                    # todo  fix bg if player on the could
-                    # if sprite.item_name == 'left_right' and self.is_background_fixed_if_player_on_platform:
-                    #     print( self.player_data.pos.x , ' x   bor  ',  self.player_data.WALK_RIGHT_SCREEN_BORDER)
-                    #     if self.player_data.pos.x > self.player_data.WALK_RIGHT_SCREEN_BORDER:
-                    #         self.background_data.bg_counter -= self.speed_cloud
-                    # else:
-                    #     self.is_background_fixed_if_player_on_platform = False
 
     def prevent_overflow_item_group(self):  # remove old item from item_group if it out of screen
         if self.rect.x < -200 or self.rect.x > SCREEN_WIDTH + 100 or self.rect.y > SCREEN_HEIGHT:

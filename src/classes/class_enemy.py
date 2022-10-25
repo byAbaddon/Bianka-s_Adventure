@@ -1,3 +1,5 @@
+import pygame.image
+
 from src.settings import *
 from src.classes.class_sound import Sound
 from src.classes.class_player import Player
@@ -54,6 +56,8 @@ class Enemy(Player, Sound):
             self.eagle_attack_action()
         if self.item_name == 'bat_attack':
             self.bat_attack_action()
+        if self.item_name == 'vamp':
+            self.vamp_action()
 
     def make_sound(self):
         if self.noise:
@@ -61,7 +65,7 @@ class Enemy(Player, Sound):
                                   'octopus', 'dragon', 'vulture', 'turtle', 'monster', 'fireball', 'cockroach',
                                   'penguin', 'seal', 'snowmen', 'eagle', 'eagle_attack', 'bird', 'medusa', 'camel',
                                   'emu', 'lizard', 'tiger', 'stone_ball', 'dragon_big', 'dragon_big_attack', 'elf',
-                                  'bat', 'bat_attack']:
+                                  'bat', 'bat_attack', 'vamp', 'knight_sword']:
                 self.noise = False
                 return eval(f'Sound.{self.item_name}_sound(self)')
 
@@ -92,6 +96,15 @@ class Enemy(Player, Sound):
             self.rect.x = randrange(SCREEN_WIDTH // 2, SCREEN_WIDTH)
             self.is_visited = True
         self.rect.y += self.speed
+
+    def vamp_action(self):
+        if not self.is_visited:
+            Sound.thunder_sound(self)
+            self.rect.x = randrange(SCREEN_WIDTH // 3, SCREEN_WIDTH)
+            self.is_visited = True
+        self.rect.y += self.speed
+        if self.rect.y > SCREEN_HEIGHT - GROUND_HEIGHT_SIZE :
+            self.image = pygame.image.load('../src/assets/images/enemies/vamp/2.png')
 
     def octopus_action(self):
         if not self.is_visited:

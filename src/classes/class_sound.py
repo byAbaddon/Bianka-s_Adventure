@@ -125,6 +125,15 @@ class Sound:
         self.play_sound('../src/assets/sounds/trap/snapping_trap.wav', 1)
 
     # -------------------------------------------   enemy sound
+    def vamp_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/vamp.wav', 1)
+
+    def knight_sword_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/knight_sword.wav', 1, 2)
+
+    def knight_dead_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/knight_dead.wav', 1)
+
     def snowmen_sound(self):
         self.play_sound('../src/assets/sounds/enemies/snowmen.wav', 1,)
 

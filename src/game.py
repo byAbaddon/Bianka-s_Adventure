@@ -84,10 +84,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 6
+        self.area = 10
         self.level = 1
         self.boss_number = 1
-        self.level_reader_row = 6 # 1
+        self.level_reader_row = 11 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -121,6 +121,7 @@ class GameState(Sound):
             self.is_in_water = False
             self.background = None
             self.is_star_area = False
+            self.player_data.is_water_level = False
         # -----------------------------------------------
         self.bonus_pts = 0  # reset pts
         player.is_boss_level = False  # set player walking border to 1/3 S_W
@@ -254,6 +255,12 @@ class GameState(Sound):
             if enemy_name == 'enemy_shooter':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/shooter/1.png',
                              S_W, 120, 0, True, True, '../src/assets/images/bullets/spear_min.png', 2, 0, True)
+            if enemy_name == 'enemy_vamp':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/vamp/1.png',
+                             S_W // 2, 115, 2, True, None, None, 0, 0, True)
+            if enemy_name == 'enemy_knight_sword':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/knight_sword/1.png',
+                             S_W, S_H - G_H_S - 55, 0, True, False, None, None, 8, True)
 
         # ================================ create cloud platform classes
         def platform_creator(v_type):
@@ -447,7 +454,7 @@ class GameState(Sound):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True,)
                 # add rock ground
                 ground_group.empty()
-                ground_rock = Ground('../src/assets/images/ground/rock_see_two.png', False, 0, S_H - 200)
+                ground_rock = Ground('../src/assets/images/ground/dock_sea.png', False, 0, S_H - 200)
                 ground_group.add(ground_rock)
                 self.is_star_area = True
             # check is player in the Sea and allowed animation
@@ -635,6 +642,7 @@ class GameState(Sound):
 
     def level_statistic(self):
         # reset part of game state
+        self.player_data.is_water_level = False
         self.is_star_area = False
         self.background = None
         self.player_data.PLAYER_FRICTION = -0.12
