@@ -29,7 +29,7 @@ class Bullet(pygame.sprite.Sprite):
             self.speed = 5
 
     def direction_shooting(self):
-
+        print(self.item_name , 'shooting')
         pygame.mask.from_surface(self.image)  # create mask image
         self.rect.y += self.BULLED_SCALE
         if self.falling_without_trajectory:
@@ -41,13 +41,17 @@ class Bullet(pygame.sprite.Sprite):
             if self.direction.x == 1:
                 self.rect.x += self.speed
             elif self.direction.x == -1:
-                if self.item_name in ['snowball', 'spit', 'fire_spit']:  # ----- shooting  left
+
+                if self.item_name in ['snowball', 'spit', 'fire_spit', 'medusa_spit']:  # ----- shooting  left
                     self.rect.x -= self.speed
                     self.rect.y = SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - self.image.get_height() - 25
                     if self.item_name == 'spit':
                         self.rect.y -= 35
                     elif self.item_name == 'fire_spit':
                         self.rect.y -= 50
+                    elif self.item_name == 'medusa_spit':
+
+                        self.rect.y -= 5
                     if key_pressed(pygame.K_RIGHT):  # if player movie right fix bullet position
                         self.rect.x -= BG_SPEED
                 else:  # ---------------------------------- shooting down + right

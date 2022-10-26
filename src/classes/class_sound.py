@@ -200,6 +200,9 @@ class Sound:
     def medusa_sound(self):
         self.play_sound('../src/assets/sounds/enemies/medusa.wav', 0.5)
 
+    def medusa_attack_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/medusa.wav', 0.8)
+
     def fish_sound(self):
         self.play_sound('../src/assets/sounds/enemies/fish.wav', 0.5,)
 

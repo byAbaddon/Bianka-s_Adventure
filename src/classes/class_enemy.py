@@ -50,8 +50,6 @@ class Enemy(Player, Sound):
             self.fireball_action()
         if self.item_name == 'ghost':
             self.ghost_action()
-        if self.item_name == 'medusa':
-            self.medusa_action()
         if self.item_name == 'eagle_attack':
             self.eagle_attack_action()
         if self.item_name == 'bat_attack':
@@ -63,16 +61,11 @@ class Enemy(Player, Sound):
         if self.noise:
             if self.item_name in ['monkey', 'raven', 'turtle', 'boar', 'bee', 'mouse', 'mole', 'crab', 'fish', 'ghost',
                                   'octopus', 'dragon', 'vulture', 'turtle', 'monster', 'fireball', 'cockroach',
-                                  'penguin', 'seal', 'snowmen', 'eagle', 'eagle_attack', 'bird', 'medusa', 'camel',
-                                  'emu', 'lizard', 'tiger', 'stone_ball', 'dragon_big', 'dragon_big_attack', 'elf',
-                                  'bat', 'bat_attack', 'vamp', 'knight_sword']:
+                                  'penguin', 'seal', 'snowmen', 'eagle', 'eagle_attack', 'bird', 'camel', 'emu', 'elf',
+                                  'medusa', 'medusa_attack', 'tiger', 'stone_ball', 'dragon_big', 'dragon_big_attack',
+                                  'lizard', 'bat', 'bat_attack', 'vamp', 'knight_sword']:
                 self.noise = False
                 return eval(f'Sound.{self.item_name}_sound(self)')
-
-    def medusa_action(self):
-        if self.rect.x <= SCREEN_WIDTH - 200:
-            self.image = pygame.image.load('../src/assets/images/enemies/medusa/1.png')
-            self.speed = 0
 
     def eagle_attack_action(self):
         if self.rect.x <= SCREEN_WIDTH - 100:
@@ -143,7 +136,7 @@ class Enemy(Player, Sound):
     def shooting_enemy(self):  # shooting:
         if self.shooting:
             # Add bullet name enemy to class bullet !!!
-            if self.item_name in ['snowmen', 'camel', 'dragon_big_attack']:   # enemies with shooting only left
+            if self.item_name in ['snowmen', 'camel', 'dragon_big_attack', 'medusa_attack']:   # enemies with shooting only left
                 Sound.bullet_fail(self)
                 shot_position = self.rect.midright
                 self.direction = vec(-1, 0)

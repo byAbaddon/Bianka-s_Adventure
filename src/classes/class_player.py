@@ -274,7 +274,7 @@ class Player(pygame.sprite.Sprite, Sound):
                         self.energy_power -= 10
                         sprite.kill()
                     if name in ['raven', 'octopus', 'dragon', 'fireball', 'snowball', 'penguin', 'bird', 'crab', 'stone'
-                                , 'bat', 'vamp']:
+                                , 'bat', 'vamp', 'medusa_attack']:
                         self.energy_power -= 20
                         sprite.kill()
                     if name in ['hedgehog', 'mole', 'turtle', 'seal', 'eagle_attack', 'medusa', 'lizard', 'bat_attack']:
@@ -393,8 +393,8 @@ class Player(pygame.sprite.Sprite, Sound):
                         Sound.bullet_kill_enemy(self)
                         item.kill()
                         bullet.kill()
-                    if item.item_name in ['mouse', 'octopus', 'raven', 'butterfly', 'ghost', 'penguin', 'seal',
-                                          'eagle_attack', 'medusa', 'birth', 'emu', 'bat', 'bat_attack']:
+                    if item.item_name in ['mouse', 'octopus', 'raven', 'butterfly', 'ghost', 'penguin', 'seal', 'bird',
+                                          'eagle_attack', 'medusa', 'medusa_attack', 'emu', 'bat', 'bat_attack']:
                         self.points += 300
                         Sound.bullet_kill_enemy(self)
                         item.kill()
@@ -422,12 +422,12 @@ class Player(pygame.sprite.Sprite, Sound):
                                 else:
                                     Sound.bullet_player_hit_knight_armor(self)  # body soot
 
-
     def check_enemy_bullets_collide(self):
         bullets_group = self.all_sprite_groups_dict['bullets']
         for sprite in pygame.sprite.spritecollide(self, bullets_group, False, pygame.sprite.collide_mask):
             match sprite.item_name:
-                case 'egg' | 'coconut' | 'bone' | 'snowball' | 'skull' | 'spit' | 'fire_spit' | 'spear_min':
+                case 'egg' | 'coconut' | 'bone' | 'snowball' | 'skull' | 'spit' | 'fire_spit' | 'spear_min' |\
+                     'medusa_spear':
                     sprite.kill()
                     Sound.enemy_bullet_hit_player_head(self)
                     self.energy_power -= 10

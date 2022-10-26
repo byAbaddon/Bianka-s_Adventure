@@ -84,10 +84,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 10
-        self.level = 1
+        self.area = 2
+        self.level = 2
         self.boss_number = 1
-        self.level_reader_row = 11 # 1
+        self.level_reader_row = 10 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -167,7 +167,7 @@ class GameState(Sound):
                              S_W, S_H - G_H_S - 2, 0, True)
             if enemy_name == 'enemy_static_crab':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/crab/1.png',
-                             S_W, S_H - G_H_S - 44, 0, True, False, None, None, 3)
+                             S_W, S_H - G_H_S - 20, 0, True, False, None, None, 3)
             if enemy_name == 'enemy_butterfly':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/butterfly/1.png',
                              S_W, T_F_S + 100, 1, False, False, None, None, 6)
@@ -195,9 +195,12 @@ class GameState(Sound):
             if enemy_name == 'enemy_bat':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/bat/1.png',
                              S_W, S_H - G_H_S - 130, 3, True, None, None, 0, 4)
-            if enemy_name == 'enemy_bird':
+            if enemy_name == 'enemy_bird' or enemy_name == 'enemy_bird_low':
+                y_pos = T_F_S + 50
+                if enemy_name == 'enemy_bird_low':
+                    y_pos = S_H - G_H_S - 110
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/bird/1.png',
-                             S_W, T_F_S + 50, 2, True, False, None, 0, 8)
+                             S_W, y_pos, 2, True, False, None, 0, 8)
             if enemy_name == 'enemy_turtle':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/turtle/1.png',
                              S_W, S_H - G_H_S - 15, 1, True, False, None, None, 8)
@@ -224,10 +227,10 @@ class GameState(Sound):
                              S_H - G_H_S - 40, 0, True, True, '../src/assets/images/bullets/snowball.png', 2, 0)
             if enemy_name == 'enemy_medusa':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/medusa/4.png',
-                             S_W, S_H - G_H_S - 50, 00.1, True, False, None, None, 4)
+                             S_W, S_H - G_H_S - 28, 0, True, False, None, None, 4)
             if enemy_name == 'enemy_medusa_attack':
-                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/medusa_attack/6.png',
-                             S_W, S_H - G_H_S - 52, 2, True, False, None, None, 0, True)
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/medusa_attack/6.png', S_W,
+                             S_H - G_H_S - 28, 0, True, True, '../src/assets/images/bullets/medusa_spit.png', 2, 0)
             if enemy_name == 'enemy_camel':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/camel/1.png',
                              S_W, S_H - G_H_S - 35, 1, True, True, '../src/assets/images/bullets/spit.png', 2, 8)
@@ -308,7 +311,7 @@ class GameState(Sound):
                                                          6)
                         elif v == 'bonus/balloon':  # change item position
                             # test move to decoration !!!!!!!!!!
-                            new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H // 2, 0)
+                            new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H // 2 + 15, 0)
                         elif v.split('/')[0] in ['decor', 'wall_decor', 'star', 'lava']:  # change item position
                             y_pos = S_H - G_H_S - 42
                             if v.split('/')[0] in ['lava']:
@@ -463,7 +466,6 @@ class GameState(Sound):
                 self.is_in_water = True
             # prevent squat player in could level
             self.player_data.is_water_level = True
-
 
         # ========================================== START GAME  with Area 1; Level 7 / Desert
         if self.area == 7:
