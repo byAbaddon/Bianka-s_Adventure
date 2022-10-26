@@ -196,9 +196,9 @@ class GameState(Sound):
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/bat/1.png',
                              S_W, S_H - G_H_S - 130, 3, True, None, None, 0, 4)
             if enemy_name == 'enemy_bird' or enemy_name == 'enemy_bird_low':
-                y_pos = T_F_S + 50
+                y_pos = T_F_S + 60
                 if enemy_name == 'enemy_bird_low':
-                    y_pos = S_H - G_H_S - 110
+                    y_pos = S_H - G_H_S - 100
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/bird/1.png',
                              S_W, y_pos, 2, True, False, None, 0, 8)
             if enemy_name == 'enemy_turtle':
