@@ -29,7 +29,7 @@ class Bullet(pygame.sprite.Sprite):
             self.speed = 5
 
     def direction_shooting(self):
-        print(self.item_name , 'shooting')
+        print(self.item_name , 'shooting - medusa test')
         pygame.mask.from_surface(self.image)  # create mask image
         self.rect.y += self.BULLED_SCALE
         if self.falling_without_trajectory:
