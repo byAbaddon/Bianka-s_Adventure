@@ -84,10 +84,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 6
+        self.area = 8
         self.level = 2
         self.boss_number = 1
-        self.level_reader_row = 14 # 1
+        self.level_reader_row = 16 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -100,7 +100,7 @@ class GameState(Sound):
 
     def start_game(self):
         # ------------------top display frame
-        # table.update()
+        table.update()
 
         # =============================================== RESET ALL DATA IF START NEW GAME
         if self.is_start_new_game:  # reset all old data
@@ -127,12 +127,12 @@ class GameState(Sound):
         player.is_boss_level = False  # set player walking border to 1/3 S_W
 
         # ++++++++++++++++++++++++++++++ developer utils +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
-        text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
-        text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
-        text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
-        text_creator(f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70, 22)
-        text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 5)
+        # text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
+        # text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
+        # text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
+        # text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
+        # text_creator(f'Acc: x= {player.acceleration.x:.2f} y= {player.acceleration.y:.2f}', 'white', 90, 70, 22)
+        # text_creator(f'MousePos: x= {pygame.mouse.get_pos()}', 'white', 490, 5)
 
         # ================================ create enemy classes
         def enemy_creator(enemy_name):
@@ -239,7 +239,7 @@ class GameState(Sound):
                              S_W, S_H - G_H_S - 10, 2, False, False, None, None, 6)
             if enemy_name == 'enemy_stone_ball':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/stone_ball/1.png',
-                             S_W, S_H - G_H_S - 10, 2, True, None, None, 0, 5)
+                             S_W, S_H - G_H_S - 20, 2, True, None, None, 0, 5)
             if enemy_name == 'enemy_lizard':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/lizard/1.png',
                              S_W, S_H - G_H_S - 10, 2, True, False, None, None, 8)
@@ -358,10 +358,13 @@ class GameState(Sound):
                              SCREEN_HEIGHT // 2, 36)
 
         # ============================ level manipulator
-        if self.area > 9:
-            if self.knight_data.is_boss_level_complete:
-                self.area = 1
-                self.level += 1
+        if self.level == 10:
+            self.area += 1
+        # if self.area > 9:
+        #     if self.knight_data.is_boss_level_complete:
+        #         self.area = 1
+        #         self.level += 1
+        #
 
         # ==============---------------level manipulator end
 
@@ -489,21 +492,20 @@ class GameState(Sound):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 self.is_star_area = True
 
-        # ==========================================    *** BOSS ***
+        # ==========================================    *** BONUS ***
         if self.area == 9:
-            self.state = 'boss'
-            return
+            pass
 
         # ========================================== START GAME  with Area 10;Level 9 / Castle FINAL
         if self.area == 10:
             if not self.is_star_area:
-                if self.level_reader_row == 10:  # 57
+                if self.level_reader_row == 15:  # 57
                     # set music
                     self.current_music = Sound.in_the_castle_music_area_then(self)
                     # resize image and set background
                     scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_10_1.png', 800, 510)
                     self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
-                elif self.level_reader_row == 11:  # 58
+                elif self.level_reader_row == 16:  # 58
                     # set music
                     self.current_music = Sound.in_the_castle_music_area_then_two(self)
                     # resize image and set background
@@ -518,6 +520,11 @@ class GameState(Sound):
             if self.player_data.check_is_player_fail_out_of_screen():
                 Sound.player_fail_in_water(self)
                 self.is_in_water = True
+
+        # ========================================== START GAME  with Area 10;Level  ***BOSS***
+        if self.area == 11:
+            self.state = 'boss'
+            return
 
         # =================== check is player energy player/ dead - and set image
         if self.player_data.check_is_energy_player():
