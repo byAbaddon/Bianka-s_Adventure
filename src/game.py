@@ -84,10 +84,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 8
+        self.area = 9
         self.level = 2
         self.boss_number = 1
-        self.level_reader_row = 16 # 1
+        self.level_reader_row = 9 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -125,6 +125,7 @@ class GameState(Sound):
         # -----------------------------------------------
         self.bonus_pts = 0  # reset pts
         player.is_boss_level = False  # set player walking border to 1/3 S_W
+        # player.is_bonus_level = False
 
         # ++++++++++++++++++++++++++++++ developer utils +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         # text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
@@ -351,11 +352,14 @@ class GameState(Sound):
                     self.state = 'level_statistic'  # switch to statistic state
 
         def area_label():  # Info Table label when Start new Area/Level
-            if self.background.distance_mt < 10:
+            if self.area != 9 and self.background.distance_mt < 10:
                 image = pygame.image.load('../src/assets/images/frames/level_frame.png')
-                SCREEN.blit(image, [SCREEN_WIDTH // 2 - 80, SCREEN_HEIGHT // 2 - 32])
-                text_creator(f'Level {self.level} - {self.area}', 'white', SCREEN_WIDTH // 2 - 58,
-                             SCREEN_HEIGHT // 2, 36)
+                SCREEN.blit(image, [S_W // 2 - 80, S_H // 2 - 32])
+                text_creator(f'Level {self.level} - {self.area}', 'white', S_W // 2 - 58, S_H // 2, 36)
+            if self.area == 9 and self.background.distance_mt == 0:
+                image = pygame.image.load('../src/assets/images/frames/level_frame.png')
+                SCREEN.blit(image, [S_W // 2 - 80, S_H // 2 - 32])
+                text_creator('BONUS', 'yellow', S_W // 2 - 46, S_H // 2, 36)
 
         # ============================ level manipulator
         if self.level == 10:
@@ -494,7 +498,30 @@ class GameState(Sound):
 
         # ==========================================    *** BONUS ***
         if self.area == 9:
-            pass
+            if not self.is_star_area:
+                # set music
+                Sound.bonus_level(self)
+                # resize image and set background
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_bonus.png', 800, 510)
+                self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
+                self.player_data.image = pygame.image.load('../src/assets/images/player/boat/y1.png')
+                self.is_star_area = True
+
+            if key_pressed(pygame.K_UP) or key_pressed(pygame.K_DOWN) or key_pressed(pygame.K_SPACE)\
+                    or key_pressed(pygame.K_LEFT) or key_pressed(pygame.K_RIGHT):
+                self.player_data.is_bonus_level = True
+
+            if key_pressed(pygame.K_LEFT):
+                self.background.distance_mt = 100
+                self.player_data.image = pygame.image.load('../src/assets/images/player/boat/y1.png')
+            elif key_pressed(pygame.K_RIGHT):
+                self.player_data.image = pygame.image.load('../src/assets/images/player/boat/y2.png')
+                self.background.distance_mt = 100
+            else:
+                if self.player_data.direction.x == -1:
+                    self.player_data.image = pygame.image.load('../src/assets/images/player/boat/y1.png')
+                else:
+                    self.player_data.image = pygame.image.load('../src/assets/images/player/boat/y2.png')
 
         # ========================================== START GAME  with Area 10;Level 9 / Castle FINAL
         if self.area == 10:

@@ -34,7 +34,7 @@ class Table:
         text_creator(f'TopScore: {self.height_score}', (255, 200, 0), 21, 25, 30)
 
     def draw_current_score(self):
-        t = text_creator(f'Score: {self.score}', 'white', 57, 46, 29)
+        text_creator(f'Score: {self.score}', 'white', 57, 46, 29)
 
     def draw_lives(self):
         text_creator(f'Lives: {self.lives}', 'white', 58, 68, 29)
@@ -43,10 +43,10 @@ class Table:
 
     def draw_area_and_level(self):
         text_creator(f'Level: {self.level}', (255, 200, 0), SCREEN_WIDTH - 99, 24, 29)
-        if not self.player.is_boss_level:
+        if not self.player.is_bonus_level:
             text_creator(f'Area:  {self.area}', (255, 200, 0), SCREEN_WIDTH - 97, 44, 29)
         else:
-            text_creator(f'-BOSS-', (255, 200, 0), SCREEN_WIDTH - 92, 44, 29)
+            text_creator(f'-BONUS-', (255, 200, 0), SCREEN_WIDTH - 104, 44, 29)
 
     def energy_bar(self):
         text_creator('Bianka', 'white', 328, 67, 29)

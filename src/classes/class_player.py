@@ -33,6 +33,8 @@ class Player(pygame.sprite.Sprite, Sound):
     is_jump_allowed = True
     is_player_squat = False
     is_water_level = False
+    is_boss_level = False
+    is_bonus_level = False
 
     def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
@@ -55,7 +57,6 @@ class Player(pygame.sprite.Sprite, Sound):
         self.WALK_LEFT_SCREEN_BORDER = self.player_width_size
         self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH // 3
         self.jump_limit = SCREEN_HEIGHT  # allowed jump form all position
-        self.is_boss_level = False
 
     def movement_plyer(self):
         self.acceleration = vec(0, self.GRAVITY)  # fail gravity
@@ -63,6 +64,8 @@ class Player(pygame.sprite.Sprite, Sound):
         # if boss leve walk in all SCREEN_WIDTH
         if self.is_boss_level:
             self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH - 60
+        if self.is_bonus_level:
+            self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH - 150
 
         key = pygame.key.get_pressed()
 
@@ -70,7 +73,7 @@ class Player(pygame.sprite.Sprite, Sound):
         if self.pos.x < 25:
             self.pos.x = self.WALK_LEFT_SCREEN_BORDER
             self.direction = vec(1, 0)
-        if self.is_jump_allowed:
+        if self.is_jump_allowed and not self.is_bonus_level:
             # jump up
             if key[pygame.K_UP] and self.direction.y == 1 and self.direction.x != 0 and self.rect.bottom < self.jump_limit:
                 Sound.player_jump(self)
@@ -127,7 +130,7 @@ class Player(pygame.sprite.Sprite, Sound):
 
         # squat
         if key[pygame.K_DOWN] and not key[pygame.K_RIGHT] and not key[pygame.K_LEFT] and not key[pygame.K_UP] and\
-                self.direction.y == 1:
+                self.direction.y == 1 and not self.is_bonus_level:
             self.is_player_squat = True
             if not self.is_water_level:  # squat only not water level
                 self.acceleration = vec(0, 0)
@@ -172,8 +175,8 @@ class Player(pygame.sprite.Sprite, Sound):
         key = pygame.key.get_pressed()
         time_now = pygame.time.get_ticks()  # get time now
         # velocity is equal shooting window time
-        if key[pygame.K_SPACE] and self.direction.x != 0 and abs(self.velocity.x) <= 3.0 and\
-                time_now - self.last_time > self.WEAPONS_DICT[self.current_weapon_name]['cooldown_shooting']:
+        if key[pygame.K_SPACE] and self.direction.x != 0 and abs(self.velocity.x) <= 3.0 and not self.is_bonus_level\
+                and time_now - self.last_time > self.WEAPONS_DICT[self.current_weapon_name]['cooldown_shooting']:
             Sound.player_shoot(self)
             self.last_time = time_now
 
@@ -496,6 +499,7 @@ class Player(pygame.sprite.Sprite, Sound):
         self.pos = vec(self.rect.x, self.rect.y)
         self.jump_limit = SCREEN_HEIGHT  # allowed jump form all position
         self.is_boss_level = False
+        self.is_bonus_level = False
         self.is_jump_allowed = True
 
     # RESET TO NEW GAME
@@ -523,3 +527,5 @@ class Player(pygame.sprite.Sprite, Sound):
         self.pos = vec(self.rect.x, self.rect.y)
         self.jump_limit = SCREEN_HEIGHT  # allowed jump form all position
         self.is_jump_allowed = True
+        self.is_boss_level = False
+        self.is_bonus_level = False

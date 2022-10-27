@@ -21,6 +21,9 @@ class Sound:
         self.play_sound('../src/assets/sounds/game_musics/intro.mp3')
 
     # =================================== areas bg music
+    # Bonus Level
+    def bonus_level(self):
+        self.play_sound('../src/assets/sounds/game_musics/level_bonus.mp3', 0.6, -1)
 
     # Area 1 forest
     def forest_music_area_one(self):
