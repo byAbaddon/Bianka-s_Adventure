@@ -61,10 +61,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 9
-        self.level = 1
+        self.area = 6
+        self.level = 3
         self.boss_number = 1
-        self.level_reader_row = 9# 1
+        self.level_reader_row = 24# 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -143,8 +143,11 @@ class GameState(Sound):
             if enemy_name == 'enemy_static_mole':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/mole/mole.png',
                              S_W, S_H - G_H_S - 2, 0, True)
-            if enemy_name == 'enemy_static_crab':
-                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/crab/1.png',
+            if enemy_name == 'enemy_static_crab' or enemy_name == 'enemy_crab':
+                type_enemy = 'crab'
+                if len(enemy_name.split('_')) == 3:
+                    type_enemy = 'static_crab'
+                return Enemy(Bullet, asg, background, f'../src/assets/images/enemies/{type_enemy}/1.png',
                              S_W, S_H - G_H_S - 20, 0, True, False, None, None, 3)
             if enemy_name == 'enemy_butterfly':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/butterfly/1.png',
@@ -176,7 +179,7 @@ class GameState(Sound):
             if enemy_name == 'enemy_bird' or enemy_name == 'enemy_bird_low':
                 y_pos = T_F_S + 60
                 if enemy_name == 'enemy_bird_low':
-                    y_pos = S_H - G_H_S - 100
+                    y_pos = S_H - G_H_S - 110
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/bird/1.png',
                              S_W, y_pos, 2, True, False, None, 0, 8)
             if enemy_name == 'enemy_turtle':
@@ -246,7 +249,9 @@ class GameState(Sound):
         # ================================ create cloud platform classes
         def platform_creator(v_type):
             pic_cloud = '../src/assets/images/cloud/static.png'
-            if v_type == 'cloud/static':
+            if v_type == 'cloud/small':
+                pic_cloud = '../src/assets/images/cloud/small.png'
+            if v_type == 'cloud/static' or v_type == 'cloud/small':
                 return Cloud(self.player_data, self.background, pic_cloud, S_W, S_H - 280, True, 0, 'static', 0)
             if v_type == 'cloud/left_right':
                 return Cloud(self.player_data, self.background, pic_cloud, S_W, S_H - 200, False, 2, 'left_right', 200)
@@ -339,8 +344,10 @@ class GameState(Sound):
                 text_creator('BONUS', 'yellow', S_W // 2 - 46, S_H // 2, 36)
 
         # ============================ level manipulator
-        if self.level == 10:
-            self.area += 1
+        if self.area == 10 and self.level < 9:
+            self.level += 1
+            self.area = 1
+
         # if self.area > 9:
         #     if self.knight_data.is_boss_level_complete:
         #         self.area = 1
@@ -504,12 +511,12 @@ class GameState(Sound):
             time_now = pygame.time.get_ticks()
             if time_now - self.start_timer > self.COOLDOWN:
                 self.start_timer = time_now
-                if self.count_visit == randrange(1, 25):  # create bomb if random num match
+                if self.count_visit == randrange(1, 21):  # create bomb if random num match
                     bonus_group.add(Bonus('../src/assets/images/items/bonus/bomb.png'))
                 else:
                     bonus_group.add(Bonus())
                 self.count_visit += 1
-            if self.count_visit == 25 or self.player_data.is_player_dead:
+            if self.count_visit == 21 or self.player_data.is_player_dead:
                 self.count_visit = 0
                 self.level_reader_row += 1  # read row level from txt
                 self.background.distance_mt = 0  # prevent ...
@@ -517,6 +524,7 @@ class GameState(Sound):
                 Sound.stop_all_sounds()
                 Sound.statistic_music(self)
                 self.state = 'level_statistic'
+
         # ========================================== START GAME  with Area 10;Level 9 / Castle FINAL
         if self.area == 10:
             if not self.is_star_area:

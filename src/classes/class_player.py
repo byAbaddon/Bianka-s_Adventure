@@ -276,8 +276,8 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name in ['fish', 'mouse', 'cockroach', 'cactus_ball']:
                         self.energy_power -= 10
                         sprite.kill()
-                    if name in ['raven', 'octopus', 'dragon', 'fireball', 'snowball', 'penguin', 'bird', 'crab', 'stone'
-                                , 'bat', 'vamp', 'medusa_attack']:
+                    if name in ['raven', 'octopus', 'dragon', 'fireball', 'snowball', 'penguin', 'bird', 'bat', 'stone',
+                                'carb', 'static_crab', 'vamp', 'medusa_attack']:
                         self.energy_power -= 20
                         sprite.kill()
                     if name in ['hedgehog', 'mole', 'turtle', 'seal', 'eagle_attack', 'medusa', 'lizard', 'bat_attack']:
@@ -386,7 +386,7 @@ class Player(pygame.sprite.Sprite, Sound):
                     if item.item_name == 'stone_ball':
                         Sound.bullet_ricochet(self)
                         bullet.kill()
-                    if item.item_name in ['fish', 'mole',  'crab', 'bee', 'bird', 'cactus_ball']:
+                    if item.item_name in ['fish', 'mole',  'crab', 'static_crab', 'bee', 'bird', 'cactus_ball']:
                         self.points += 100
                         Sound.bullet_kill_enemy(self)
                         item.kill()
@@ -429,8 +429,8 @@ class Player(pygame.sprite.Sprite, Sound):
         bullets_group = self.all_sprite_groups_dict['bullets']
         for sprite in pygame.sprite.spritecollide(self, bullets_group, False, pygame.sprite.collide_mask):
             match sprite.item_name:
-                case 'egg' | 'coconut' | 'bone' | 'snowball' | 'skull' | 'spit' | 'fire_spit' | 'arrow' |\
-                     'medusa_spear':
+                case 'egg' | 'coconut' | 'bone' | 'snowball' | 'skull' | 'spit' | 'fire_spit' | 'arrow' | 'medusa_spit':
+
                     sprite.kill()
                     Sound.enemy_bullet_hit_player_head(self)
                     self.energy_power -= 10

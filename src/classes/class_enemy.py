@@ -7,6 +7,8 @@ from src.classes.class_player import Player
 
 class Enemy(Player, Sound):
     SPRITE_ANIMATION_SPEED = 0.1
+    COOLDOWN = 2000
+    start_time = pygame.time.get_ticks()
 
     def __init__(self, class_bullet, all_sprite_groups_dict, background, pic='', x=SCREEN_WIDTH, y=0, speed=0,
                  noise=False, shooting=False, pic_bullet='', bullet_speed=1, sprite_pic_num=0, is_static=False):
@@ -56,6 +58,8 @@ class Enemy(Player, Sound):
             self.bat_attack_action()
         if self.item_name == 'vamp':
             self.vamp_action()
+        if self.item_name == 'crab':
+            self.crab_action()
 
     def make_sound(self):
         if self.noise:
@@ -66,6 +70,21 @@ class Enemy(Player, Sound):
                                   'lizard', 'bat', 'bat_attack', 'vamp', 'knight_sword']:
                 self.noise = False
                 return eval(f'Sound.{self.item_name}_sound(self)')
+
+    def crab_action(self):
+        time_now = pygame.time.get_ticks()
+        if time_now - self.start_time > self.COOLDOWN:
+            Sound.crab_sound(self)
+            self.start_time = time_now
+            if not self.is_visited:
+                self.is_visited = True
+            else:
+                self.is_visited = False
+
+        if not self.is_visited:
+            self.rect.x += 1
+        else:
+            self.rect.x -= 1
 
     def eagle_attack_action(self):
         if self.rect.x <= SCREEN_WIDTH - 100:
@@ -121,7 +140,7 @@ class Enemy(Player, Sound):
                 self.image = pygame.transform.rotate(self.image, + 15)
         elif self.half_position and self.rect.x > 570:  # middle pos
             self.rect.x -= 1
-        else: # go to down pos
+        else:  # go to down pos
             self.half_position = True
             self.rect.y += 1
             self.rect.x -= self.speed + 1
