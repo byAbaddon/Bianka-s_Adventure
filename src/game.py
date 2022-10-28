@@ -11,11 +11,10 @@ from classes.class_item import Item
 from classes.class_enemy import Enemy
 from classes.class_cloud import Cloud
 from classes.class_log import Log
+from classes.class_bonus import Bonus
 
 # ================================================================= TEST imported classes
 # print(dir(Menu))
-
-# ========================================================================== variables
 
 # ======================================================================== create Sprite groups
 background_group = pygame.sprite.Group()
@@ -24,10 +23,11 @@ knight_group = pygame.sprite.GroupSingle()
 ground_group = pygame.sprite.Group()
 bullets_group = pygame.sprite.Group()
 item_group = pygame.sprite.Group()
+bonus_group = pygame.sprite.GroupSingle()
 
-# add to all_sprite_groups   /items group include enemy/
+# add to all_sprite_groups   /items group included enemy/
 all_spite_groups_dict = {'player': player_group, 'knight': knight_group, 'bullets': bullets_group,
-                         'ground': ground_group, 'items': item_group}
+                         'ground': ground_group, 'items': item_group, 'bonus': bonus_group}
 
 # ======================================================================= initialize  Classes
 
@@ -35,14 +35,11 @@ player = Player(Bullet, all_spite_groups_dict)
 knight = Knight(Bullet, all_spite_groups_dict, player)
 ground = Ground()
 background = Background()
+
 # add to group
-# ground2 = Ground('../src/assets/images/cloud/static.png', SCREEN_WIDTH, SCREEN_HEIGHT - 150)
-# ground3 = Ground('../src/assets/images/ground/distance.png', 400, SCREEN_HEIGHT - 170)
 player_group.add(player)
 knight_group.add(knight)
 ground_group.add(ground)
-
-# ---------------------------------------------------------------------- create Enemies
 
 # variables
 asg = all_spite_groups_dict
@@ -50,26 +47,6 @@ S_W = SCREEN_WIDTH
 S_H = SCREEN_HEIGHT
 G_H_S = GROUND_HEIGHT_SIZE
 T_F_S = TOP_FRAME_SIZE
-
-
-# pic_hedgehog = '../src/assets/images/enemies/hedgehog/hedgehog.png'
-# pic_boar = '../src/assets/images/enemies/boar/1.png'
-# pic_bee = '../src/assets/images/enemies/bee/1.png'
-# pic_mouse = '../src/assets/images/enemies/mouse/1.png'
-# pic_mole = '../src/assets/images/enemies/mole/mole.png'
-# pic_crab = '../src/assets/images/enemies/crab/1.png'
-# pic_raven = '../src/assets/images/enemies/raven/1.png'
-# pic_raven_bullet = '../src/assets/images/bullets/egg.png'
-# pic_monkey = '../src/assets/images/enemies/monkey/monkey.png'
-# pic_monkey_bullet = '../src/assets/images/bullets/coconut.png'
-# pic_butterfly = '../src/assets/images/enemies/butterfly/1.png'
-# pic_bonus_coin = '../src/assets/images/bonus/coin/1.png'
-# pic_fish = '../src/assets/images/enemies/fish/1.png'
-# pic_octopus = '../src/assets/images/enemies/octopus/1.png'
-# pic_small_dragon = '../src/assets/images/enemies/small_dragon/1.png'
-# enemy_list = ['enemy_raven', 'enemy_monkey', 'enemy_hedgehog', 'enemy_static_hedgehog', 'enemy_boar', 'enemy_bee',
-#                   'enemy_mouse', 'enemy_static_mole', 'enemy_static_crab', 'enemy_butterfly', 'enemy_fish',
-#                   'enemy_octopus', 'enemy_dragon', 'enemy_vulture', 'enemy_turtle']
 
 
 # Game State
@@ -85,9 +62,9 @@ class GameState(Sound):
         self.background = None
         self.is_bg_created = False
         self.area = 9
-        self.level = 2
+        self.level = 1
         self.boss_number = 1
-        self.level_reader_row = 9 # 1
+        self.level_reader_row = 9# 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -128,7 +105,7 @@ class GameState(Sound):
         # player.is_bonus_level = False
 
         # ++++++++++++++++++++++++++++++ developer utils +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        # text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
+        text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
         # text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
         # text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
         # text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
@@ -258,7 +235,7 @@ class GameState(Sound):
                              S_W, S_H - G_H_S - 46, 0, True, True, '../src/assets/images/bullets/fire_spit.png', 2, 0)
             if enemy_name == 'enemy_shooter':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/shooter/1.png',
-                             S_W, 120, 0, True, True, '../src/assets/images/bullets/spear_min.png', 2, 0, True)
+                             S_W, 122, 0, True, True, '../src/assets/images/bullets/arrow.png', 2, 0, True)
             if enemy_name == 'enemy_vamp':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/vamp/1.png',
                              S_W // 2, 115, 2, True, None, None, 0, 0, True)
@@ -507,6 +484,7 @@ class GameState(Sound):
                 self.player_data.image = pygame.image.load('../src/assets/images/player/boat/y1.png')
                 self.is_star_area = True
 
+            # change image player if bonus level -------------------------------------------------------
             if key_pressed(pygame.K_UP) or key_pressed(pygame.K_DOWN) or key_pressed(pygame.K_SPACE)\
                     or key_pressed(pygame.K_LEFT) or key_pressed(pygame.K_RIGHT):
                 self.player_data.is_bonus_level = True
@@ -522,7 +500,23 @@ class GameState(Sound):
                     self.player_data.image = pygame.image.load('../src/assets/images/player/boat/y1.png')
                 else:
                     self.player_data.image = pygame.image.load('../src/assets/images/player/boat/y2.png')
-
+            # -----------------  create and add bonus to group
+            time_now = pygame.time.get_ticks()
+            if time_now - self.start_timer > self.COOLDOWN:
+                self.start_timer = time_now
+                if self.count_visit == randrange(1, 25):  # create bomb if random num match
+                    bonus_group.add(Bonus('../src/assets/images/items/bonus/bomb.png'))
+                else:
+                    bonus_group.add(Bonus())
+                self.count_visit += 1
+            if self.count_visit == 25 or self.player_data.is_player_dead:
+                self.count_visit = 0
+                self.level_reader_row += 1  # read row level from txt
+                self.background.distance_mt = 0  # prevent ...
+                self.is_music_play = False
+                Sound.stop_all_sounds()
+                Sound.statistic_music(self)
+                self.state = 'level_statistic'
         # ========================================== START GAME  with Area 10;Level 9 / Castle FINAL
         if self.area == 10:
             if not self.is_star_area:
@@ -586,12 +580,13 @@ class GameState(Sound):
         item_group.draw(SCREEN)
         player_group.draw(SCREEN)
         bullets_group.draw(SCREEN)
-
+        bonus_group.draw(SCREEN)
         # --------------------------- update sprite group
         ground_group.update()
         player_group.update()
         bullets_group.update()
         item_group.update()
+        bonus_group.update()
 
         # ============== draw current area/level labels
         area_label()
@@ -691,7 +686,12 @@ class GameState(Sound):
             LevelStatistic(self.bonus_pts, self.player_data, self.level).update()
             LevelStatistic(self.bonus_pts, self.player_data, self.level).event(self)
 
-            if self.player_data.energy_power > 0:  # add bonus points to score
+            if self.player_data.is_bonus_level and not self.is_add_bonus:  # for bonus level
+                if player.bonus_coins:
+                    player.points += 1000 * player.bonus_coins
+                player.points += 5000
+                self.is_add_bonus = True
+            elif self.player_data.energy_power > 0 and not self.is_add_bonus:  # add bonus points to score
                 Sound.add_point(self)
                 self.player_data.energy_power -= 1
                 self.bonus_pts += 30  # 3000 pts

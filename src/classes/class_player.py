@@ -283,7 +283,7 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name in ['hedgehog', 'mole', 'turtle', 'seal', 'eagle_attack', 'medusa', 'lizard', 'bat_attack']:
                         self.energy_power -= 30
                         sprite.kill()
-                    if name in ['monkey', 'ghost', 'snowmen', 'emu', 'dragon_big']:
+                    if name in ['monkey', 'ghost', 'snowmen', 'emu', 'dragon_big', 'stone_ball']:
                         self.energy_power -= 50
                         sprite.kill()
                     if name in ['boar', 'monster', 'camel', 'tiger', 'dragon_big_attack', 'knight_sword']:
@@ -429,7 +429,7 @@ class Player(pygame.sprite.Sprite, Sound):
         bullets_group = self.all_sprite_groups_dict['bullets']
         for sprite in pygame.sprite.spritecollide(self, bullets_group, False, pygame.sprite.collide_mask):
             match sprite.item_name:
-                case 'egg' | 'coconut' | 'bone' | 'snowball' | 'skull' | 'spit' | 'fire_spit' | 'spear_min' |\
+                case 'egg' | 'coconut' | 'bone' | 'snowball' | 'skull' | 'spit' | 'fire_spit' | 'arrow' |\
                      'medusa_spear':
                     sprite.kill()
                     Sound.enemy_bullet_hit_player_head(self)
@@ -466,6 +466,30 @@ class Player(pygame.sprite.Sprite, Sound):
             print(1)
             return True
 
+    def check_bonus_level_collide(self):
+        bonus_group = self.all_sprite_groups_dict['bonus']
+        sprites = pygame.sprite.spritecollide(self, bonus_group, False, pygame.sprite.collide_mask)
+        if sprites and not self.is_player_dead:
+            for sprite in sprites:
+                if sprite.item_name == 'coin_small':
+                    self.bonus_coins += 1
+                    Sound.coin_fail(self)
+                    sprite.kill()
+                if sprite.item_name == 'bomb':
+                    pygame.event.clear()  # clear all events in queue
+                    SCREEN.fill(pygame.Color('black'))
+                    Sound.stop_all_sounds()
+                    Sound.explosion(self)  # play sound bomb
+                    for i in range(17):
+                        increase_pic = 100 * i
+                        exp = pygame.image.load('../src/assets/images/explosion/big_exp_1.jpeg')
+                        explosion = pygame.transform.scale(exp, (increase_pic, increase_pic))
+                        central_pos = explosion.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+                        SCREEN.blit(explosion, central_pos)
+                        pygame.display.update()
+                        pygame.time.delay(100)
+                    self.is_player_dead = True
+
     def update(self):
         self.check_is_energy_player()
         self.check_is_player_fail_out_of_screen()  # return True or False
@@ -481,15 +505,12 @@ class Player(pygame.sprite.Sprite, Sound):
         self.poisoned_player_energy_decrease()
         self.check_platform_collide()
         self.check_player_and_enemy_bullets_collide()
+        self.check_bonus_level_collide()
 
     # ============================================ RESET PLAYER DATA ====================================
     # reset For current game
     def reset_current_player_data(self):
         self.energy_power = 101  # add 1 to for fix full energy
-        self.is_player_dead = False
-        self.is_player_poisoned = False
-        self.is_player_kill_boss = False
-        self.is_jump = False
         self.bonus_coins = 0
         self.bonus_statuette = 0
         self.player_dead_x_pos = 0
@@ -498,9 +519,15 @@ class Player(pygame.sprite.Sprite, Sound):
         self.direction = vec(0, 1)  # stay 0
         self.pos = vec(self.rect.x, self.rect.y)
         self.jump_limit = SCREEN_HEIGHT  # allowed jump form all position
+        self.is_player_dead = False
+        self.is_player_poisoned = False
+        self.is_player_kill_boss = False
         self.is_boss_level = False
-        self.is_bonus_level = False
+        self.is_jump = False
         self.is_jump_allowed = True
+        self.is_bonus_level = False
+        self.is_player_squat = False
+        self.is_water_level = False
 
     # RESET TO NEW GAME
     def reset_all_player_data_for_new_game(self):
@@ -515,17 +542,18 @@ class Player(pygame.sprite.Sprite, Sound):
         self.statistics = {}
         self.hit_enemy_counter = 0
         self.boss_taken_amulets = 0
-        self.is_player_dead = False
-        self.is_player_poisoned = False
-        self.is_player_kill_boss = False
-        self.is_boss_level = False
-        self.is_jump = False
         self.player_dead_x_pos = 0
         self.image = pygame.image.load('../src/assets/images/player/stay/1.png')
         self.rect.center = (SCREEN_WIDTH - 700, SCREEN_HEIGHT - (self.player_height_size - GROUND_HEIGHT_SIZE))
         self.direction = vec(0, 1)  # stay 0
         self.pos = vec(self.rect.x, self.rect.y)
         self.jump_limit = SCREEN_HEIGHT  # allowed jump form all position
-        self.is_jump_allowed = True
+        self.is_player_dead = False
+        self.is_player_poisoned = False
+        self.is_player_kill_boss = False
         self.is_boss_level = False
+        self.is_jump = False
+        self.is_jump_allowed = True
         self.is_bonus_level = False
+        self.is_player_squat = False
+        self.is_water_level = False

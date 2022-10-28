@@ -118,6 +118,15 @@ class Sound:
     def grab_coin(self):
         self.play_sound('../src/assets/sounds/player/grab_coin.wav', 1)
 
+    def coin_fail(self):
+        self.play_sound('../src/assets/sounds/player/coin_fail.mp3', 1)
+
+    def coin_fail_in_water(self):
+        self.play_sound('../src/assets/sounds/player/coin_fail_in_water.wav', 1)
+
+    def explosion(self):
+        self.play_sound('../src/assets/sounds/explosion/final_explosion.wav', 1)
+
     def grab_statuette(self):
         self.play_sound('../src/assets/sounds/player/grab_statuette.wav', 1)
 
