@@ -61,10 +61,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 6
+        self.area = 8
         self.level = 3
         self.boss_number = 1
-        self.level_reader_row = 24# 1
+        self.level_reader_row = 26 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -223,10 +223,10 @@ class GameState(Sound):
                              S_W, S_H - G_H_S - 20, 2, True, None, None, 0, 5)
             if enemy_name == 'enemy_lizard':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/lizard/1.png',
-                             S_W, S_H - G_H_S - 10, 2, True, False, None, None, 8)
+                             S_W, S_H - G_H_S - 17, 2, True, False, None, None, 8)
             if enemy_name == 'enemy_emu':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/emu/1.png',
-                             S_W, S_H - G_H_S - 10, 3, True, False, None, None, 6)
+                             S_W, S_H - G_H_S - 17, 3, True, False, None, None, 6)
             if enemy_name == 'enemy_tiger':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/tiger/1.png',
                              S_W, S_H - G_H_S - 24, 1, True, False, None, None, 11)
@@ -259,6 +259,9 @@ class GameState(Sound):
                 return Cloud(self.player_data, self.background, pic_cloud, S_W, S_H - 160, False, 2, 'up_down', 210)
             if v_type == 'cloud/fail':
                 return Cloud(self.player_data, self.background, pic_cloud, S_W, S_H - 280, False, 1, 'fail', 0)
+            if v_type == 'cloud/low':
+                return Cloud(self.player_data, self.background, pic_cloud, S_W, S_H - 150, True, 0, 'static', 0)
+
             # ================================ create logs
             if v_type.split('/')[0] == 'logs':
                 pic_log = f'../src/assets/images/logs/{v_type.split("/")[1]}.png'
