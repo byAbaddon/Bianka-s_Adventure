@@ -61,10 +61,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 8
-        self.level = 3
+        self.area = 2
+        self.level = 4
         self.boss_number = 1
-        self.level_reader_row = 26 # 1
+        self.level_reader_row = 29 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -291,7 +291,7 @@ class GameState(Sound):
                             # test move to decoration !!!!!!!!!!
                             new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, 250)
                         elif v.split('/')[0] == 'ground':  # change item position
-                            new_item_class = input_class(f'../src/assets/images/{v}.png', S_W, S_H)
+                            new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H)
                         elif v == 'bonus/coin':  # change item position
                             new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H - G_H_S - 152,
                                                          6)

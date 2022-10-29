@@ -277,7 +277,7 @@ class Player(pygame.sprite.Sprite, Sound):
                         self.energy_power -= 10
                         sprite.kill()
                     if name in ['raven', 'octopus', 'dragon', 'fireball', 'snowball', 'penguin', 'bird', 'bat', 'stone',
-                                'carb', 'static_crab', 'vamp', 'medusa_attack']:
+                                'crab', 'static_crab', 'vamp', 'medusa_attack']:
                         self.energy_power -= 20
                         sprite.kill()
                     if name in ['hedgehog', 'mole', 'turtle', 'seal', 'eagle_attack', 'medusa', 'lizard', 'bat_attack']:
