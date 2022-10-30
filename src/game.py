@@ -61,10 +61,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 5
+        self.area = 8
         self.level = 10
         self.boss_number = 1
-        self.level_reader_row = 32 # 1
+        self.level_reader_row = 35 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -248,9 +248,11 @@ class GameState(Sound):
 
         # ================================ create cloud platform classes
         def platform_creator(v_type):
-            pic_cloud = '../src/assets/images/cloud/static.png'
-            if v_type == 'cloud/small':
+
+            if v_type == 'cloud/small' or v_type ==   'cloud/small_low' :
                 pic_cloud = '../src/assets/images/cloud/small.png'
+            else:
+                pic_cloud = '../src/assets/images/cloud/static.png'
             if v_type == 'cloud/static' or v_type == 'cloud/small':
                 return Cloud(self.player_data, self.background, pic_cloud, S_W, S_H - 280, True, 0, 'static', 0)
             if v_type == 'cloud/left_right':
@@ -260,6 +262,8 @@ class GameState(Sound):
             if v_type == 'cloud/fail':
                 return Cloud(self.player_data, self.background, pic_cloud, S_W, S_H - 280, False, 1, 'fail', 0)
             if v_type == 'cloud/low':
+                return Cloud(self.player_data, self.background, pic_cloud, S_W, S_H - 150, True, 0, 'static', 0)
+            if v_type == 'cloud/small_low':
                 return Cloud(self.player_data, self.background, pic_cloud, S_W, S_H - 150, True, 0, 'static', 0)
 
             # ================================ create logs
