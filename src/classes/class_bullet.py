@@ -67,3 +67,4 @@ class Bullet(pygame.sprite.Sprite):
         self.direction_shooting()
         self.weapon_capability()
         self.prevent_overflow_bullet_group()
+

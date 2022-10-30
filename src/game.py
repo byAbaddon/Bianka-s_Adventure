@@ -61,10 +61,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 2
-        self.level = 4
+        self.area = 5
+        self.level = 10
         self.boss_number = 1
-        self.level_reader_row = 29 # 1
+        self.level_reader_row = 32 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
