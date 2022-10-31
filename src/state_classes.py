@@ -76,11 +76,13 @@ class Score(Sound):
 
 # =========================================== LevelStatistic class
 class LevelStatistic(Sound):
-    def __init__(self, bonus_pts, player_data, level):
+    def __init__(self, bonus_pts, player_data, level, area, amulets_counter):
         self.state = ''
         self.bonus_pts = bonus_pts
         self.player_data = player_data
         self.level = level
+        self.area = area
+        self.amulets_counter = amulets_counter
 
     def info_statistic(self):
         if not self.player_data.is_player_kill_boss and not self.player_data.is_bonus_level:
@@ -102,28 +104,19 @@ class LevelStatistic(Sound):
             SCREEN.blit(image, [580, 360])
         else:
             # bonus point
-            # text_creator(f'Bonus Points', 'yellow', 336, 410, 30)
-            # text_creator(f'{self.bonus_pts}', 'yellow', 372, 440, 36)
-            # image = pygame.image.load(f'../src/assets/images/frames/down_left.png')
-            # SCREEN.blit(image, [300, 380])
-            # image = pygame.image.load(f'../src/assets/images/frames/down_right.png')
-            # SCREEN.blit(image, [400, 380])
             text_creator("***BONUS STAGE*** ", 'red', 200, 230, 55, None, None, True)
             # coin
             text_creator(f'{self.player_data.bonus_coins}  x', 'yellow', 300, 450, 30)
-            image = pygame.image.load(f'../src/assets/images/items/bonus/coin_medium.png')
+            if self.area & 1:
+                image = pygame.image.load(f'../src/assets/images/items/bonus/star.png')
+            else:
+                image = pygame.image.load(f'../src/assets/images/items/bonus/coin_medium.png')
             SCREEN.blit(image, [370, 420])
             text_creator('1000', 'yellow', 470, 450, 30)
-            # {self.player_data.bonus_coins * 1000}',
-            #              'yellow', 300, 450, 30)
-            # image = pygame.image.load(f'../src/assets/images/frames/down_left.png')
-            # SCREEN.blit(image, [300, 380])
-            # image = pygame.image.load(f'../src/assets/images/frames/down_right.png')
-            # SCREEN.blit(image, [400, 380])
             # amulet
             text_creator(f'1  x', 'teal', 280, 320, 30)
             text_creator('5000', 'teal', 480, 320, 30)
-            amulet_img = f'../src/assets/images/amulets/big/{self.level}.png'
+            amulet_img = f'../src/assets/images/amulets/big/{self.amulets_counter}.png'
             # amulet_img = f'../src/assets/images/amulets/big/{self.player_data.boss_taken_amulets}.png'
             scaled_amulet = scale_image(amulet_img, 100, 100)
             SCREEN.blit(scaled_amulet, [SCREEN_WIDTH // 2 - 50, 270])
@@ -138,8 +131,10 @@ class LevelStatistic(Sound):
             Sound.stop_all_sounds()
             self.state = 'start_game'
             # if not self.player_data.is_player_kill_boss:
+            if self.area % 5 == 0:
+                self.amulets_counter += 1
             self.area += 1  # increase area ------------------------  # todo:
-
+            self.is_add_bonus = False  # restore statistic level bonus points
 
 
 # =========================================== GameOver class

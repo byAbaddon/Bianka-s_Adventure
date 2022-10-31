@@ -54,6 +54,7 @@ class GameState(Sound):
     COOLDOWN = 2000  # milliseconds
     start_timer = pygame.time.get_ticks()
     count_visit = 0
+    amulets_counter = 0
 
     def __init__(self, player_data, knight_data, background_data):
         self.state = 'intro'
@@ -62,9 +63,9 @@ class GameState(Sound):
         self.background = None
         self.is_bg_created = False
         self.area = 1
-        self.level = 5
+        self.level = 1
         self.boss_number = 1
-        self.level_reader_row = 28 # 1
+        self.level_reader_row = 1 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -102,7 +103,6 @@ class GameState(Sound):
         # -----------------------------------------------
         self.bonus_pts = 0  # reset pts
         player.is_boss_level = False  # set player walking border to 1/3 S_W
-        # player.is_bonus_level = False
 
         # ++++++++++++++++++++++++++++++ developer utils +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
@@ -351,7 +351,7 @@ class GameState(Sound):
                 text_creator('BONUS', 'yellow', S_W // 2 - 46, S_H // 2, 36)
 
         # ============================ level manipulator
-        if self.area == 10 and self.level < 9:
+        if self.area == 11 and self.level < 10:
             self.level += 1
             self.area = 1
 
@@ -435,8 +435,63 @@ class GameState(Sound):
                 self.player_data.PLAYER_FRICTION = -0.07
                 self.is_star_area = True
 
-        # ========================================== START GAME  with Area 1; Level 5 / Wood Two - Dark
+        # ==========================================    *** BONUS 1 -  Night Sky***
         if self.area == 5:
+            if not self.is_star_area:
+                self.player_data.is_drive_jeep = True
+                # set music
+                Sound.bonus_level(self)
+                # resize image and set background
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_bonus_1.png', 800, 510)
+                self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
+                self.player_data.image = pygame.image.load('../src/assets/images/player/jeep/1.png')
+                self.player_data.pos.x = S_W // 2
+                self.is_star_area = True
+
+            # fix jeep position
+            self.player_data.rect.y += 70
+            pic_num = 1
+
+            # change image player if bonus level -------------------------------------------------------
+            if key_pressed(pygame.K_UP) or key_pressed(pygame.K_DOWN) or key_pressed(pygame.K_SPACE) \
+                    or key_pressed(pygame.K_LEFT) or key_pressed(pygame.K_RIGHT):
+                self.player_data.is_bonus_level = True
+                pic_num = randrange(1, 4)
+
+            if key_pressed(pygame.K_LEFT):
+                self.background.distance_mt = 100
+                self.player_data.image = pygame.image.load(f'../src/assets/images/player/jeep/jeep_sp/{pic_num}.png')
+            elif key_pressed(pygame.K_RIGHT):
+                self.background.distance_mt = 100
+                flipped_pic = pygame.transform.\
+                    flip(pygame.image.load(f'../src/assets/images/player/jeep/jeep_sp/{pic_num}.png'), True, False)
+                self.player_data.image = flipped_pic
+            else:
+                if self.player_data.direction.x == -1:
+                    self.player_data.image = pygame.image.load('../src/assets/images/player/jeep/1.png')
+                else:
+                    self.player_data.image = pygame.image.load('../src/assets/images/player/jeep/2.png')
+
+            # -----------------  create and add bonus to group
+            time_now = pygame.time.get_ticks()
+            if time_now - self.start_timer > self.COOLDOWN:
+                self.start_timer = time_now
+                if self.count_visit == randrange(1, 21):  # create bomb if random num match
+                    bonus_group.add(Bonus('../src/assets/images/items/bonus/comet.png'))
+                else:
+                    bonus_group.add(Bonus('../src/assets/images/items/bonus/star_small.png'))
+                self.count_visit += 1
+            if self.count_visit == 21 or self.player_data.is_player_dead:
+                self.count_visit = 0
+                self.level_reader_row += 1  # read row level from txt
+                self.background.distance_mt = 0  # prevent ...
+                self.is_music_play = False
+                Sound.stop_all_sounds()
+                Sound.statistic_music(self)
+                self.state = 'level_statistic'
+
+        # ========================================== START GAME  with Area 1; Level 5 / Wood Two - Dark
+        if self.area == 6:
             if not self.is_star_area:
                 # set music
                 Sound.dark_forest_music_area_five(self)
@@ -446,7 +501,7 @@ class GameState(Sound):
                 self.is_star_area = True
 
         # ========================================== START GAME  with Area 1; Level 6 / Sea Two - Clouds
-        if self.area == 6:
+        if self.area == 7:
             if not self.is_star_area:
                 # set music
                 self.current_music = Sound.sea_two_music_area_six(self)
@@ -466,7 +521,7 @@ class GameState(Sound):
             self.player_data.is_water_level = True
 
         # ========================================== START GAME  with Area 1; Level 7 / Desert
-        if self.area == 7:
+        if self.area == 8:
             if not self.is_star_area:
                 # set music
                 self.current_music = Sound.desert_music_area_seven(self)
@@ -478,7 +533,7 @@ class GameState(Sound):
                 self.is_star_area = True
 
         # ========================================== START GAME  with Area 1; Level 8 /Front of the castle
-        if self.area == 8:
+        if self.area == 9:
             if not self.is_star_area:
                 # set music
                 Sound.front_castle_music_area_eight(self)
@@ -487,15 +542,16 @@ class GameState(Sound):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 self.is_star_area = True
 
-        # ==========================================    *** BONUS ***
-        if self.area == 9:
+        # ==========================================    *** BONUS 2 - Buy Yacht***
+        if self.area == 10:
             if not self.is_star_area:
+                self.player_data.is_drive_jeep = False
                 # set music
                 Sound.bonus_level(self)
                 # resize image and set background
-                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_bonus.png', 800, 510)
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_bonus_2.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
-                self.player_data.image = pygame.image.load('../src/assets/images/player/boat/y1.png')
+                self.player_data.image = pygame.image.load('../src/assets/images/player/boat/1.png')
                 self.is_star_area = True
 
             # change image player if bonus level -------------------------------------------------------
@@ -505,15 +561,16 @@ class GameState(Sound):
 
             if key_pressed(pygame.K_LEFT):
                 self.background.distance_mt = 100
-                self.player_data.image = pygame.image.load('../src/assets/images/player/boat/y1.png')
+                self.player_data.image = pygame.image.load('../src/assets/images/player/boat/1.png')
             elif key_pressed(pygame.K_RIGHT):
-                self.player_data.image = pygame.image.load('../src/assets/images/player/boat/y2.png')
+                self.player_data.image = pygame.image.load('../src/assets/images/player/boat/2.png')
                 self.background.distance_mt = 100
             else:
                 if self.player_data.direction.x == -1:
-                    self.player_data.image = pygame.image.load('../src/assets/images/player/boat/y1.png')
+                    self.player_data.image = pygame.image.load('../src/assets/images/player/boat/1.png')
                 else:
-                    self.player_data.image = pygame.image.load('../src/assets/images/player/boat/y2.png')
+                    self.player_data.image = pygame.image.load('../src/assets/images/player/boat/2.png')
+
             # -----------------  create and add bonus to group
             time_now = pygame.time.get_ticks()
             if time_now - self.start_timer > self.COOLDOWN:
@@ -533,7 +590,7 @@ class GameState(Sound):
                 self.state = 'level_statistic'
 
         # ========================================== START GAME  with Area 10;Level 9 / Castle FINAL
-        if self.area == 10:
+        if self.area == 11:
             if not self.is_star_area:
                 if self.level_reader_row == 15:  # 57
                     # set music
@@ -558,7 +615,7 @@ class GameState(Sound):
                 self.is_in_water = True
 
         # ========================================== START GAME  with Area 10;Level  ***BOSS***
-        if self.area == 11:
+        if self.area == 12:
             self.state = 'boss'
             return
 
@@ -581,10 +638,10 @@ class GameState(Sound):
         self.background.update()
 
         # --------------------------- draw sprite group
-        if self.area == 2 or self.area == 6 or (self.area == 10 and self.level_reader_row == 11):  # 58
+        if self.area == 2 or self.area == 7 or (self.area == 11 and self.level_reader_row == 11):  # 58
             ground_group.draw(SCREEN)  # hide under bg or removed
             if self.is_in_water:  # run splashes animation
-                if self.area < 10:
+                if self.area < 11:
                     pic = pygame.image.load('../src/assets/images/splashes/splashes.png')
                 else:
                     pic = pygame.image.load('../src/assets/images/splashes/splashes_fire.png')
@@ -689,6 +746,7 @@ class GameState(Sound):
     def level_statistic(self):
         # reset part of game state
         self.player_data.is_water_level = False
+        # self.player_data.is_bonus_level = False
         self.is_star_area = False
         self.background = None
         self.player_data.PLAYER_FRICTION = -0.12
@@ -698,8 +756,8 @@ class GameState(Sound):
         table.update()
 
         if screen_transition_animation() >= 0:  # clear screen
-            LevelStatistic(self.bonus_pts, self.player_data, self.level).update()
-            LevelStatistic(self.bonus_pts, self.player_data, self.level).event(self)
+            LevelStatistic(self.bonus_pts, self.player_data, self.level, self.area, self.amulets_counter).update()
+            LevelStatistic(self.bonus_pts, self.player_data, self.level, self.area, self.amulets_counter).event(self)
 
             if self.player_data.is_bonus_level and not self.is_add_bonus:  # for bonus level
                 if player.bonus_coins:

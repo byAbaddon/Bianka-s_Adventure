@@ -35,6 +35,7 @@ class Player(pygame.sprite.Sprite, Sound):
     is_water_level = False
     is_boss_level = False
     is_bonus_level = False
+    is_drive_jeep = False
 
     def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
@@ -64,8 +65,12 @@ class Player(pygame.sprite.Sprite, Sound):
         # if boss leve walk in all SCREEN_WIDTH
         if self.is_boss_level:
             self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH - 60
+
         if self.is_bonus_level:
-            self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH - 150
+            if self.is_drive_jeep:  # set jeep or yacht right border
+                self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH - 105
+            else:
+                self.WALK_RIGHT_SCREEN_BORDER = SCREEN_WIDTH - 140
 
         key = pygame.key.get_pressed()
 
@@ -430,7 +435,6 @@ class Player(pygame.sprite.Sprite, Sound):
         for sprite in pygame.sprite.spritecollide(self, bullets_group, False, pygame.sprite.collide_mask):
             match sprite.item_name:
                 case 'egg' | 'coconut' | 'bone' | 'snowball' | 'skull' | 'spit' | 'fire_spit' | 'arrow' | 'medusa_spit':
-
                     sprite.kill()
                     Sound.enemy_bullet_hit_player_head(self)
                     self.energy_power -= 10
@@ -468,14 +472,22 @@ class Player(pygame.sprite.Sprite, Sound):
 
     def check_bonus_level_collide(self):
         bonus_group = self.all_sprite_groups_dict['bonus']
+        self.rect.y = SCREEN_HEIGHT - 150
         sprites = pygame.sprite.spritecollide(self, bonus_group, False, pygame.sprite.collide_mask)
+        self.rect.y -= 50
+        # pygame.draw.rect(SCREEN, 'red', self.rect)
         if sprites and not self.is_player_dead:
             for sprite in sprites:
                 if sprite.item_name == 'coin_small':
                     self.bonus_coins += 1
                     Sound.coin_fail(self)
                     sprite.kill()
-                if sprite.item_name == 'bomb':
+                elif sprite.item_name == 'star_small':
+                    self.bonus_coins += 1
+                    Sound.grab_star(self)
+                    sprite.kill()
+
+                if sprite.item_name == 'bomb' or sprite.item_name == 'comet':
                     pygame.event.clear()  # clear all events in queue
                     SCREEN.fill(pygame.Color('black'))
                     Sound.stop_all_sounds()
@@ -505,7 +517,8 @@ class Player(pygame.sprite.Sprite, Sound):
         self.poisoned_player_energy_decrease()
         self.check_platform_collide()
         self.check_player_and_enemy_bullets_collide()
-        self.check_bonus_level_collide()
+        if self.is_bonus_level:
+            self.check_bonus_level_collide()
 
     # ============================================ RESET PLAYER DATA ====================================
     # reset For current game
@@ -528,6 +541,7 @@ class Player(pygame.sprite.Sprite, Sound):
         self.is_bonus_level = False
         self.is_player_squat = False
         self.is_water_level = False
+        self.is_drive_jeep = False
 
     # RESET TO NEW GAME
     def reset_all_player_data_for_new_game(self):
@@ -557,3 +571,5 @@ class Player(pygame.sprite.Sprite, Sound):
         self.is_bonus_level = False
         self.is_player_squat = False
         self.is_water_level = False
+        self.is_drive_jeep = False
+

@@ -124,6 +124,12 @@ class Sound:
     def coin_fail_in_water(self):
         self.play_sound('../src/assets/sounds/player/coin_fail_in_water.wav', 1)
 
+    def grab_star(self):
+        self.play_sound('../src/assets/sounds/player/grab_star.mp3', 1)
+
+    def star_fail_out(self):
+        self.play_sound('../src/assets/sounds/player/star_fail_out.mp3', 1)
+
     def explosion(self):
         self.play_sound('../src/assets/sounds/explosion/final_explosion.wav', 1)
 
