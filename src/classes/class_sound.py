@@ -73,6 +73,10 @@ class Sound:
     def in_the_castle_music_area_final_two(self):
         self.play_sound('../src/assets/sounds/game_musics/level_10_2.mp3', 0.5, -1)
 
+    # 10/3
+    def in_the_castle_music_area_final_three(self):
+        self.play_sound('../src/assets/sounds/game_musics/level_10_3.mp3', 0.5, -1)
+
     # ======================================   BOSS
     def boss_music_area_one(self):
         self.play_sound('../src/assets/sounds/game_musics/boss/boss_2.mp3', 0.5, -1)
@@ -152,6 +156,12 @@ class Sound:
 
     def knight_sword_sound(self):
         self.play_sound('../src/assets/sounds/enemies/knight_sword.wav', 1, 2)
+
+    def knight_pike_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/knight_pike.wav', 1, 2)
+
+    def knight_axe_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/knight_axe.wav', 1, 2)
 
     def knight_dead_sound(self):
         self.play_sound('../src/assets/sounds/enemies/knight_dead.wav', 1)

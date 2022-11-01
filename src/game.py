@@ -65,7 +65,7 @@ class GameState(Sound):
         self.area = 11
         self.level = 4
         self.boss_number = 1
-        self.level_reader_row =  41 # 1
+        self.level_reader_row =  43 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -242,9 +242,21 @@ class GameState(Sound):
             if enemy_name == 'enemy_vamp':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/vamp/1.png',
                              S_W // 2, 115, 2, True, None, None, 0, 0, True)
-            if enemy_name == 'enemy_knight_sword':
-                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/knight_sword/1.png',
-                             S_W, S_H - G_H_S - 55, 0, True, False, None, None, 8, True)
+            if enemy_name == 'enemy_knight_sword' or 'enemy_knight_pike' or 'enemy_knight_axe':
+                knight_type = ''
+                sprite = 0
+                if enemy_name == 'enemy_knight_sword':
+                    knight_type = 'knight_sword'
+                    sprite = 8
+                elif enemy_name == 'enemy_knight_pike':
+                    knight_type = 'knight_pike'
+                    sprite = 4
+                elif enemy_name == 'enemy_knight_axe':
+                    knight_type = 'knight_axe'
+                    sprite = 3
+
+                return Enemy(Bullet, asg, background, f'../src/assets/images/enemies/{knight_type}/1.png',
+                             S_W, S_H - G_H_S - 55, 0, True, False, None, None, sprite, True)
 
         # ================================ create cloud platform classes
         def platform_creator(v_type):
@@ -607,6 +619,13 @@ class GameState(Sound):
                     ground_rock = Ground('../src/assets/images/ground/stone_platform.png', False, 0, S_H - 62)
                     ground_group.add(ground_rock)
                     self.player_data.jump_limit = S_H - 50  # prevent jump from water
+                elif self.level_reader_row == 43:  # read from row 43
+                    # set music
+                    self.current_music = Sound.in_the_castle_music_area_final_three(self)
+                    # resize image and set background
+                    scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_10_3.png', 800, 510)
+                    self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
+
                 self.is_start_area = False
             # check is player in the Lava and allowed animation
             if self.player_data.check_is_player_fail_out_of_screen():
