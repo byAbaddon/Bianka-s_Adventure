@@ -278,7 +278,7 @@ class Player(pygame.sprite.Sprite, Sound):
             match sprite.group_name:
                 case 'enemies':
                     Sound.player_enemy_hit(self)  # sound if player hit with some enemy
-                    if name in ['fish', 'mouse', 'cockroach', 'cactus_ball']:
+                    if name in ['fish', 'mouse', 'cockroach', 'cactus_ball', 'bee']:
                         self.energy_power -= 10
                         sprite.kill()
                     if name in ['raven', 'octopus', 'dragon', 'fireball', 'snowball', 'penguin', 'bird', 'bat', 'stone',

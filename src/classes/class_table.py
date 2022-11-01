@@ -44,7 +44,10 @@ class Table:
     def draw_area_and_level(self):
         text_creator(f'Level: {self.level}', (255, 200, 0), SCREEN_WIDTH - 99, 24, 29)
         if not self.player.is_bonus_level:
-            text_creator(f'Area:  {self.area}', (255, 200, 0), SCREEN_WIDTH - 97, 44, 29)
+            if self.level < 5:
+                text_creator(f'Area:  {self.area}', (255, 200, 0), SCREEN_WIDTH - 97, 44, 29)
+            else:
+                text_creator(f'-Castle-', (255, 200, 0), SCREEN_WIDTH - 97, 44, 29)
         else:
             text_creator(f'-BONUS-', (255, 200, 0), SCREEN_WIDTH - 104, 44, 29)
 
@@ -79,14 +82,11 @@ class Table:
 
     def draw_amulet_bar(self):
         text_creator('Amulets', 'white', 240, 32, 29)
-
         # draw cells
         # SCREEN.fill((70,70,70), [326, 15, 360, 40])
         [pygame.draw.rect(SCREEN, (200, 220, 222), [326 + 40 * x, 15, 40, 40], 1, 1,) for x in range(0, 9)]
 
         # draw items
-        # if self.player.is_player_kill_boss:
-        # for x in range(0, self.level - 1):
         for x in range(0, self.game_state.amulets_counter):
             pic = pygame.image.load(self.player.AMULETS_LIST[x])
             SCREEN.blit(pic, [332 + (41 * x - 1) - (x + 2), 18,  36, 36])

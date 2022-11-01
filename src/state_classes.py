@@ -116,7 +116,7 @@ class LevelStatistic(Sound):
             # amulet
             text_creator(f'1  x', 'teal', 280, 320, 30)
             text_creator('5000', 'teal', 480, 320, 30)
-            amulet_img = f'../src/assets/images/amulets/big/{self.amulets_counter}.png'
+            amulet_img = f'../src/assets/images/amulets/big/{self.amulets_counter + 1}.png'
             # amulet_img = f'../src/assets/images/amulets/big/{self.player_data.boss_taken_amulets}.png'
             scaled_amulet = scale_image(amulet_img, 100, 100)
             SCREEN.blit(scaled_amulet, [SCREEN_WIDTH // 2 - 50, 270])
@@ -126,15 +126,15 @@ class LevelStatistic(Sound):
 
     @staticmethod
     def event(self):
-        if key_pressed(pygame.K_SPACE): # and self.player_data.energy_power == 0:  # todo:
+        if key_pressed(pygame.K_SPACE):
             self.player_data.reset_current_player_data()  # rest energy player and more...
             Sound.stop_all_sounds()
             self.state = 'start_game'
             # if not self.player_data.is_player_kill_boss:
             if self.area % 5 == 0:
                 self.amulets_counter += 1
-            self.area += 1  # increase area ------------------------  # todo:
             self.is_add_bonus = False  # restore statistic level bonus points
+            self.area += 1  # increase area
 
 
 # =========================================== GameOver class
@@ -153,7 +153,7 @@ class PlayerDead(Sound):
         SCREEN.blit(scaled_image, [480, 40])
 
         text_creator('You are dead!', 'red', 390, 340, 50)
-        text_creator(f'Area: {self.area} / Level: {self.level}', 'yellow', 510, 380)
+        text_creator(f'Level: {self.level} / Area: {self.area}', 'yellow', 510, 380)
         text_creator(f'Lives: {self.player_data.lives}', 'green', 620, 410)
 
         text_creator('Press Space to try again...', 'white', SCREEN_WIDTH // 2 + 100, SCREEN_HEIGHT - 30)

@@ -21,7 +21,11 @@ class Sound:
         self.play_sound('../src/assets/sounds/game_musics/intro.mp3')
 
     # =================================== areas bg music
-    # Bonus Level
+    # Bonus Level One
+    def bonus_level_one(self):
+        self.play_sound('../src/assets/sounds/game_musics/level_bonus_one.mp3', 0.6, -1)
+
+    # Bonus Level Two
     def bonus_level(self):
         self.play_sound('../src/assets/sounds/game_musics/level_bonus.mp3', 0.6, -1)
 
@@ -62,11 +66,11 @@ class Sound:
         self.play_sound('../src/assets/sounds/game_musics/level_9.mp3', 0.4, -1)
 
     # Level 10 In the Castle
-    def in_the_castle_music_area_then(self):
-        self.play_sound('../src/assets/sounds/game_musics/level_10.mp3', 0.5, -1)
+    def in_the_castle_music_area_final(self):
+        self.play_sound('../src/assets/sounds/game_musics/level_10.mp3', 0.4, -1)
 
     # 10/2
-    def in_the_castle_music_area_then_two(self):
+    def in_the_castle_music_area_final_two(self):
         self.play_sound('../src/assets/sounds/game_musics/level_10_2.mp3', 0.5, -1)
 
     # ======================================   BOSS
