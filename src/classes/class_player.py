@@ -536,7 +536,6 @@ class Player(pygame.sprite.Sprite, Sound):
         self.is_player_dead = False
         self.is_player_poisoned = False
         self.is_player_kill_boss = False
-        self.is_boss_level = False
         self.is_jump = False
         self.is_jump_allowed = True
         self.is_bonus_level = False

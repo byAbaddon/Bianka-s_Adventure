@@ -67,7 +67,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
         self.rect.y = SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - self.image.get_height() // 2
 
         # create amulet after knight dead
-        amulet = pygame.image.load(f'../src/assets/images/amulets/small/{ self.player.boss_taken_amulets}.png')
+        amulet = pygame.image.load(f'../src/assets/images/amulets/small/10.png')
         img_rect = amulet.get_bounding_rect(min_alpha=1)
         img_rect.center = [SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 20]
         SCREEN.blit(amulet, img_rect.center)
@@ -99,7 +99,8 @@ class Knight(pygame.sprite.Sprite, Sound,):
                 if 400 <= hit_point.rect.topleft[1] <= 442:  # head shoot
                     self.is_walk = True
                     Sound.bullet_player_hit_knight_face(self)
-                    self.energy_power -= self.player.WEAPONS_DICT[self.player.current_weapon_name]['power']
+                    # self.energy_power -= self.player.WEAPONS_DICT[self.player.current_weapon_name]['power']
+                    self.energy_power -= 1
                 else:
                     Sound.bullet_player_hit_knight_armor(self)  # body soot
 

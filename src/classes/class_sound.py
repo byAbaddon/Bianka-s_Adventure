@@ -77,6 +77,10 @@ class Sound:
     def in_the_castle_music_area_final_three(self):
         self.play_sound('../src/assets/sounds/game_musics/level_10_3.mp3', 0.5, -1)
 
+    # 10/4 BOSS BATTLE
+    def boss_battle_final(self):
+        self.play_sound('../src/assets/sounds/game_musics/boss_battle.mp3', 1, -1)
+
     # ======================================   BOSS
     def boss_music_area_one(self):
         self.play_sound('../src/assets/sounds/game_musics/boss/boss_2.mp3', 0.5, -1)

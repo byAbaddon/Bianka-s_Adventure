@@ -163,7 +163,11 @@ class PlayerDead(Sound):
             Sound.stop_all_sounds()
             Sound.btn_click(self)
             pygame.time.delay(500)
-            self.state = 'start_game'
+            print(self.player_data.is_bonus_level)
+            if self.player_data.is_boss_level:
+                self.state = 'boss'
+            else:
+                self.state = 'start_game'
 
 
 

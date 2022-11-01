@@ -47,8 +47,11 @@ class Table:
             if self.level < 5:
                 text_creator(f'Area:  {self.area}', (255, 200, 0), SCREEN_WIDTH - 97, 44, 29)
             else:
-                text_creator(f'-Castle-', (255, 200, 0), SCREEN_WIDTH - 97, 44, 29)
-        else:
+                if self.player.is_boss_level:
+                    text_creator(f' *BOSS*', 'red', SCREEN_WIDTH - 104, 44, 29)
+                else:
+                    text_creator(f'-Castle-', (255, 200, 0), SCREEN_WIDTH - 97, 44, 29)
+        if self.area % 5 == 0:
             text_creator(f'-BONUS-', (255, 200, 0), SCREEN_WIDTH - 104, 44, 29)
 
     def energy_bar(self):

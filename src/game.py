@@ -65,7 +65,7 @@ class GameState(Sound):
         self.area = 11
         self.level = 4
         self.boss_number = 1
-        self.level_reader_row =  43 # 1
+        self.level_reader_row = 43 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -102,7 +102,7 @@ class GameState(Sound):
             self.player_data.is_water_level = False
         # -----------------------------------------------
         self.bonus_pts = 0  # reset pts
-        player.is_boss_level = False  # set player walking border to 1/3 S_W
+        # player.is_boss_level = False  # set player walking border to 1/3 S_W
 
         # ++++++++++++++++++++++++++++++ developer utils +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
@@ -261,7 +261,7 @@ class GameState(Sound):
         # ================================ create cloud platform classes
         def platform_creator(v_type):
 
-            if v_type == 'cloud/small' or v_type ==   'cloud/small_low' :
+            if v_type == 'cloud/small' or v_type == 'cloud/small_low':
                 pic_cloud = '../src/assets/images/cloud/small.png'
             else:
                 pic_cloud = '../src/assets/images/cloud/static.png'
@@ -625,7 +625,11 @@ class GameState(Sound):
                     # resize image and set background
                     scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_10_3.png', 800, 510)
                     self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
-
+                    ground_group.empty()
+                    ground_group.add(ground)
+                elif self.level_reader_row == 44:  # read from row 44  The BOSS
+                    self.state = 'boss'
+                    return
                 self.is_start_area = False
             # check is player in the Lava and allowed animation
             if self.player_data.check_is_player_fail_out_of_screen():
@@ -633,9 +637,6 @@ class GameState(Sound):
                 self.is_in_water = True
 
         # ========================================== START GAME  with Area 10;Level  ***BOSS***
-        if self.area == 12:
-            self.state = 'boss'
-            return
 
         # =================== check is player energy player/ dead - and set image
         if self.player_data.check_is_energy_player():
@@ -686,16 +687,14 @@ class GameState(Sound):
         table.update()
         if self.boss_number == 1:
             text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 10, 25)
-            if not self.is_music_play:
-                Sound.stop_all_sounds()
-                Sound.boss_music_area_one(self)
-                self.is_music_play = True
 
-            if not self.is_bg_created:  # todo remove not  only for test
+            if not self.is_bg_created:
+                Sound.stop_all_sounds()
+                Sound.boss_battle_final(self)
                 # resize image
-                scaled_img = scale_image('../src/assets/images/backgrounds/bg_boss/bg_area_one_forest_boss.png', 800, 510)
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_10_4.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
-                self.is_bg_created = True  # todo must be False
+            self.is_bg_created = True
 
             if self.player_data.is_player_kill_boss:
                 self.state = 'level_statistic'
@@ -739,6 +738,7 @@ class GameState(Sound):
         self.is_start_area = False
         if self.level == 5:
             self.is_start_area = True
+            self.is_bg_created = False
         self.is_in_water = False
         self.background = None
         self.count = 0
