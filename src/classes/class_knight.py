@@ -110,6 +110,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
 
         hit = pygame.sprite.groupcollide(player_group, knight_group, False, False, pygame.sprite.collide_mask)
         if hit and not self.player.is_player_dead and not self.is_dead:
+            self.player.is_allowed_shooting = False
             if not self.visited:
                 Sound.player_dead(self)
                 self.player_dead_x_pos = self.player.rect.x

@@ -36,6 +36,7 @@ class Player(pygame.sprite.Sprite, Sound):
     is_boss_level = False
     is_bonus_level = False
     is_drive_jeep = False
+    is_allowed_shooting = True
 
     def __init__(self, class_bullet, all_sprite_groups_dict):
         pygame.sprite.Sprite.__init__(self)
@@ -181,7 +182,8 @@ class Player(pygame.sprite.Sprite, Sound):
         time_now = pygame.time.get_ticks()  # get time now
         # velocity is equal shooting window time
         if key[pygame.K_SPACE] and self.direction.x != 0 and abs(self.velocity.x) <= 3.0 and not self.is_bonus_level\
-                and time_now - self.last_time > self.WEAPONS_DICT[self.current_weapon_name]['cooldown_shooting']:
+                and time_now - self.last_time > self.WEAPONS_DICT[self.current_weapon_name]['cooldown_shooting']\
+                and self.is_allowed_shooting:
             Sound.player_shoot(self)
             self.last_time = time_now
 
@@ -542,6 +544,7 @@ class Player(pygame.sprite.Sprite, Sound):
         self.is_player_squat = False
         self.is_water_level = False
         self.is_drive_jeep = False
+        self.is_allowed_shooting = True
 
     # RESET TO NEW GAME
     def reset_all_player_data_for_new_game(self):
@@ -572,4 +575,4 @@ class Player(pygame.sprite.Sprite, Sound):
         self.is_player_squat = False
         self.is_water_level = False
         self.is_drive_jeep = False
-
+        self.is_allowed_shooting = True

@@ -9,11 +9,11 @@ class Intro(Sound):
     def __init__(self):
         super().__init__()
         self.state = ''
-        background_image('../src/assets/images/backgrounds/bg_intro.png')
-        text_creator('Copyright - 2022', (211, 0, 0), 20, SCREEN_HEIGHT - 20,)
-        text_creator('By Abaddon', (211, 0, 0), SCREEN_WIDTH - 130, SCREEN_HEIGHT - 20,)
-        text_creator('Start Game: SpaceBar', (255, 255, 200), SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 100, 36)
-        text_creator('MENU: Return', (255, 255, 200), SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 140, 36)
+        background_image('../src/assets/images/backgrounds/bg_intro_2.png')
+        text_creator('Copyright - 2022', 'gray25', 20, SCREEN_HEIGHT - 20,)
+        text_creator('By Abaddon', 'gray25', SCREEN_WIDTH - 130, SCREEN_HEIGHT - 20,)
+        text_creator('Start Game: SpaceBar', 'brown', SCREEN_WIDTH // 2 - 110, SCREEN_HEIGHT // 2 + 148, 36)
+        text_creator('Menu: Return', 'red4', SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT - 100, 32)
 
     def event(self):
         keys = pygame.key.get_pressed()
@@ -182,7 +182,6 @@ class PlayerDead(Sound):
             Sound.stop_all_sounds()
             Sound.btn_click(self)
             pygame.time.delay(500)
-            print(self.player_data.is_bonus_level)
             if self.player_data.is_boss_level:
                 self.state = 'boss'
             else:

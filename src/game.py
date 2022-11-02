@@ -62,10 +62,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 11
+        self.area = 1
         self.level = 4
         self.boss_number = 1
-        self.level_reader_row = 44 # 1
+        self.level_reader_row = 1 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -375,14 +375,14 @@ class GameState(Sound):
 
         # ==================== # check is player ALIVE
         if self.player_data.is_player_dead:
-            self.background_data.is_allowed_move = False  # stop move background if key pressed
+            if key_pressed(pygame.K_RIGHT):  # prevent player movie right and finish level after dead
+                self.background.distance_mt = -11
             time_now = pygame.time.get_ticks()  # 2sec time delay before go to state 'player_dead'
             if time_now - self.start_timer > self.COOLDOWN:
                 self.start_timer = time_now
                 print(3)
                 self.count_visit += 1
                 if self.count_visit == 2:
-                    self.background_data.is_allowed_move = True  # restore move background if key pressed
                     self.player_data.life -= 1
                     Sound.stop_all_sounds()
                     if self.player_data.life > 0:
