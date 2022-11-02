@@ -150,8 +150,7 @@ class LevelStatistic(Sound):
             self.is_add_bonus = False  # restore statistic level bonus points
             self.area += 1  # increase area
             if self.player_data.is_player_kill_boss:  # Happy End  - Game Finish
-                self.state = 'epilogue'
-
+                self.state = 'epilogue'  # Todo:  ...........
 
 # =========================================== GameOver class
 class PlayerDead(Sound):

@@ -12,7 +12,7 @@ class Table(Sound):
     lives = 0
     weapon = 'knife'
     is_poisoned = False
-    is_visited = False
+    life_counter = 0
 
     def __init__(self, game_state, player, knight):
         self.game_state = game_state
@@ -39,26 +39,26 @@ class Table(Sound):
         text_creator(f'Score: {self.score}', 'white', 57, 46, 29)
 
     def add_life_by_score_points(self):
-        if 100_000 <= self.player.points < 200_000 and not self.is_visited:
-            Sound.add_life(self)
+        if 100_000 <= self.player.points < 200_000 and self.life_counter == 0:
             self.player.life += 1
-            self.is_visited = True
-        elif 200_000 <= self.player.points < 300_000 and not self.is_visited:
+            self.life_counter = 1
             Sound.add_life(self)
+        elif 200_000 <= self.player.points < 300_000 and self.life_counter == 1:
             self.player.life += 1
-            self.is_visited = True
-        elif 300_000 <= self.player.points < 400_000 and not self.is_visited:
+            self.life_counter = 2
             Sound.add_life(self)
+        elif 300_000 <= self.player.points < 400_000 and self.life_counter == 2:
             self.player.life += 1
-            self.is_visited = True
-        elif 400_000 <= self.player.points < 500_000 and not self.is_visited:
+            self.life_counter = 3
             Sound.add_life(self)
+        elif 400_000 <= self.player.points < 500_000 and self.life_counter == 3:
             self.player.life += 1
-            self.is_visited = True
-        elif 500_000 <= self.player.points < 600_000 and not self.is_visited:
+            self.life_counter = 4
             Sound.add_life(self)
+        elif 500_000 <= self.player.points < 600_000 and self.life_counter == 3:
             self.player.life += 1
-            self.is_visited = True
+            self.life_counter = 5
+            Sound.add_life(self)
 
     def draw_lives(self):
         text_creator(f'Lives: {self.lives}', 'white', 58, 68, 29)
