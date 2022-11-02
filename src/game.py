@@ -2,7 +2,7 @@ from settings import *
 from classes.class_background import Background
 from classes.class_table import Table
 from src.classes.class_sound import Sound
-from state_classes import Intro, Menu, Legend, Score, LevelStatistic, PlayerDead
+from state_classes import Intro, Menu, Legend, Score, LevelStatistic, PlayerDead, Epilogue
 from classes.class_player import Player
 from classes.class_knight import Knight
 from classes.class_ground import Ground
@@ -65,7 +65,7 @@ class GameState(Sound):
         self.area = 11
         self.level = 4
         self.boss_number = 1
-        self.level_reader_row = 43 # 1
+        self.level_reader_row = 44 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -383,12 +383,12 @@ class GameState(Sound):
                 self.count_visit += 1
                 if self.count_visit == 2:
                     self.background_data.is_allowed_move = True  # restore move background if key pressed
-                    self.player_data.lives -= 1
+                    self.player_data.life -= 1
                     Sound.stop_all_sounds()
-                    if self.player_data.lives > 0:
+                    if self.player_data.life > 0:
                         Sound.player_lost_live_music(self)
                         self.state = 'player_dead'
-                    if self.player_data.lives == 0:
+                    if self.player_data.life == 0:
                         Sound.player_dead_funeral_march(self)
                         self.state = 'funeral_agency'  # - Game Over
 
@@ -730,7 +730,7 @@ class GameState(Sound):
         Score.event(self)
 
     def player_dead(self):
-        if self.player_data.lives <= 0:
+        if self.player_data.life <= 0:
             Sound.stop_all_sounds()
             Sound.player_dead_funeral_march(self)
             self.state = 'funeral_agency'
@@ -787,6 +787,12 @@ class GameState(Sound):
                     player.points += 1000 * player.bonus_coins
                 player.points += 5000
                 self.is_add_bonus = True
+            elif self.player_data.is_player_kill_boss and not self.is_add_bonus:  # BOSS WAS KILLED
+                self.amulets_counter = 9
+                player.points += self.player_data.life * 10_000
+                player.points += 50_000
+                Sound.add_point_two(self)
+                self.is_add_bonus = True
             elif self.player_data.energy_power > 0 and not self.is_add_bonus:  # add bonus points to score
                 Sound.add_point(self)
                 self.player_data.energy_power -= 1
@@ -802,6 +808,10 @@ class GameState(Sound):
                 if player.is_player_kill_boss:
                     player.points += 5000
                 self.is_add_bonus = True
+
+    def epilogue(self):
+        Epilogue()
+        Epilogue.event(self)
 
     # ========================================= state manager
     def state_manager(self):
@@ -822,6 +832,8 @@ class GameState(Sound):
             self.player_dead()
         if self.state == 'funeral_agency':
             self.funeral_agency()
+        if self.state == 'epilogue':
+            self.epilogue()
 
 
 #  ================================ create new GameState

@@ -14,7 +14,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
     last_time = pygame.time.get_ticks()
     time_counter = 0
     visited = False
-    energy_power = 200
+    energy_power = 2
     is_walk = False
     is_run = False
     is_jump = False
@@ -67,7 +67,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
         self.rect.y = SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - self.image.get_height() // 2
 
         # create amulet after knight dead
-        amulet = pygame.image.load(f'../src/assets/images/amulets/small/10.png')
+        amulet = pygame.image.load(f'../src/assets/images/amulets/small/9.png')
         img_rect = amulet.get_bounding_rect(min_alpha=1)
         img_rect.center = [SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 20]
         SCREEN.blit(amulet, img_rect.center)
@@ -124,7 +124,7 @@ class Knight(pygame.sprite.Sprite, Sound,):
                 if self.time_counter == 2:
                     Sound.stop_all_sounds()
                     Sound.player_lost_live_music(self)
-                    self.player.lives -= 1
+                    self.player.life -= 1
                     self.player.is_player_dead = True
 
     def update(self,):

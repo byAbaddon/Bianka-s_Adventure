@@ -91,6 +91,12 @@ class Sound:
     def add_point(self):
         self.play_sound('../src/assets/sounds/point/point.wav')
 
+    def add_life(self):
+        self.play_sound('../src/assets/sounds/player/add_life.wav')
+
+    def add_point_two(self):
+        self.play_sound('../src/assets/sounds/point/point_two.mp3')
+
     def player_jump(self):
         self.play_sound('../src/assets/sounds/player/jump.wav')
 

@@ -1,7 +1,8 @@
 from src.settings import *
+from src.classes.class_sound import Sound
 
 
-class Table:
+class Table(Sound):
     height_score = 3000
     boss_energy = 200
     energy_power = 100
@@ -11,6 +12,7 @@ class Table:
     lives = 0
     weapon = 'knife'
     is_poisoned = False
+    is_visited = False
 
     def __init__(self, game_state, player, knight):
         self.game_state = game_state
@@ -35,6 +37,28 @@ class Table:
 
     def draw_current_score(self):
         text_creator(f'Score: {self.score}', 'white', 57, 46, 29)
+
+    def add_life_by_score_points(self):
+        if 100_000 <= self.player.points < 200_000 and not self.is_visited:
+            Sound.add_life(self)
+            self.player.life += 1
+            self.is_visited = True
+        elif 200_000 <= self.player.points < 300_000 and not self.is_visited:
+            Sound.add_life(self)
+            self.player.life += 1
+            self.is_visited = True
+        elif 300_000 <= self.player.points < 400_000 and not self.is_visited:
+            Sound.add_life(self)
+            self.player.life += 1
+            self.is_visited = True
+        elif 400_000 <= self.player.points < 500_000 and not self.is_visited:
+            Sound.add_life(self)
+            self.player.life += 1
+            self.is_visited = True
+        elif 500_000 <= self.player.points < 600_000 and not self.is_visited:
+            Sound.add_life(self)
+            self.player.life += 1
+            self.is_visited = True
 
     def draw_lives(self):
         text_creator(f'Lives: {self.lives}', 'white', 58, 68, 29)
@@ -98,13 +122,14 @@ class Table:
         self.area = self.game_state.area
         self.level = self.game_state.level
         self.score = self.player.points
-        self.lives = self.player.lives
+        self.lives = self.player.life
         self.energy_power = self.player.energy_power
         self.weapon = self.player.current_weapon
         self.is_poisoned = self.player.is_player_poisoned
         self.boss_energy = self.knight.energy_power
 
     def update(self):
+        self.add_life_by_score_points()
         self.create_top_frame()
         self.draw_lives()
         self.draw_top_score()

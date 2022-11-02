@@ -102,7 +102,7 @@ class LevelStatistic(Sound):
             text_creator(f'{self.player_data.bonus_statuette * 3000} = {self.player_data.bonus_statuette} x', 'yellow', 480, 430, 30)
             image = pygame.image.load(f'../src/assets/images/items/bonus/statuette_medium.png')
             SCREEN.blit(image, [580, 360])
-        else:
+        elif self.player_data.is_bonus_level:  # BONUS Label info
             # bonus point
             text_creator("***BONUS STAGE*** ", 'red', 200, 230, 55, None, None, True)
             # coin
@@ -120,6 +120,20 @@ class LevelStatistic(Sound):
             # amulet_img = f'../src/assets/images/amulets/big/{self.player_data.boss_taken_amulets}.png'
             scaled_amulet = scale_image(amulet_img, 100, 100)
             SCREEN.blit(scaled_amulet, [SCREEN_WIDTH // 2 - 50, 270])
+        elif self.player_data.is_player_kill_boss: # THE BOSS WAS KILLED AND PLAYER WIN GAME
+            text_creator("***BIANKA YOU WIN*** ", 'red', 200, 230, 55, None, None, True)
+            image = pygame.image.load(f'../src/assets/images/frames/down_left.png')
+            SCREEN.blit(image, [300, 300])
+            image = pygame.image.load(f'../src/assets/images/frames/down_right.png')
+            SCREEN.blit(image, [400, 300])
+            amulet_img = f'../src/assets/images/amulets/big/crown.png'
+            scaled_amulet = scale_image(amulet_img, 100, 100)
+            SCREEN.blit(scaled_amulet, [SCREEN_WIDTH // 2 - 50, 270])
+            text_creator('1 x', 'teal', 245, 340, 40)
+            text_creator('50 000', 'teal', 520, 340, 40)
+            image = pygame.image.load('../src/assets/images/title_icon/baby_hat.png').convert()
+            SCREEN.blit(image, (384, 410))
+            text_creator(f'{self.player_data.life} x 10000  =  {self.player_data.life * 10_000}', 'yellow', 290, 465, 36)
 
     def update(self):
         self.info_statistic()
@@ -135,6 +149,8 @@ class LevelStatistic(Sound):
                 self.amulets_counter += 1
             self.is_add_bonus = False  # restore statistic level bonus points
             self.area += 1  # increase area
+            if self.player_data.is_player_kill_boss:  # Happy End  - Game Finish
+                self.state = 'epilogue'
 
 
 # =========================================== GameOver class
@@ -154,7 +170,7 @@ class PlayerDead(Sound):
 
         text_creator('You are dead!', 'red', 390, 340, 50)
         text_creator(f'Level: {self.level} / Area: {self.area}', 'yellow', 510, 380)
-        text_creator(f'Lives: {self.player_data.lives}', 'green', 620, 410)
+        text_creator(f'Lives: {self.player_data.life}', 'green', 620, 410)
 
         text_creator('Press Space to try again...', 'white', SCREEN_WIDTH // 2 + 100, SCREEN_HEIGHT - 30)
 
@@ -170,6 +186,18 @@ class PlayerDead(Sound):
                 self.state = 'start_game'
 
 
+# =========================================== Epilogue class
+class Epilogue(Sound):
+    def __init__(self):
+        super().__init__()
+        background_image('../src/assets/images/backgrounds/bg_epilogue/bg_ep_1.png')
+        self.state = ''
+
+    @staticmethod
+    def event(self):
+        if key_pressed(pygame.K_LEFT):
+            Sound.btn_click(self)
+            self.state = 'score'
 
 
 

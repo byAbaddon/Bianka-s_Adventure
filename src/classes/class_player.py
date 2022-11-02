@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite, Sound):
     JUMP_HEIGHT = -6
     PLAYER_FRICTION = -0.12
     PLAYER_SPEED = 0.4
-    lives = 53
+    life = 3
     points = 0
     energy_power = 100
     is_player_dead = False
@@ -546,7 +546,7 @@ class Player(pygame.sprite.Sprite, Sound):
     # RESET TO NEW GAME
     def reset_all_player_data_for_new_game(self):
         self.current_weapon = '../src/assets/images/bullets/knife.png'
-        self.lives = 3
+        self.life = 3
         self.points = 0
         self.energy_power = 100
         self.bonus_statuette = 0
