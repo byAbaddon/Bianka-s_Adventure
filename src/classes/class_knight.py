@@ -1,5 +1,5 @@
 import pygame
-from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT_SIZE, screen_transition_animation, vec, randrange
+from src.settings import SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT_SIZE, vec, randrange
 from src.classes.class_sound import Sound
 
 
@@ -67,9 +67,9 @@ class Knight(pygame.sprite.Sprite, Sound,):
         self.rect.y = SCREEN_HEIGHT - GROUND_HEIGHT_SIZE - self.image.get_height() // 2
 
         # create amulet after knight dead
-        amulet = pygame.image.load(f'../src/assets/images/amulets/small/9.png')
+        amulet = pygame.image.load(f'../src/assets/images/amulets/big/crown_middle.png')
         img_rect = amulet.get_bounding_rect(min_alpha=1)
-        img_rect.center = [SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 20]
+        img_rect.center = [SCREEN_WIDTH - 185, SCREEN_HEIGHT // 2 + 10]
         SCREEN.blit(amulet, img_rect.center)
 
         # check collide player and amulet

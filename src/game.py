@@ -62,10 +62,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 1
+        self.area = 11
         self.level = 4
         self.boss_number = 1
-        self.level_reader_row = 4 # 1
+        self.level_reader_row = 44 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -100,6 +100,7 @@ class GameState(Sound):
             self.background = None
             self.is_start_area = False
             self.player_data.is_water_level = False
+            table.life_counter = 0
         # -----------------------------------------------
         self.bonus_pts = 0  # reset pts
         # player.is_boss_level = False  # set player walking border to 1/3 S_W
@@ -370,7 +371,6 @@ class GameState(Sound):
             self.area = 1
         elif self.level == 5:
             self.area = 11
-
         # ==============---------------level manipulator end
 
         # ==================== # check is player ALIVE
@@ -599,7 +599,7 @@ class GameState(Sound):
                 Sound.statistic_music(self)
                 self.state = 'level_statistic'
 
-        # ========================================== START GAME  with Area 10;Level 9 / Castle FINAL
+        # ========================================== START GAME  with Area 10;Level 9 / Castle FINAL /***BOSS***
         if self.area == 11:
             if self.is_start_area:
                 Sound.stop_all_sounds()
@@ -635,8 +635,6 @@ class GameState(Sound):
             if self.player_data.check_is_player_fail_out_of_screen():
                 Sound.player_fail_in_water(self)
                 self.is_in_water = True
-
-        # ========================================== START GAME  with Area 10;Level  ***BOSS***
 
         # =================== check is player energy player/ dead - and set image
         if self.player_data.check_is_energy_player():
@@ -695,6 +693,11 @@ class GameState(Sound):
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_10_4.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
             self.is_bg_created = True
+
+            if self.knight_data.is_dead and self.is_start_area:
+                self.is_start_area = False
+                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_10_4_1.png', 800, 510)
+                self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
 
             if self.player_data.is_player_kill_boss:
                 self.state = 'level_statistic'

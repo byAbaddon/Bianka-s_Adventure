@@ -141,16 +141,20 @@ class LevelStatistic(Sound):
     @staticmethod
     def event(self):
         if key_pressed(pygame.K_SPACE):
-            self.player_data.reset_current_player_data()  # rest energy player and more...
             Sound.stop_all_sounds()
-            self.state = 'start_game'
             # if not self.player_data.is_player_kill_boss:
             if self.area % 5 == 0:
                 self.amulets_counter += 1
             self.is_add_bonus = False  # restore statistic level bonus points
             self.area += 1  # increase area
             if self.player_data.is_player_kill_boss:  # Happy End  - Game Finish
-                self.state = 'epilogue'  # Todo:  ...........
+                Sound.stop_all_sounds()
+                self.is_add_bonus = True
+                self.state = 'epilogue'
+            else:
+                self.player_data.reset_current_player_data()  # rest energy player and more...
+                self.state = 'start_game'
+
 
 # =========================================== GameOver class
 class PlayerDead(Sound):
