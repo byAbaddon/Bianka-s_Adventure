@@ -103,6 +103,9 @@ class Sound:
     def player_stone_hit(self):
         self.play_sound('../src/assets/sounds/player/stone_hit.wav')
 
+    def player_injury_scream(self):
+        self.play_sound('../src/assets/sounds/player/injury_scream.mp3', 1)
+
     def player_enemy_hit(self):
         self.play_sound('../src/assets/sounds/player/enemy_hit.wav', 1)
 
@@ -308,8 +311,14 @@ class Sound:
         self.play_sound('../src/assets/sounds/player/enemy_shooting_hit_body.wav', 1)
 
     # ==================================== BOSS KNIGHT
+    def witch_magic_effect(self):
+        self.play_sound('../src/assets/sounds/bullet/magic_effect.wav', 1)
+
     def player_scream_die(self):
         self.play_sound('../src/assets/sounds/boss_knight/player_scream_die.wav', 0.5)
+
+    def boss_attack(self):
+        self.play_sound('../src/assets/sounds/boss_knight/attack.wav', 1)
 
     def knight_scream(self):
         self.play_sound('../src/assets/sounds/boss_knight/knight_scream_time_to_kill.wav', 1)
@@ -322,6 +331,9 @@ class Sound:
 
     def knight_sword_slash(self):
         self.play_sound('../src/assets/sounds/boss_knight/sword_slash.wav', 1)
+
+    def knight_sword_attack(self):
+        self.play_sound('../src/assets/sounds/boss_knight/sword_attack.wav', 0.3)
 
     def knight_jump(self):
         self.play_sound('../src/assets/sounds/boss_knight/jump.wav', 1)
