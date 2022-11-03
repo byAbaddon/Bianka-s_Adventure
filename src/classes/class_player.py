@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite, Sound):
     JUMP_HEIGHT = -6
     PLAYER_FRICTION = -0.12
     PLAYER_SPEED = 0.4
-    life = 3
+    life = 53
     points = 0
     energy_power = 100
     is_player_dead = False

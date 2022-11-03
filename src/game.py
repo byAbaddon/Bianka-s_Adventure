@@ -62,10 +62,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 1
+        self.area = 8
         self.level = 4
         self.boss_number = 1
-        self.level_reader_row = 1 # 1
+        self.level_reader_row = 8 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -375,6 +375,8 @@ class GameState(Sound):
 
         # ==================== # check is player ALIVE
         if self.player_data.is_player_dead:
+            if self.player_data.energy_power < 0:
+                self.player_data.energy_power = 0  # set low boundary draw energy bar
             if key_pressed(pygame.K_RIGHT):  # prevent player movie right and finish level after dead
                 self.background.distance_mt = -11
             time_now = pygame.time.get_ticks()  # 2sec time delay before go to state 'player_dead'

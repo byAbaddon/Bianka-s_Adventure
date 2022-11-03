@@ -3,7 +3,7 @@ from src.classes.class_sound import Sound
 
 
 class Table(Sound):
-    height_score = 3000
+    height_score = 130000
     boss_energy = 200
     energy_power = 100
     area = 0
