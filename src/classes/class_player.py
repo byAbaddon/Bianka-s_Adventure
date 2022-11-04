@@ -348,7 +348,17 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name in ['small', 'small_red', 'small_ice', 'small_des']:
                         self.energy_power -= 1
                     return
-
+                case 'decor':
+                    if name == 'spear':
+                        self.current_weapon = '../src/assets/images/bullets/spear.png'
+                        self.current_weapon_name = 'spear'
+                        Sound.player_get_weapon(self)
+                        sprite.kill()
+                    if name == 'axe':
+                        self.current_weapon = '../src/assets/images/bullets/axe.png'
+                        self.current_weapon_name = 'axe'
+                        Sound.player_get_weapon(self)
+                        sprite.kill()
             # -------------------------------------------------create statistics
             ignore_group_list = ['signs', 'stones']
             if sprite.group_name not in ignore_group_list:
@@ -412,9 +422,16 @@ class Player(pygame.sprite.Sprite, Sound):
                         bullet.kill()
                     if item.item_name in ['boar', 'monkey', 'monster', 'camel', 'tiger', 'dragon_big',
                                           'dragon_big_attack']:
-                        self.hit_enemy_counter += 1
                         bullet.kill()
-                        if self.hit_enemy_counter == 2:
+                        if bullet.item_name == 'spear':
+                            print(self.hit_enemy_counter )
+                            self.hit_enemy_counter += 1
+                        elif bullet.item_name == 'axe':
+                            self.hit_enemy_counter += 2
+
+                        self.hit_enemy_counter += 1
+
+                        if self.hit_enemy_counter >= 3:
                             self.hit_enemy_counter = 0
                             self.points += 500
                             bullet.kill()

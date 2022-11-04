@@ -102,10 +102,22 @@ class Table(Sound):
         pygame.draw.rect(SCREEN, 'teal', bar, border_radius=2)
 
     def draw_weapon(self):
+        x_size = y_size = 60
+        x_pos, y_pos = 244, 38
         text_creator('Weapon', 'white', 162, 68, 29)
-        weapon = pygame.image.load(self.player.current_weapon)
-        SCREEN.blit(weapon, (244, 38,))
-        pygame.draw.rect(SCREEN, 'teal', [246, 54, 60, 24], 1, 2)
+        if self.player.current_weapon_name == 'knife':
+            y_pos = 33
+        elif self.player.current_weapon_name == 'spear':
+            x_pos = 246
+            y_pos = 35
+        elif self.player.current_weapon_name == 'axe':
+            x_size = 45
+            y_size = 20
+            x_pos = 255
+            y_pos = 55
+        weapon = pygame.transform.scale(pygame.image.load(self.player.current_weapon), [x_size, y_size])
+        SCREEN.blit(weapon, (x_pos, y_pos))
+        pygame.draw.rect(SCREEN, 'teal', [246, 52, 60, 24], 1, 2)
 
     def draw_amulet_bar(self):
         text_creator('Amulets', 'white', 240, 32, 29)

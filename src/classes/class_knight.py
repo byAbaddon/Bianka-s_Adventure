@@ -15,7 +15,7 @@ class Knight(pygame.sprite.Sprite, Sound):
     last_time_magic = pygame.time.get_ticks()
     time_counter = 0
     visited = False
-    energy_power = 102
+    energy_power = 200
     is_idle = True
     is_walk = False
     is_run = False
@@ -179,7 +179,7 @@ class Knight(pygame.sprite.Sprite, Sound):
 
     # ======================================reset knight data
     def reset_knife_data(self):
-        self.energy_power = 102  # 200
+        self.energy_power = 200  # 200
         self.time_counter = 0
         self.is_walk = False
         self.is_run = False

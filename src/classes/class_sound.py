@@ -103,6 +103,9 @@ class Sound:
     def player_stone_hit(self):
         self.play_sound('../src/assets/sounds/player/stone_hit.wav')
 
+    def player_get_weapon(self):
+        self.play_sound('../src/assets/sounds/player/oh_my_gosh.wav', 1)
+
     def player_injury_scream(self):
         self.play_sound('../src/assets/sounds/player/injury_scream.mp3', 1)
 
