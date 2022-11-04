@@ -23,7 +23,6 @@ class Intro(Sound):
         if keys[pygame.K_SPACE]:
             Sound.stop_all_sounds()  # if eny music play stop it
             self.state = 'start_game'
-            # self.state = 'boss'
 
 
 # =========================================== Menu state class ============================================
@@ -40,38 +39,41 @@ class Menu(Sound):
             self.state = 'intro'
         if key_pressed(pygame.K_LEFT):
             Sound.btn_click(self)
-            self.state = 'legend'
+            self.state = 'story'
         if key_pressed(pygame.K_RIGHT):
             Sound.btn_click(self)
             self.state = 'score'
 
 
-# =========================================== Legend state class =============================================
-class Legend(Sound):
+# =========================================== Story class
+class Story(Sound):
     def __init__(self):
-        super().__init__()
-        background_image('../src/assets/images/backgrounds/bg_legend.png')
+        background_image('../src/assets/images/backgrounds/bg_story.png')
         self.state = ''
 
     @staticmethod
     def event(self):
-        if key_pressed(pygame.K_RIGHT):
-            Sound.btn_click(self)
-            self.state = 'intro'
+        for event in pygame.event.get():
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_RIGHT:
+                    Sound.btn_click(self)
+                    self.state = 'menu'
 
 
 # =========================================== Score state class ============================================
 class Score(Sound):
     def __init__(self):
         super().__init__()
-        background_image('../src/assets/images/backgrounds/bg_legend.png')
+        background_image('../src/assets/images/backgrounds/bg_controls_old.png')
         self.state = ''
 
     @staticmethod
     def event(self):
-        if key_pressed(pygame.K_LEFT):
-            Sound.btn_click(self)
-            self.state = 'intro'
+        for event in pygame.event.get():
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT:
+                    Sound.btn_click(self)
+                    self.state = 'menu'
 
 
 # =========================================== LevelStatistic class
@@ -200,6 +202,8 @@ class Epilogue(Sound):
         if key_pressed(pygame.K_LEFT):
             Sound.btn_click(self)
             self.state = 'score'
+
+
 
 
 

@@ -3,6 +3,7 @@ from random import randrange
 from sys import exit
 from pygame.math import Vector2
 
+
 vec = Vector2
 # ========================================================================== initialize
 pygame.init()
@@ -106,3 +107,4 @@ def exit_game():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+

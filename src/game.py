@@ -1,8 +1,10 @@
+import pygame.time
+
 from settings import *
 from classes.class_background import Background
 from classes.class_table import Table
 from src.classes.class_sound import Sound
-from state_classes import Intro, Menu, Legend, Score, LevelStatistic, PlayerDead, Epilogue
+from state_classes import Intro, Menu, Story, Score, LevelStatistic, PlayerDead, Epilogue
 from classes.class_player import Player
 from classes.class_knight import Knight
 from classes.class_ground import Ground
@@ -77,6 +79,11 @@ class GameState(Sound):
         self.count = 0
 
     def start_game(self):
+        # ------------------------- MAKE PAUSE GAME
+        if key_pressed(pygame.K_p):
+            Sound.btn_click(self)
+            self.state = 'pause'
+
         # ------------------top display frame
         table.update()
 
@@ -726,13 +733,17 @@ class GameState(Sound):
         Menu()
         Menu.event(self)
 
-    def legend(self):
-        Legend()
-        Legend.event(self)
+    def story(self):
+        Story()
+        Story.event(self)
 
     def score(self):
         Score()
         Score.event(self)
+
+    def epilogue(self):
+        Epilogue()
+        Epilogue.event(self)
 
     def player_dead(self):
         if self.player_data.life <= 0:
@@ -814,19 +825,36 @@ class GameState(Sound):
                     player.points += 5000
                 self.is_add_bonus = True
 
-    def epilogue(self):
-        Epilogue()
-        Epilogue.event(self)
+    def start_pause(self):
+        table.update()
+        background_image('../src/assets/images/pause/bg_toilet.png', 50, 100)
+        text_creator('PAUSED', 'chocolate1', S_W // 2 - 50, S_H // 2, 40, None, None, True)
+        text_creator('Press RETURN to continue...', 'cornsilk', S_W - 250, S_H - 30)
+
+        time_now = pygame.time.get_ticks()
+        if time_now - self.start_timer > self.COOLDOWN:
+            self.start_timer = time_now
+            bonus_group.add(Bonus('../src/assets/images/pause/toilet_roll/roll.png'))
+        bonus_group.draw(SCREEN)
+        bonus_group.update()
+
+        if key_pressed(pygame.K_RETURN):
+            Sound.btn_click(self)
+            self.state = 'start_game'
 
     # ========================================= state manager
     def state_manager(self):
         # print(self.state)
+        if self.state == 'pause':
+            self.start_pause()
         if self.state == 'intro':
             self.intro()
         if self.state == 'menu':
             self.menu()
-        if self.state == 'legend':
-            self.legend()
+        if self.state == 'story':
+            self.story()
+        if self.state == 'score':
+            self.score()
         if self.state == 'start_game':
             self.start_game()
         if self.state == 'level_statistic':
@@ -847,10 +875,12 @@ game_state = GameState(player, knight, background)
 # ================================================================ create top Table for: score , energy and more
 table = Table(game_state, player, knight)
 
-# ============= Starting Game loo
+
+# ============= Starting Game loop
 while True:
     SCREEN.fill(pygame.Color('black'))
     game_state.state_manager()
     pygame.display.update()
     CLOCK.tick(FPS)
     exit_game()
+
