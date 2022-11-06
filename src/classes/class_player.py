@@ -461,13 +461,15 @@ class Player(pygame.sprite.Sprite, Sound):
                 case 'magic':
                     sprite.kill()
                     Sound.player_injury_scream(self)
-                    self.energy_power -= 5
+                    self.energy_power -= 20
 
     def check_player_and_enemy_bullets_collide(self):
         bullets_group = self.all_sprite_groups_dict['bullets']
         for bullet in bullets_group:
+            if bullet.item_name == 'magic':
+                return
             sprite_collide = pygame.sprite.spritecollide(bullet, bullets_group, False)
-            # If len(sprite_collide) is 1 hit with self.
+            #if len(sprite_collide) == 1:  hit with self.
             if len(sprite_collide) > 1:
                 for sprite in sprite_collide:
                     Sound.bullet_hit(self)

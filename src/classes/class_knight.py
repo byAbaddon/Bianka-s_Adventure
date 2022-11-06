@@ -15,7 +15,7 @@ class Knight(pygame.sprite.Sprite, Sound):
     last_time_magic = pygame.time.get_ticks()
     time_counter = 0
     visited = False
-    energy_power = 200
+    energy_power = 2
     is_idle = True
     is_walk = False
     is_run = False
@@ -124,7 +124,7 @@ class Knight(pygame.sprite.Sprite, Sound):
         knight_group = self.all_sprite_groups_dict['knight']
 
         hit = pygame.sprite.groupcollide(player_group, knight_group, False, False, pygame.sprite.collide_mask)
-        if hit:
+        if hit and not self.is_dead:
             self.player.is_allowed_shooting = False
             self.is_boss_kill_player = True
             self.is_walk = False
@@ -167,7 +167,6 @@ class Knight(pygame.sprite.Sprite, Sound):
 
     def update(self,):
         self.sprite_frames()
-        self.knight_movie()
         self.check_players_bullet_collide()
         self.check_players_and_boss_collide()
         self.energy_boss_watcher()
@@ -175,7 +174,9 @@ class Knight(pygame.sprite.Sprite, Sound):
             self.knight_dead()
             if self.energy_power < 0:
                 self.energy_power = 0
-        self.witch_magic()
+        else:
+            self.knight_movie()
+            self.witch_magic()
 
     # ======================================reset knight data
     def reset_knife_data(self):

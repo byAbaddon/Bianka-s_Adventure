@@ -14,6 +14,7 @@ from classes.class_enemy import Enemy
 from classes.class_cloud import Cloud
 from classes.class_log import Log
 from classes.class_bonus import Bonus
+from src.score.crud import ranking_manipulator, post
 
 # ================================================================= TEST imported classes
 # print(dir(Menu))
@@ -64,10 +65,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 9
-        self.level = 3
+        self.area = 11
+        self.level = 4
         self.boss_number = 1
-        self.level_reader_row = 29 # 1
+        self.level_reader_row = 44 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -77,6 +78,7 @@ class GameState(Sound):
         self.is_in_water = False
         self.is_start_area = False
         self.count = 0
+        self.ranking_list = ranking_manipulator()
 
     def start_game(self):
         # ------------------------- MAKE PAUSE GAME
@@ -738,8 +740,28 @@ class GameState(Sound):
         Story.event(self)
 
     def score(self):
-        Score()
-        Score.event(self)
+        background_image('../src/assets/images/backgrounds/bg_score.png')
+        text_creator('TOP RANKING LIST', 'orange', SCREEN_WIDTH // 2 - 140, 100, 40, None, None, True)
+        for i in range(len(self.ranking_list)):
+            name, score = self.ranking_list[i]
+            if i & 1:
+                color = 'grey'
+            else:
+                color = 'olivedrab'
+            text_creator(f'{i + 1}) :  {score} ', color, SCREEN_WIDTH // 2 - 110, 150 + i * 40, 30)
+            text_creator('-', color, SCREEN_WIDTH // 2 + 15, 150 + i * 40, 30)
+            text_creator(f'{name}', color, SCREEN_WIDTH // 2 + 50, 150 + i * 40, 30)
+        for event in pygame.event.get():
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT:
+                    Sound.btn_click(self)
+                    self.state = 'menu'
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+        text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', S_W // 2, 15, 25)
+        # post('Linashj', 32100 )
 
     def epilogue(self):
         Epilogue()
@@ -841,6 +863,7 @@ class GameState(Sound):
         if key_pressed(pygame.K_RETURN):
             Sound.btn_click(self)
             self.state = 'start_game'
+            bonus_group.empty()
 
     # ========================================= state manager
     def state_manager(self):

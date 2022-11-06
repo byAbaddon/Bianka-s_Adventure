@@ -10,8 +10,8 @@ class Intro(Sound):
         super().__init__()
         self.state = ''
         background_image('../src/assets/images/backgrounds/bg_intro_2.png')
-        text_creator('Copyright - 2022', 'gray25', 20, SCREEN_HEIGHT - 20,)
-        text_creator('By Abaddon', 'gray25', SCREEN_WIDTH - 130, SCREEN_HEIGHT - 20,)
+        text_creator('Copyright - 2022', 'gray25', 20, SCREEN_HEIGHT - 20, )
+        text_creator('By Abaddon', 'gray25', SCREEN_WIDTH - 130, SCREEN_HEIGHT - 20, )
         text_creator('Start Game: SpaceBar', 'brown', SCREEN_WIDTH // 2 - 110, SCREEN_HEIGHT // 2 + 148, 36)
         text_creator('Menu: Return', 'red4', SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT - 100, 32)
 
@@ -62,18 +62,19 @@ class Story(Sound):
 
 # =========================================== Score state class ============================================
 class Score(Sound):
+
     def __init__(self):
-        super().__init__()
-        background_image('../src/assets/images/backgrounds/bg_controls_old.png')
+        # background_image('../src/assets/images/backgrounds/bg_score.png')
+        # text_creator('TOP RANKING LIST', 'yellow', SCREEN_WIDTH // 2 - 140, 100, 40, None, None, True)
         self.state = ''
 
-    @staticmethod
-    def event(self):
-        for event in pygame.event.get():
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT:
-                    Sound.btn_click(self)
-                    self.state = 'menu'
+    # @staticmethod
+    # def event(self):
+    #     for event in pygame.event.get():
+    #         if event.type == pygame.KEYUP:
+    #             if event.key == pygame.K_LEFT:
+    #                 Sound.btn_click(self)
+    #                 self.state = 'menu'
 
 
 # =========================================== LevelStatistic class
@@ -99,9 +100,11 @@ class LevelStatistic(Sound):
             # coin
             image = pygame.image.load(f'../src/assets/images/items/bonus/coin_medium.png')
             SCREEN.blit(image, [150, 400])
-            text_creator(f'x {self.player_data.bonus_coins} = {self.player_data.bonus_coins * 1000}', 'yellow', 220, 430, 30)
+            text_creator(f'x {self.player_data.bonus_coins} = {self.player_data.bonus_coins * 1000}', 'yellow', 220,
+                         430, 30)
             # idol
-            text_creator(f'{self.player_data.bonus_statuette * 3000} = {self.player_data.bonus_statuette} x', 'yellow', 480, 430, 30)
+            text_creator(f'{self.player_data.bonus_statuette * 3000} = {self.player_data.bonus_statuette} x', 'yellow',
+                         480, 430, 30)
             image = pygame.image.load(f'../src/assets/images/items/bonus/statuette_medium.png')
             SCREEN.blit(image, [580, 360])
         elif self.player_data.is_bonus_level:  # BONUS Label info
@@ -122,7 +125,7 @@ class LevelStatistic(Sound):
             # amulet_img = f'../src/assets/images/amulets/big/{self.player_data.boss_taken_amulets}.png'
             scaled_amulet = scale_image(amulet_img, 100, 100)
             SCREEN.blit(scaled_amulet, [SCREEN_WIDTH // 2 - 50, 270])
-        elif self.player_data.is_player_kill_boss: # THE BOSS WAS KILLED AND PLAYER WIN GAME
+        elif self.player_data.is_player_kill_boss:  # THE BOSS WAS KILLED AND PLAYER WIN GAME
             text_creator("***BIANKA YOU WIN*** ", 'red', 200, 230, 55, None, None, True)
             image = pygame.image.load(f'../src/assets/images/frames/down_left.png')
             SCREEN.blit(image, [300, 300])
@@ -135,7 +138,8 @@ class LevelStatistic(Sound):
             text_creator('50 000', 'teal', 520, 340, 40)
             image = pygame.image.load('../src/assets/images/title_icon/baby_hat.png').convert()
             SCREEN.blit(image, (384, 410))
-            text_creator(f'{self.player_data.life} x 10000  =  {self.player_data.life * 10_000}', 'yellow', 290, 465, 36)
+            text_creator(f'{self.player_data.life} x 10000  =  {self.player_data.life * 10_000}', 'yellow', 290, 465,
+                         36)
 
     def update(self):
         self.info_statistic()
@@ -202,9 +206,3 @@ class Epilogue(Sound):
         if key_pressed(pygame.K_LEFT):
             Sound.btn_click(self)
             self.state = 'score'
-
-
-
-
-
-

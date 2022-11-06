@@ -55,7 +55,6 @@ class Bullet(pygame.sprite.Sprite):
                     elif self.item_name == 'fire_spit':
                         self.rect.y -= 50
                     elif self.item_name == 'medusa_spit':
-
                         self.rect.y -= 5
                     if key_pressed(pygame.K_RIGHT):  # if player movie right fix bullet position
                         self.rect.x -= BG_SPEED
