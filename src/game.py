@@ -4,7 +4,7 @@ from settings import *
 from classes.class_background import Background
 from classes.class_table import Table
 from src.classes.class_sound import Sound
-from state_classes import Intro, Menu, Story, Score, LevelStatistic, PlayerDead, Epilogue
+from state_classes import Intro, Menu, Story, LevelStatistic, PlayerDead, Epilogue, WriteScore
 from classes.class_player import Player
 from classes.class_knight import Knight
 from classes.class_ground import Ground
@@ -104,6 +104,8 @@ class GameState(Sound):
             self.level_reader_row = 1
             self.bonus_pts = 0
             self.count = 0
+            self.count_visit = 0
+            self.amulets_counter = 0
             self.is_add_bonus = False
             self.is_in_water = False
             self.background = None
@@ -744,7 +746,9 @@ class GameState(Sound):
         text_creator('TOP RANKING LIST', 'orange', SCREEN_WIDTH // 2 - 140, 100, 40, None, None, True)
         for i in range(len(self.ranking_list)):
             name, score = self.ranking_list[i]
-            if i & 1:
+            if i < 3:
+                color = 'brown3'
+            elif i & 1:
                 color = 'grey'
             else:
                 color = 'olivedrab'
@@ -763,8 +767,13 @@ class GameState(Sound):
         text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', S_W // 2, 15, 25)
         # post('Linashj', 32100 )
 
+    def write_score(self):
+        WriteScore()
+        WriteScore.event(self)
+
     def epilogue(self):
-        Epilogue()
+        self.is_start_new_game = True  # old game finish
+        Epilogue(self.player_data, self.ranking_list)
         Epilogue.event(self)
 
     def player_dead(self):
@@ -890,7 +899,8 @@ class GameState(Sound):
             self.funeral_agency()
         if self.state == 'epilogue':
             self.epilogue()
-
+        if self.state == 'write_score':
+            self.write_score()
 
 #  ================================ create new GameState
 game_state = GameState(player, knight, background)

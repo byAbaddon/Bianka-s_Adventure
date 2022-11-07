@@ -52,7 +52,7 @@ def ranking_manipulator():
     try:
         for res_data in get().values():
             for key, player in res_data.items():
-                if len(dict_of_players) < 10: # allowed only 10 players in dict
+                if len(dict_of_players) < 10:  # allowed only 10 players in dict
                     name = list(player.keys())[0]
                     score = list(player.values())[0]
                     dict_of_players[name] = score

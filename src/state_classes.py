@@ -60,23 +60,6 @@ class Story(Sound):
                     self.state = 'menu'
 
 
-# =========================================== Score state class ============================================
-class Score(Sound):
-
-    def __init__(self):
-        # background_image('../src/assets/images/backgrounds/bg_score.png')
-        # text_creator('TOP RANKING LIST', 'yellow', SCREEN_WIDTH // 2 - 140, 100, 40, None, None, True)
-        self.state = ''
-
-    # @staticmethod
-    # def event(self):
-    #     for event in pygame.event.get():
-    #         if event.type == pygame.KEYUP:
-    #             if event.key == pygame.K_LEFT:
-    #                 Sound.btn_click(self)
-    #                 self.state = 'menu'
-
-
 # =========================================== LevelStatistic class
 class LevelStatistic(Sound):
     def __init__(self, bonus_pts, player_data, level, area, amulets_counter):
@@ -156,6 +139,7 @@ class LevelStatistic(Sound):
             if self.player_data.is_player_kill_boss:  # Happy End  - Game Finish
                 Sound.stop_all_sounds()
                 self.is_add_bonus = True
+                Sound.epilogue_music(self)
                 self.state = 'epilogue'
             else:
                 self.player_data.reset_current_player_data()  # rest energy player and more...
@@ -196,13 +180,42 @@ class PlayerDead(Sound):
 
 # =========================================== Epilogue class
 class Epilogue(Sound):
+    def __init__(self, player_data, ranking_list):
+        super().__init__()
+        background_image('../src/assets/images/backgrounds/bg_epilogue.png')
+        self.state = ''
+        self.player_data = player_data
+        self.ranking_list = ranking_list
+
+    @staticmethod
+    def event(self):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_SPACE:
+                    Sound.btn_click(self)
+                    if self.player_data.points >= self.ranking_list[9][1]:
+                        self.state = 'write_score'
+                    else:
+                        self.state = 'score'
+
+
+        # if key_pressed(pygame.K_SPACE):
+        #     Sound.btn_click(self)
+        #     if self.player_data.points >= self.ranking_list[9][1]:
+        #         self.state = 'write_score'
+        #     else:
+        #         self.state = 'score'
+
+
+# =========================================== WriteScore class
+class WriteScore(Sound):
     def __init__(self):
         super().__init__()
-        background_image('../src/assets/images/backgrounds/bg_epilogue/bg_ep_1.png')
+        background_image('../src/assets/images/backgrounds/bg_write_score.png')
         self.state = ''
 
     @staticmethod
     def event(self):
-        if key_pressed(pygame.K_LEFT):
+        if key_pressed(pygame.K_RETURN):
             Sound.btn_click(self)
             self.state = 'score'

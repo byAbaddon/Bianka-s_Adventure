@@ -82,6 +82,15 @@ class Sound:
         self.play_sound('../src/assets/sounds/game_musics/boss_battle.mp3', 1, -1)
 
     # ======================================   BOSS
+    def epilogue_music(self):
+        self.play_sound('../src/assets/sounds/game_musics/epilogue.mp3', 0.4, -1)
+
+    def score_music(self):
+        self.play_sound('../src/assets/sounds/game_musics/score.mp3', 0.6, -1)
+
+    def record_music(self):
+        self.play_sound('../src/assets/sounds/game_musics/record.mp3', 0.6, -1)
+
     def boss_music_area_one(self):
         self.play_sound('../src/assets/sounds/game_musics/boss/boss_2.mp3', 0.5, -1)
 
