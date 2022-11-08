@@ -1,4 +1,4 @@
-import pygame.time
+import pygame
 
 from src.settings import *
 from src.classes.class_sound import Sound
@@ -189,33 +189,18 @@ class Epilogue(Sound):
 
     @staticmethod
     def event(self):
-        for event in pygame.event.get():
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_SPACE:
-                    Sound.btn_click(self)
-                    if self.player_data.points >= self.ranking_list[9][1]:
-                        self.state = 'write_score'
-                    else:
-                        self.state = 'score'
-
-
-        # if key_pressed(pygame.K_SPACE):
-        #     Sound.btn_click(self)
-        #     if self.player_data.points >= self.ranking_list[9][1]:
-        #         self.state = 'write_score'
-        #     else:
-        #         self.state = 'score'
-
-
-# =========================================== WriteScore class
-class WriteScore(Sound):
-    def __init__(self):
-        super().__init__()
-        background_image('../src/assets/images/backgrounds/bg_write_score.png')
-        self.state = ''
-
-    @staticmethod
-    def event(self):
-        if key_pressed(pygame.K_RETURN):
+        exit_game()
+        if key_pressed(pygame.K_SPACE):
             Sound.btn_click(self)
+            Sound.stop_all_sounds()
+            Sound.score_music(self)
+            if self.ranking_list:
+                if self.player_data.points >= self.ranking_list[9][1]:
+                    self.state = 'write_score'
+                    return
             self.state = 'score'
+
+
+
+
+

@@ -4,7 +4,7 @@ from settings import *
 from classes.class_background import Background
 from classes.class_table import Table
 from src.classes.class_sound import Sound
-from state_classes import Intro, Menu, Story, LevelStatistic, PlayerDead, Epilogue, WriteScore
+from state_classes import Intro, Menu, Story, LevelStatistic, PlayerDead, Epilogue
 from classes.class_player import Player
 from classes.class_knight import Knight
 from classes.class_ground import Ground
@@ -58,6 +58,7 @@ class GameState(Sound):
     start_timer = pygame.time.get_ticks()
     count_visit = 0
     amulets_counter = 0
+    input_text = ''
 
     def __init__(self, player_data, knight_data, background_data):
         self.state = 'intro'
@@ -744,6 +745,10 @@ class GameState(Sound):
     def score(self):
         background_image('../src/assets/images/backgrounds/bg_score.png')
         text_creator('TOP RANKING LIST', 'orange', SCREEN_WIDTH // 2 - 140, 100, 40, None, None, True)
+        if not self.ranking_list:
+            text_creator('No Internet!', 'red3', 300, S_H // 2 - 50, 50)
+            text_creator('or', 'peachpuff', 380, S_H // 2, 40)
+            text_creator('Requests operation failed...', 'cadetblue4', 170, S_H // 2 + 50, 50)
         for i in range(len(self.ranking_list)):
             name, score = self.ranking_list[i]
             if i < 3:
@@ -764,12 +769,28 @@ class GameState(Sound):
                 pygame.quit()
                 exit()
 
-        text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', S_W // 2, 15, 25)
-        # post('Linashj', 32100 )
-
     def write_score(self):
-        WriteScore()
-        WriteScore.event(self)
+        background_image('../src/assets/images/backgrounds/bg_write_score.png')
+        text_creator(self.input_text, 'teal', 315, SCREEN_HEIGHT - 110, 32)
+        pygame.draw.rect(SCREEN, 'white', pygame.Rect((310, 470, 175, 40)), 2, 2)
+
+        exit_game()
+        if key_pressed(pygame.K_RETURN):
+            Sound.btn_click(self)
+            post(self.input_text, self.player_data.points)
+            self.state = 'score'
+        if key_pressed(pygame.K_BACKSPACE):
+            self.input_text = ''
+
+        keys = pygame.key.get_pressed()
+        for i in range(pygame.K_a, pygame.K_z + 1):
+            if keys[i]:
+                if len(self.input_text) < 10:
+                    time_now = pygame.time.get_ticks()
+                    if time_now - self.start_timer > 150:
+                        self.start_timer = time_now
+                        self.input_text += pygame.key.name(i)
+                        self.input_text = self.input_text.title()
 
     def epilogue(self):
         self.is_start_new_game = True  # old game finish
@@ -907,7 +928,6 @@ game_state = GameState(player, knight, background)
 
 # ================================================================ create top Table for: score , energy and more
 table = Table(game_state, player, knight)
-
 
 # ============= Starting Game loop
 while True:

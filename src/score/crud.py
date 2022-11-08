@@ -1,17 +1,19 @@
 import collections.abc
+
 collections.MutableMapping = collections.abc.MutableMapping
 collections.Mapping = collections.abc.Mapping
 collections.Iterable = collections.abc.Iterable
 collections.MutableSet = collections.abc.MutableSet
 collections.Callable = collections.abc.Callable
 
-# not change import requests position!
+# don't change import requests position!
 import requests
 
+
 '''
-===============================================================================================
-                                 *** Don't be a bastard ***
-===============================================================================================
+           =========================================================================================
+                                          *** Don't be a bastard ***
+           =========================================================================================
 '''
 
 url = 'https://gamebiankasadventureuserscore-default-rtdb.europe-west1.firebasedatabase.app/'
@@ -49,20 +51,22 @@ def delete(data_key):
 
 def ranking_manipulator():
     dict_of_players = {}
+    top_ten_list_of_players = []
     try:
         for res_data in get().values():
             for key, player in res_data.items():
-                if len(dict_of_players) < 10:  # allowed only 10 players in dict
-                    name = list(player.keys())[0]
-                    score = list(player.values())[0]
-                    dict_of_players[name] = score
-                else:  # delete more form 10 players
-                    delete(key)
-                    print('Delete success')
-        sorted_list_of_players = sorted(dict_of_players.items(), key=lambda x: -x[1])
-        return sorted_list_of_players
-        # for k, v in sorted_list_of_players:
-        #     print(k, v)
+                name = list(player.keys())[0]
+                score = list(player.values())[0]
+                dict_of_players[key] = {'name': name, 'score': score}
+        full_sorted_list_of_players = sorted(dict_of_players.items(), key=lambda x: -x[1]['score'])
+
+        for key, val in full_sorted_list_of_players:
+            if len(top_ten_list_of_players) < 10:
+                top_ten_list_of_players.append((val['name'], val['score']))
+            else:
+                delete(key)
+
+        return top_ten_list_of_players
     except:
         print('Requests operation failed')
         return []
