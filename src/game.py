@@ -757,8 +757,8 @@ class GameState(Sound):
                 color = 'grey'
             else:
                 color = 'olivedrab'
-            text_creator(f'{i + 1}) :  {score} ', color, SCREEN_WIDTH // 2 - 110, 150 + i * 40, 30)
-            text_creator('-', color, SCREEN_WIDTH // 2 + 15, 150 + i * 40, 30)
+            text_creator(f'{i + 1})   {score} ', color, SCREEN_WIDTH // 2 - 130, 150 + i * 40, 30)
+            text_creator('-', color, SCREEN_WIDTH // 2 + 10, 150 + i * 40, 30)
             text_creator(f'{name}', color, SCREEN_WIDTH // 2 + 50, 150 + i * 40, 30)
         for event in pygame.event.get():
             if event.type == pygame.KEYUP:
@@ -778,6 +778,9 @@ class GameState(Sound):
         if key_pressed(pygame.K_RETURN):
             Sound.btn_click(self)
             post(self.input_text, self.player_data.points)
+            self.ranking_list.append((self.input_text, self.player_data.points))
+            self.ranking_list = sorted(self.ranking_list, key=lambda x: x[1], reverse=True)[:-1]
+            pygame.time.delay(100)
             self.state = 'score'
         if key_pressed(pygame.K_BACKSPACE):
             self.input_text = ''
@@ -824,11 +827,18 @@ class GameState(Sound):
         print(4)
 
     def funeral_agency(self):
-        background_image('../src/assets/images/player/dead/bg/rip.png', 0, 0)
-        if key_pressed(pygame.K_RETURN):
-            self.is_start_new_game = True  # for reset old game
-            Sound.stop_all_sounds()
-            self.state = 'intro'
+        background_image('../src/assets/images/backgrounds/bg_funeral_agency.png', 0, 0)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_RETURN:
+                    self.is_start_new_game = True  # for reset old game
+                    Sound.stop_all_sounds()
+                    self.state = 'intro'
+
 
     def level_statistic(self):
         # reset part of game state
@@ -922,6 +932,7 @@ class GameState(Sound):
             self.epilogue()
         if self.state == 'write_score':
             self.write_score()
+
 
 #  ================================ create new GameState
 game_state = GameState(player, knight, background)
