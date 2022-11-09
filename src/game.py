@@ -55,6 +55,7 @@ T_F_S = TOP_FRAME_SIZE
 # Game State
 class GameState(Sound):
     COOLDOWN = 2000  # milliseconds
+    delay_count = 2000
     start_timer = pygame.time.get_ticks()
     count_visit = 0
     amulets_counter = 0
@@ -66,10 +67,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 11
-        self.level = 4
+        self.area = 1
+        self.level = 2
         self.boss_number = 1
-        self.level_reader_row = 44 # 1
+        self.level_reader_row = 1 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -351,8 +352,8 @@ class GameState(Sound):
             match int(self.background.distance_mt):
                 case 25:
                     Sound.sign_go(self)
-                    # self.state = 'level_statistic'
                     self.background.distance_mt += 1  # prevent play double sound if player stay in same position
+                    # self.state = 'level_statistic'
                 case 550:
                     Sound.sign_middle(self)
                     self.background.distance_mt += 1  # prevent ...
@@ -839,7 +840,6 @@ class GameState(Sound):
                     Sound.stop_all_sounds()
                     self.state = 'intro'
 
-
     def level_statistic(self):
         # reset part of game state
         if self.level < 5:
@@ -904,6 +904,19 @@ class GameState(Sound):
             Sound.btn_click(self)
             self.state = 'start_game'
             bonus_group.empty()
+
+    def state_general_statistics(self):
+        background_image('../src/assets/images/backgrounds/bg_EMPTY.png')
+        text_creator('GENERAL STATISTICS', 'chocolate1', S_W // 2 - 100, 50, 40, None, None, True)
+
+        for k, v in self.player_data.statistics.items():
+            pass
+
+        if key_pressed(pygame.K_RETURN):
+            Sound.btn_click(self)
+            self.state = 'start_game'
+
+
 
     # ========================================= state manager
     def state_manager(self):

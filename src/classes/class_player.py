@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite, Sound):
     JUMP_HEIGHT = -6
     PLAYER_FRICTION = -0.12
     PLAYER_SPEED = 0.4
-    life = 1
+    life = 3
     points = 0
     energy_power = 100
     is_player_dead = False
@@ -360,7 +360,8 @@ class Player(pygame.sprite.Sprite, Sound):
                         Sound.player_get_weapon(self)
                         sprite.kill()
             # -------------------------------------------------create statistics
-            ignore_group_list = ['signs', 'stones']
+            ignore_group_list = ['decor', 'signs', 'stones', 'cactus', 'head', 'logs', 'cloud', 'platforms', 'trap',
+                                 'enemies']
             if sprite.group_name not in ignore_group_list:
                 if sprite.group_name not in self.statistics:  # add item to statistics dict if not have key
                     self.statistics[sprite.group_name] = {name: 1}
@@ -379,7 +380,10 @@ class Player(pygame.sprite.Sprite, Sound):
             # add bullet effect explosion
             if item.group_name not in ['signs', 'decor', 'wall_decor']:  # ignore bullet collide
                 hit_explosion = pygame.image.load('../src/assets/images/explosion/explosion.png')
-                SCREEN.blit(hit_explosion, bullet.rect.topleft)
+                if self.current_weapon_name == 'spear':
+                    SCREEN.blit(hit_explosion, (bullet.rect.x + 45, bullet.rect.y + 25))
+                else:
+                    SCREEN.blit(hit_explosion, (bullet.rect.x + 20, bullet.rect.y))  # bullet.rect.topleft
             match item.group_name:
                 case 'logs' | 'cloud':
                     Sound.bullet_hit(self)
@@ -393,6 +397,7 @@ class Player(pygame.sprite.Sprite, Sound):
                     bullet.kill()
                 case 'trap':
                     Sound.snapping_trap(self)
+                    self.points += 100
                     bullet.kill()
                     item.kill()
                 case 'bonus':
@@ -401,7 +406,7 @@ class Player(pygame.sprite.Sprite, Sound):
                         bullet.kill()
                         item.kill()
                 case 'enemies':
-                    if item.item_name == 'stone_ball':
+                    if item.item_name == 'stone_ball' or item.item_name == 'fireball':
                         Sound.bullet_ricochet(self)
                         bullet.kill()
                     if item.item_name in ['fish', 'mole',  'crab', 'static_crab', 'bee', 'bird', 'cactus_ball']:
@@ -424,11 +429,9 @@ class Player(pygame.sprite.Sprite, Sound):
                                           'dragon_big_attack']:
                         bullet.kill()
                         if bullet.item_name == 'spear':
-                            print(self.hit_enemy_counter )
                             self.hit_enemy_counter += 1
                         elif bullet.item_name == 'axe':
                             self.hit_enemy_counter += 2
-
                         self.hit_enemy_counter += 1
 
                         if self.hit_enemy_counter >= 3:
@@ -443,12 +446,26 @@ class Player(pygame.sprite.Sprite, Sound):
                             for hit_point in sprite:
                                 if 400 <= hit_point.rect.topleft[1] <= 442:  # head shoot
                                     Sound.bullet_player_hit_knight_face(self)
-                                    self.points += 1000
-                                    Sound.knight_dead_sound(self)
-                                    item.kill()
+                                    self.hit_enemy_counter += 1
+                                    if self.hit_enemy_counter == 3:
+                                        self.points += 1000
+                                        Sound.knight_dead_sound(self)
+                                        item.kill()
+                                        self.hit_enemy_counter = 0
                                     bullet.kill()
                                 else:
                                     Sound.bullet_player_hit_knight_armor(self)  # body soot
+
+                    ignore_group_list = ['decor', 'signs', 'stones', 'head', 'logs', 'cloud', 'platforms', 'bonus']
+                    if item.group_name not in ignore_group_list:
+                        if item.group_name not in self.statistics:  # add item to statistics dict if not have key
+                            self.statistics[item.group_name] = {item.item_name: 1}
+                        else:
+                            if item.item_name not in self.statistics[item.group_name]:
+                                self.statistics[item.group_name][item.item_name] = 0
+                            self.statistics[item.group_name][item.item_name] += 1
+                    print(self.statistics)
+                    # print(item.item_name, item.group_name)
 
     def check_enemy_bullets_collide(self):
         bullets_group = self.all_sprite_groups_dict['bullets']

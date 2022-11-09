@@ -15,7 +15,7 @@ class Knight(pygame.sprite.Sprite, Sound):
     last_time_magic = pygame.time.get_ticks()
     time_counter = 0
     visited = False
-    energy_power = 2
+    energy_power = 200
     is_idle = True
     is_walk = False
     is_run = False

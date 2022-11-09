@@ -55,10 +55,20 @@ class Table(Sound):
             self.player.life += 1
             self.life_counter = 4
             Sound.add_life(self)
-        elif 500_000 <= self.player.points < 600_000 and self.life_counter == 3:
+        elif 500_000 <= self.player.points < 600_000 and self.life_counter == 4:
             self.player.life += 1
             self.life_counter = 5
             Sound.add_life(self)
+        elif 600_000 <= self.player.points < 700_000 and self.life_counter == 5:
+            self.player.life += 1
+            self.life_counter = 6
+            Sound.add_life(self)
+        elif 700_000 <= self.player.points < 800_000 and self.life_counter == 6:
+            self.player.life += 1
+            self.life_counter = 7
+            Sound.add_life(self)
+
+
 
     def draw_lives(self):
         text_creator(f'Lives: {self.lives}', 'white', 58, 68, 29)

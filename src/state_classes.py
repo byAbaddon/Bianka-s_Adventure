@@ -9,11 +9,12 @@ class Intro(Sound):
     def __init__(self):
         super().__init__()
         self.state = ''
-        background_image('../src/assets/images/backgrounds/bg_intro_2.png')
-        text_creator('Copyright - 2022', 'gray25', 20, SCREEN_HEIGHT - 20, )
-        text_creator('By Abaddon', 'gray25', SCREEN_WIDTH - 130, SCREEN_HEIGHT - 20, )
-        text_creator('Start Game: SpaceBar', 'brown', SCREEN_WIDTH // 2 - 110, SCREEN_HEIGHT // 2 + 148, 36)
-        text_creator('Menu: Return', 'red4', SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT - 100, 32)
+        background_image('../src/assets/images/backgrounds/bg_intro.png')
+        text_creator('Copyright - 2022', 'slateblue4', 20, SCREEN_HEIGHT - 20, )
+        text_creator('By Abaddon', 'slateblue4', SCREEN_WIDTH - 130, SCREEN_HEIGHT - 20, )
+        text_creator('Space - start game', 'whitesmoke', SCREEN_WIDTH // 2 - 90, SCREEN_HEIGHT // 2 + 80, 40, None,
+                     None, True)
+        text_creator('Return -  Menu', 'whitesmoke', SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 120, 38, None, None, True)
 
     def event(self):
         keys = pygame.key.get_pressed()
@@ -69,6 +70,8 @@ class LevelStatistic(Sound):
         self.level = level
         self.area = area
         self.amulets_counter = amulets_counter
+        if self.player_data.energy_power == 0:
+            text_creator('Press Space to continue...', 'antiquewhite', SCREEN_WIDTH - 230, SCREEN_HEIGHT - 16, 24)
 
     def info_statistic(self):
         if not self.player_data.is_player_kill_boss and not self.player_data.is_bonus_level:
@@ -91,6 +94,7 @@ class LevelStatistic(Sound):
             image = pygame.image.load(f'../src/assets/images/items/bonus/statuette_medium.png')
             SCREEN.blit(image, [580, 360])
         elif self.player_data.is_bonus_level:  # BONUS Label info
+            self.player_data.energy_power = 0
             # bonus point
             text_creator("***BONUS STAGE*** ", 'red', 200, 230, 55, None, None, True)
             # coin
@@ -121,15 +125,14 @@ class LevelStatistic(Sound):
             text_creator('50 000', 'teal', 520, 340, 40)
             image = pygame.image.load('../src/assets/images/title_icon/baby_hat.png').convert()
             SCREEN.blit(image, (384, 410))
-            text_creator(f'{self.player_data.life} x 10000  =  {self.player_data.life * 10_000}', 'yellow', 290, 465,
-                         36)
+            text_creator(f'{self.player_data.life} x 10000  = {self.player_data.life * 10_000}', 'yellow', 290, 465, 36)
 
     def update(self):
         self.info_statistic()
 
     @staticmethod
     def event(self):
-        if key_pressed(pygame.K_SPACE):
+        if key_pressed(pygame.K_SPACE) and self.player_data.energy_power == 0:
             Sound.stop_all_sounds()
             # if not self.player_data.is_player_kill_boss:
             if self.area % 5 == 0:
