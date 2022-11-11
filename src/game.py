@@ -842,11 +842,11 @@ class GameState(Sound):
         # -------------------------------------- go to state
         PlayerDead(self.player_data, self.area, self.level)
         PlayerDead.event(self)
-        print(4)
+        # print(4)
 
     def funeral_agency(self):
         background_image('../src/assets/images/backgrounds/bg_funeral_agency.png', 0, 0)
-
+        text_creator('Press RETURN to continue...', 'cornsilk', S_W - 250, S_H - 20)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
