@@ -176,6 +176,12 @@ class Sound:
         self.play_sound('../src/assets/sounds/trap/snapping_trap.wav', 1)
 
     # -------------------------------------------   enemy sound
+    def crocodile_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/crocodile.wav', 1)
+
+    def crocodile_eat_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/crocodile_eat.mp3', 1)
+
     def vamp_sound(self):
         self.play_sound('../src/assets/sounds/enemies/vamp.wav', 1)
 

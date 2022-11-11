@@ -73,10 +73,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 1
-        self.level = 4
+        self.area = 2
+        self.level = 2
         self.boss_number = 1
-        self.level_reader_row = 31 # 1
+        self.level_reader_row = 32 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -237,6 +237,9 @@ class GameState(Sound):
             if enemy_name == 'enemy_medusa':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/medusa/4.png',
                              S_W, S_H - G_H_S - 28, 0, True, False, None, None, 4)
+            if enemy_name == 'enemy_crocodile':
+                return Enemy(Bullet, asg, background, '../src/assets/images/enemies/crocodile/1.png',
+                             S_W, S_H - G_H_S - 25, 0, True,)
             if enemy_name == 'enemy_medusa_attack':
                 return Enemy(Bullet, asg, background, '../src/assets/images/enemies/medusa_attack/6.png', S_W,
                              S_H - G_H_S - 28, 0, True, True, '../src/assets/images/bullets/medusa_spit.png', 2, 0)
@@ -441,7 +444,7 @@ class GameState(Sound):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 # add rock ground
                 ground_group.empty()
-                ground_rock = Ground('../src/assets/images/ground/dock_sea.png', False, 0, S_H - 75)
+                ground_rock = Ground('../src/assets/images/ground/dock_middle.png', False, 0, S_H - 75)
                 ground_group.add(ground_rock)
                 self.is_start_area = True
             self.player_data.jump_limit = S_H - 50  # prevent jump from water
@@ -934,7 +937,6 @@ class GameState(Sound):
                     # print({key: {k, v}})
                     self.current_list.append([key, k, v, self.gen_row_spacer, self.gen_col_spacer])
                     self.gen_col_spacer += 40
-
             self.is_visited = True
 
         for key, k, v, row, col in self.current_list:

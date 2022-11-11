@@ -208,6 +208,7 @@ class Player(pygame.sprite.Sprite, Sound):
             self.all_sprite_groups_dict['bullets'].add(bullet)
 
     def poisoned_player_energy_decrease(self):
+        # if work have bug - weapon delay
         time_now = pygame.time.get_ticks()
         if self.is_player_poisoned and time_now - self.last_time > self.COOLDOWN:
             self.energy_power -= 1
@@ -293,11 +294,13 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name in ['monkey', 'ghost', 'snowmen', 'emu', 'dragon_big', 'stone_ball']:
                         self.energy_power -= 50
                         sprite.kill()
-                    if name in ['boar', 'monster', 'camel', 'tiger', 'dragon_big_attack', 'knight_sword',
+                    if name in ['boar', 'monster', 'crocodile', 'camel', 'tiger', 'dragon_big_attack', 'knight_sword',
                                 'knight_pike', 'knight_axe']:
                         self.energy_power -= 100
-                        # todo: player kill
                         self.is_player_dead = True
+                        if name == 'crocodile':
+                            Sound.crocodile_eat_sound(self)
+                            self.kill()
                 case 'mushroom':
                     Sound.add_point(self)
                     if name == 'grey':
@@ -309,6 +312,7 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name == 'purple':
                         Sound.grab_poison_mushroom(self)
                         self.is_player_poisoned = True
+                        self.energy_power -= 25
                     sprite.kill()
                     Sound.grab_item(self)
                 case 'crystal' | 'diamond' | 'gnome' | 'star' | 'plant' | 'shield':
@@ -425,7 +429,7 @@ class Player(pygame.sprite.Sprite, Sound):
                         Sound.bullet_kill_enemy(self)
                         item.kill()
                         bullet.kill()
-                    if item.item_name in ['boar', 'monkey', 'monster', 'camel', 'tiger', 'dragon_big',
+                    if item.item_name in ['boar', 'monkey', 'crocodile', 'camel', 'tiger', 'dragon_big',
                                           'dragon_big_attack']:
                         bullet.kill()
                         if bullet.item_name == 'spear':
@@ -504,7 +508,7 @@ class Player(pygame.sprite.Sprite, Sound):
             Sound.player_dead(self)
             # self.kill()
             self.is_player_dead = True
-            print(1.1)
+            # print(1.1)
             return True
 
     def check_is_player_fail_out_of_screen(self):
@@ -559,7 +563,7 @@ class Player(pygame.sprite.Sprite, Sound):
         self.check_item_collide()
         self.check_bullets_collide()
         self.check_enemy_bullets_collide()
-        self.poisoned_player_energy_decrease()
+        # self.poisoned_player_energy_decrease()
         self.check_platform_collide()
         self.check_player_and_enemy_bullets_collide()
         if self.is_bonus_level:
