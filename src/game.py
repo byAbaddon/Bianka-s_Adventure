@@ -27,6 +27,7 @@ ground_group = pygame.sprite.Group()
 bullets_group = pygame.sprite.Group()
 item_group = pygame.sprite.Group()
 bonus_group = pygame.sprite.GroupSingle()
+gen_statistics_group = pygame.sprite.GroupSingle()
 
 # add to all_sprite_groups   /items group included enemy/
 all_spite_groups_dict = {'player': player_group, 'knight': knight_group, 'bullets': bullets_group,
@@ -60,6 +61,11 @@ class GameState(Sound):
     count_visit = 0
     amulets_counter = 0
     input_text = ''
+    gen_col_spacer = 0
+    gen_row_spacer = 0
+    is_visited = False
+    current_list = []
+    col_counter = 0
 
     def __init__(self, player_data, knight_data, background_data):
         self.state = 'intro'
@@ -68,9 +74,9 @@ class GameState(Sound):
         self.background = None
         self.is_bg_created = False
         self.area = 1
-        self.level = 2
+        self.level = 4
         self.boss_number = 1
-        self.level_reader_row = 1 # 1
+        self.level_reader_row = 31 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -87,6 +93,14 @@ class GameState(Sound):
         if key_pressed(pygame.K_p):
             Sound.btn_click(self)
             self.state = 'pause'
+        # ------------------------- SHOW STATISTICS REAL TIME
+        if key_pressed(pygame.K_s):
+            Sound.btn_click(self)
+            self.state = 'general_statistics'
+        # ------------------------- SHOW CREDITS
+        if key_pressed(pygame.K_c):
+            Sound.btn_click(self)
+            self.state = 'credits'
 
         # ------------------top display frame
         table.update()
@@ -427,7 +441,7 @@ class GameState(Sound):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 # add rock ground
                 ground_group.empty()
-                ground_rock = Ground('../src/assets/images/ground/dock_middle.png', False, 0, S_H - 75)
+                ground_rock = Ground('../src/assets/images/ground/dock_sea.png', False, 0, S_H - 75)
                 ground_group.add(ground_rock)
                 self.is_start_area = True
             self.player_data.jump_limit = S_H - 50  # prevent jump from water
@@ -905,18 +919,78 @@ class GameState(Sound):
             self.state = 'start_game'
             bonus_group.empty()
 
-    def state_general_statistics(self):
+    def general_statistics(self):
         background_image('../src/assets/images/backgrounds/bg_EMPTY.png')
-        text_creator('GENERAL STATISTICS', 'chocolate1', S_W // 2 - 100, 50, 40, None, None, True)
+        text_creator('GENERAL STATISTICS', 'slateblue3', S_W // 2 - 160, 40, 40, None, None, True)
 
-        for k, v in self.player_data.statistics.items():
-            pass
+        if not self.is_visited:
+            for key, val in self.player_data.statistics.items():
+                # print(key)
+                for k, v in val.items():
+                    self.col_counter += 1
+                    if self.col_counter % 13 == 0:
+                        self.gen_row_spacer += 150
+                        self.gen_col_spacer = 0
+                    # print({key: {k, v}})
+                    self.current_list.append([key, k, v, self.gen_row_spacer, self.gen_col_spacer])
+                    self.gen_col_spacer += 40
+
+            self.is_visited = True
+
+        for key, k, v, row, col in self.current_list:
+            if key != 'enemies':
+                img = pygame.image.load(f'../src/assets/images/items/{key}/{k}.png')
+            else:
+                img = pygame.image.load(f'../src/assets/images/{key}/{k}/1.png')
+
+            scaled_img = pygame.transform.scale(img, (25, 25))
+            SCREEN.blit(scaled_img, (10 + row, 90 + col))
+            text_creator(f' = {v}', 'sienna1', 40 + row, 105 + col, 30)
+
+        if key_pressed(pygame.K_RETURN):
+            self.current_list = []
+            self.gen_col_spacer = 0
+            self.gen_row_spacer = 0
+            self.col_counter = 0
+            self.is_visited = False
+            Sound.btn_click(self)
+            self.state = 'start_game'
+
+    def credits(self):
+        background_image('../src/assets/images/backgrounds/bg_EMPTY.png')
+        text_creator('CREDITS', 'slateblue3', S_W // 2 - 80, 40, 40, None, None, True)
+        text_creator('version: 1.0.0-beta', 'cornsilk', S_W - 130, 20, 20)
+
+        text_creator('Free images:', 'brown', 110, 100, 35)
+        text_creator('https://www.pngwing.com', 'cadetblue4', 130, 125, 30)
+        text_creator('https://www.freepik.com', 'cadetblue4', 130, 145, 30)
+        text_creator('https://craftpix.net', 'cadetblue4', 130, 165, 30)
+
+        text_creator('Free sounds:', 'brown', 110, 200, 35)
+        text_creator('https://freesound.org/', 'cadetblue4', 130, 225, 30)
+        text_creator('https://pixabay.com/', 'cadetblue4', 130, 245, 30)
+        text_creator('https://orangefreesounds.com', 'cadetblue4', 130, 265, 30)
+
+        text_creator('Platform 2D game:', 'brown', 110, S_H // 2, 34)
+        text_creator('https://www.pygame.org', 'cadetblue4', 130, S_H // 2 + 24, 30)
+
+        SCREEN.blit(pygame.image.load('../src/assets/images/title_icon/pygame_logo.png'), (S_W // 4 - 50, S_H - 266))
+
+        text_creator('Developer:', 'brown', 30, S_H - 55, 30)
+        text_creator('by Abaddon', 'cadetblue4', 50, S_H - 35, 30)
+
+        text_creator('Bug rapports:', 'brown', S_W // 2 - 90, S_H - 55, 30)
+        text_creator('subtotal@abv.bg', 'cadetblue4', S_W // 2 - 70, S_H - 35, 30)
+
+        text_creator('Copyright:', 'brown', S_W - 140, S_H - 55, 30)
+        text_creator('© 2023', 'cadetblue4', S_W - 120, S_H - 35, 30)
+
+        text_creator('Press RETURN to continue...', 'cornsilk', S_W - 240, S_H - 10, 24)
 
         if key_pressed(pygame.K_RETURN):
             Sound.btn_click(self)
             self.state = 'start_game'
-
-
+            bonus_group.empty()
 
     # ========================================= state manager
     def state_manager(self):
@@ -945,6 +1019,10 @@ class GameState(Sound):
             self.epilogue()
         if self.state == 'write_score':
             self.write_score()
+        if self.state == 'general_statistics':
+            self.general_statistics()
+        if self.state == 'credits':
+            self.credits()
 
 
 #  ================================ create new GameState

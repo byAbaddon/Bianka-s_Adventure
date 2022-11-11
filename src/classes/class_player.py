@@ -360,8 +360,8 @@ class Player(pygame.sprite.Sprite, Sound):
                         Sound.player_get_weapon(self)
                         sprite.kill()
             # -------------------------------------------------create statistics
-            ignore_group_list = ['decor', 'signs', 'stones', 'cactus', 'head', 'logs', 'cloud', 'platforms', 'trap',
-                                 'enemies']
+            ignore_group_list = [ 'ground',  'decor', 'signs', 'stones', 'cactus', 'head', 'logs', 'cloud', 'platforms',
+                                  'trap', 'enemies']
             if sprite.group_name not in ignore_group_list:
                 if sprite.group_name not in self.statistics:  # add item to statistics dict if not have key
                     self.statistics[sprite.group_name] = {name: 1}
@@ -456,7 +456,9 @@ class Player(pygame.sprite.Sprite, Sound):
                                 else:
                                     Sound.bullet_player_hit_knight_armor(self)  # body soot
 
-                    ignore_group_list = ['decor', 'signs', 'stones', 'head', 'logs', 'cloud', 'platforms', 'bonus']
+                    ignore_group_list = ['stone_ball', 'decor', 'signs', 'stones', 'head', 'logs', 'cloud', 'platforms',
+                                         'bonus']
+
                     if item.group_name not in ignore_group_list:
                         if item.group_name not in self.statistics:  # add item to statistics dict if not have key
                             self.statistics[item.group_name] = {item.item_name: 1}

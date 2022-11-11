@@ -1,5 +1,5 @@
 #AREA - 1  #Level - 1   READ FROM ROW 1 ,2, 3, 4  #AREA - 2 #Lefel - 1.....
-{0: 'signs/start',20: 'mushroom/grey',  40: 'mushroom/grey',  60: 'stones/small' ,  80: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 200: 'mushroom/grey', 230: 'stones/medium', 260: 'stones/medium', 290: 'mushroom/grey',320: 'stones/small', 350: 'stones/medium', 372: 'mushroom/red',  380: 'stones/big', 430: 'stones/small', 460: 'mushroom/grey', 500: 'signs/distance', 560: 'mushroom/grey', 570: 'mushroom/grey', 600: 'stones/medium', 640: 'mushroom/grey', 700 : 'stones/medium', 740  : 'mushroom/purple', 800: 'stones/medium', 840: 'mushroom/grey', 860: 'mushroom/grey', 870: 'mushroom/grey', 900: 'stones/medium', 940: 'bonus/statuette',  960: 'stones/big', 980: 'mushroom/red', 990: 'bonus/coin', 1020: 'signs/goal'}
+{0: 'signs/start', 20: 'mushroom/grey',  40: 'mushroom/grey',  60: 'stones/small' ,  80: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 200: 'mushroom/grey', 230: 'stones/medium', 260: 'stones/medium', 290: 'mushroom/grey',320: 'stones/small', 350: 'stones/medium', 372: 'mushroom/red',  380: 'stones/big', 430: 'stones/small', 460: 'mushroom/grey', 500: 'signs/distance', 560: 'mushroom/grey', 570: 'mushroom/grey', 600: 'stones/medium', 640: 'mushroom/grey', 700 : 'stones/medium', 740  : 'mushroom/purple', 800: 'stones/medium', 840: 'mushroom/grey', 860: 'mushroom/grey', 870: 'mushroom/grey', 900: 'stones/medium', 940: 'bonus/statuette',  960: 'stones/big', 980: 'mushroom/red', 990: 'bonus/coin', 1020: 'signs/goal'}
 {0: 'logs/big', 35: 'logs/big', 52: 'star/red', 70: 'logs/big', 110: 'logs/big', 128: 'star/blue', 145: 'logs/medium', 163 : 'star/red', 185: 'logs/big',  220: 'star/red', 220: 'logs/big', 255: 'enemy_medusa', 260: 'logs/small', 290: 'logs/small', 325: 'logs/medium' , 345: 'star/red', 360: 'logs/small', 375: 'bonus/coin', 390: 'logs/small' , 405: 'bonus/coin' , 425: 'logs/medium',  455: 'logs/big', 493: 'ships/airship', 490: 'logs/big',  525: 'logs/small',  560: 'logs/big', 580: 'star/red', 600: 'logs/big', 610: 'enemy_butterfly', 640: 'logs/small' , 665: 'logs/extra_small' ,  695: 'logs/big', 730: 'logs/small', 745: 'star/green', 760: 'logs/medium', 790: 'logs/small', 800: 'enemy_butterfly', 820: 'logs/medium',  835: 'bonus/balloon', 850: 'logs/extra_small', 880: 'logs/big', 890: 'enemy_static_crab', 915: 'logs/big', 934:'star/purple', 955: 'logs/big',  990: 'logs/big', 1030: 'logs/small', 1055: 'ground/dock', 1060: 'signs/goal'}
 {0: 'signs/start', 30: 'stones/small_red', 60: 'stones/medium_red', 100: 'stones/big_red',  110: 'crystal/green', 120: 'enemy_fireball', 130: 'crystal/green', 150: 'stones/medium_red', 160: 'crystal/blue', 180 : 'crystal/blue', 200: 'stones/small_red' , 210 : 'crystal/blue', 240: 'enemy_turtle', 260: 'crystal/red', 280: 'stones/medium_red', 330: 'stones/medium_red', 340: 'enemy_fireball', 350: 'crystal/green',  360: 'crystal/red', 380: 'stones/medium_red', 410: 'stones/big_red',  430: 'crystal/red', 450:  'stones/small_red', 470: 'crystal/purple'  ,500: 'signs/distance',  530: 'stones/small_red', 560: 'stones/medium_red', 580: 'crystal/green', 600: 'enemy_turtle',  620: 'crystal/green',  630: 'crystal/red', 640: 'crystal/blue', 660: 'stones/small_red', 690: 'bonus/coin',  700: 'enemy_dragon', 720: 'crystal/blue',  750: 'stones/small_red', 780: 'stones/small_red', 820: 'crystal/blue',  840: 'crystal/blue', 880: 'stones/medium_red', 900: 'bonus/statuette', 910: 'enemy_vulture', 940: 'stones/medium_red' , 970: 'crystal/purple', 990: 'stones/small_red', 1010: 'crystal/purple', 1060: 'signs/goal'}
 {0: 'signs/start', 20: 'stones/small_ice',  50: 'stones/medium_ice', 70: 'gnome/red', 90: 'stones/big_ice',  110: 'gnome/green',130: 'trap/black', 150: 'gnome/blue', 170: 'enemy_seal', 200: 'stones/medium_ice', 220: 'gnome/red', 230: 'decor/penguin_house', 250: 'gnome/green', 280: 'stones/small_ice', 320: 'enemy_penguin', 340: 'gnome/red', 370: 'stones/big_ice', 400: 'stones/medium_ice' , 420: 'gnome/red', 460: 'trap/black', 480: 'gnome/red', 500: 'signs/distance', 520: 'stones/medium_ice', 570: 'gnome/purple', 590: 'stones/small_ice', 610 : 'bonus/coin', 630: 'stones/small_ice',  660: 'gnome/blue', 690: 'trap/black', 720: 'gnome/red', 750: 'stones/medium_ice', 790: 'enemy_penguin', 820: 'stones/medium_ice', 850: 'gnome/red', 880: 'enemy_seal', 890: 'gnome/red', 930: 'bonus/statuette', 950: 'enemy_snowmen', 990: 'gnome/red', 1010: 'gnome/purple', 1030: 'gnome/green' , 1060: 'signs/goal' }
@@ -45,23 +45,6 @@
 {} # THE BOSS
 &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-
-{0: 'signs/start', 500: 'signs/distance', 1060: 'signs/goal'}
-: 'bonus/coin', : 'bonus/statuette', : 'bonus/balloon',
-+++++++++++++++++++++++++++++++++++++++++++
-attribute for Castle FINAL
-----------------
-: 'diamond/red', : 'diamond/blue', : 'diamond/green', : 'diamond/purple'
-: 'head/k1', : 'head/k2', : 'head/k3', : 'head/k4',
-: 'enemy_ghost', : 'enemy_monster', : 'enemy_cockroach', 'enemy_stone_ball', 'enemy_bat', : 'enemy_bat_attack',
-: 'enemy_knight_sword', : 'enemy_knight_pike', 50: 'enemy_knight_axe'
-: 'platform/screen',  : 'platform/big', : 'platform/medium', : 'platform/small', : 'platform/extra_small' ,: 'platform/hipper_small',
-: 'decor/k1', : 'decor/k2', : 'decor/k3', : 'decor/k4', : 'decor/k5', : 'decor/b1', : 'decor/b2',
-: 'wall_decor/s1', : 'wall_decor/s2', : 'wall_decor/s3', : 'wall_decor/s4', : 'wall_decor/s5',: 'wall_decor/candle',
-: 'enemy_tiger',
--------------------
-
-+++++++++++++++++++++++++++++++++++++++++++
 
 
 
@@ -133,6 +116,16 @@ LEVELS 10 IN THE CASTLE
 {10: 'wall_decor/candle', 40: 'platform/big' , 70: 'platform/medium', 71: 'diamond/blue', 90: 'platform/small',  92: 'wall_decor/candle',  110: 'platform/small', 115: 'enemy_vamp', 140: 'platform/big', 143: 'enemy_knight_sword', 165: 'platform/hipper_small', 166: 'diamond/red', 170: 'wall_decor/candle', 190: 'platform/medium', 193: 'diamond/green', 220: 'platform/medium', 230: 'enemy_bat_attack', 240: 'wall_decor/candle', 250: 'platform/medium',   270: 'platform/extra_small', 271: 'diamond/purple',  285: 'enemy_vamp', 290: 'platform/extra_small', 300: 'enemy_bat', 305: 'bonus/coin', 320: 'platform/medium', 322: 'diamond/blue',  340: 'platform/hipper_small',  360: 'platform/hipper_small', 361: 'bonus/statuette',   376: 'platform/hipper_small',  380: 'enemy_ghost', 410: 'platform/big',  415: 'diamond/blue', 445: 'wall_decor/candle', 440:'platform/small',  442: 'diamond/blue',  460:'platform/small', 462: 'diamond/green',  490:'platform/big', 500: 'wall_decor/s2', 530: 'platform/big', 570: 'platform/big', 575 : 'enemy_knight_sword', 610: 'platform/big', 615: 'diamond/red', 650: 'platform/small', 655: 'wall_decor/candle', 660: 'enemy_bat',  670: 'enemy_bat_attack', 680: 'platform/medium',  710: 'platform/small', 712: 'diamond/red', 720: 'wall_decor/s4', 730: 'platform/small', 740: 'enemy_vamp', 750: 'platform/extra_small', 760: 'enemy_vamp', 770: 'platform/extra_small', 780: 'enemy_bat', 790: 'platform/hipper_small', 800: 'bonus/coin', 810: 'platform/hipper_small', 820: 'bonus/coin', 830: 'platform/hipper_small', 840: 'bonus/coin', 850: 'platform/hipper_small', 855:  'wall_decor/s1', 860: 'enemy_bat_attack', 875: 'platform/hipper_small', 900:'platform/small', 930: 'platform/small',  933: 'diamond/purple',    940: 'wall_decor/candle' , 950: 'platform/big', 980: 'platform/medium', 1010: 'platform/big',  1013: 'diamond/purple', 1050: 'platform/screen',  1060: 'signs/goal' }
 {0: 'diamond/red', 5: 'diamond/blue', 10 : 'diamond/green', 15: 'diamond/purple', 50: 'enemy_tiger',  70: 'diamond/purple',  80: 'enemy_knight_sword',  120: 'diamond/red', 130: 'diamond/blue', 140 : 'diamond/green', 150: 'diamond/purple',  180: 'enemy_knight_pike',  200: 'diamond/red', 210: 'diamond/blue', 220 : 'diamond/green', 230: 'diamond/purple',  260 : 'enemy_knight_axe', 300: 'diamond/red', 310: 'diamond/blue', 320 : 'diamond/green', 330: 'diamond/purple',  370: 'enemy_tiger', 400: 'bonus/coin', 410: 'bonus/coin', 420: 'bonus/coin', 430: 'bonus/coin',  470 : 'enemy_knight_pike', 500: 'diamond/red', 510: 'diamond/blue', 520 : 'diamond/green', 530: 'diamond/purple',  570: 'enemy_tiger', 600: 'bonus/statuette', 640: 'enemy_tiger',  670: 'diamond/red', 680: 'diamond/blue', 690 : 'diamond/green', 700: 'diamond/purple',  710: 'diamond/red', 720: 'diamond/blue', 730 : 'diamond/green', 740: 'diamond/purple',  780: 'enemy_knight_sword',   820: 'bonus/coin' , 830: 'bonus/coin', 840: 'bonus/coin', 870: 'enemy_monster', 880: 'diamond/purple', 900: 'enemy_monster',  920: 'diamond/purple', 940: 'enemy_monster',   960: 'bonus/coin', 990: 'enemy_monster', 1030: 'enemy_tiger' }
 {} # The Boss
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++
+
+{0: 'signs/start', 500: 'signs/distance', 1060: 'signs/goal'}
+: 'bonus/coin', : 'bonus/statuette', : 'bonus/balloon',
+
++++++++++++++++++++++++++++++++++++++++++++
 
 +++++++++++++++++++++++++++++++++++++++++++
 attribute for forest

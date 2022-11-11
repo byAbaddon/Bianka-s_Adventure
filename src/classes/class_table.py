@@ -68,8 +68,6 @@ class Table(Sound):
             self.life_counter = 7
             Sound.add_life(self)
 
-
-
     def draw_lives(self):
         text_creator(f'Lives: {self.lives}', 'white', 58, 68, 29)
         image = pygame.image.load('../src/assets/images/title_icon/baby_hat.png').convert()
