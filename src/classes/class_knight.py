@@ -10,7 +10,7 @@ class Knight(pygame.sprite.Sprite, Sound):
     WALK_SPEED = 3
     JUMP_HEIGHT = -6
     COOLDOWN = 2000  # milliseconds
-    COOLDOWN_MAGIC = 9000 # milliseconds
+    COOLDOWN_MAGIC = 9000  # milliseconds
     last_time = pygame.time.get_ticks()
     last_time_magic = pygame.time.get_ticks()
     time_counter = 0

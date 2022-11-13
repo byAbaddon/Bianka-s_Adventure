@@ -78,10 +78,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 6
-        self.level = 2
+        self.area = 11
+        self.level = 4
         self.boss_number = 1
-        self.level_reader_row = 16 # 1
+        self.level_reader_row = 43  # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -139,7 +139,7 @@ class GameState(Sound):
         # player.is_boss_level = False  # set player walking border to 1/3 S_W
 
         # ++++++++++++++++++++++++++++++ developer utils +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
+        # text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
         # text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
         # text_creator(f'Pos: x= {int(player.pos.x)} y= {int(player.pos.y)}', 'white', 86, 33, 22)
         # text_creator(f'Vel: x= {player.velocity.x:.2f} y= {player.velocity.y:.2f} ', 'white', 90, 50, 22)
@@ -484,7 +484,7 @@ class GameState(Sound):
                     fall_effect_group.add(FallEffect('snow'))
                 self.is_start_area = True
 
-        # ==========================================    *** BONUS 1 -  Night Sky***
+        # ==========================================    *** BONUS 1 -  Night Sky*** Level 5
         if self.area == 5:
             if not self.is_start_area:
                 self.player_data.is_drive_jeep = True
@@ -539,7 +539,7 @@ class GameState(Sound):
                 Sound.statistic_music(self)
                 self.state = 'level_statistic'
 
-        # ========================================== START GAME  with Area 1; Level 5 / Wood Two - Dark
+        # ========================================== START GAME  with Area 1; Level 6 / Wood Two - Dark
         if self.area == 6:
             if not self.is_start_area:
                 # set music
@@ -551,7 +551,7 @@ class GameState(Sound):
                     fall_effect_group.add(FallEffect('rein', 'aqua'))
                 self.is_start_area = True
 
-        # ========================================== START GAME  with Area 1; Level 6 / Sea Two - Clouds
+        # ========================================== START GAME  with Area 1; Level 7 / Sea Two - Clouds
         if self.area == 7:
             if not self.is_start_area:
                 # set music
@@ -571,7 +571,7 @@ class GameState(Sound):
             # prevent squat player in could level
             self.player_data.is_water_level = True
 
-        # ========================================== START GAME  with Area 1; Level 7 / Desert
+        # ========================================== START GAME  with Area 1; Level 8 / Desert
         if self.area == 8:
             if not self.is_start_area:
                 # set music
@@ -583,7 +583,7 @@ class GameState(Sound):
                 ground_group.add(ground)
                 self.is_start_area = True
 
-        # ========================================== START GAME  with Area 1; Level 8 /Front of the castle
+        # ========================================== START GAME  with Area 1; Level 9 /Front of the castle
         if self.area == 9:
             if not self.is_start_area:
                 # set music
@@ -593,7 +593,7 @@ class GameState(Sound):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 self.is_start_area = True
 
-        # ==========================================    *** BONUS 2 - Buy Yacht***
+        # ==========================================    *** BONUS 2 - Buy Yacht***  Level 10
         if self.area == 10:
             if not self.is_start_area:
                 self.player_data.is_drive_jeep = False
@@ -640,7 +640,7 @@ class GameState(Sound):
                 Sound.statistic_music(self)
                 self.state = 'level_statistic'
 
-        # ========================================== START GAME  with Area 10;Level 9 / Castle FINAL /***BOSS***
+        # ========================================== START GAME  with Area 10;Level 11 / Castle FINAL /***BOSS***
         if self.area == 11:
             if self.is_start_area:
                 Sound.stop_all_sounds()
@@ -942,13 +942,15 @@ class GameState(Sound):
         text_creator('GENERAL STATISTICS', 'slateblue3', S_W // 2 - 160, 40, 40, None, None, True)
         text_creator('Press RETURN to continue...', 'cornsilk', S_W - 250, S_H - 14)
         if not self.is_visited:
+
             for key, val in self.player_data.statistics.items():
                 # print(key)
                 for k, v in val.items():
                     self.col_counter += 1
                     if self.col_counter % 12 == 0:
-                        self.gen_row_spacer += 120
+                        self.gen_row_spacer += 100
                         self.gen_col_spacer = 0
+
                     # print({key: {k, v}})
                     self.current_list.append([key, k, v, self.gen_row_spacer, self.gen_col_spacer])
                     self.gen_col_spacer += 40
@@ -971,14 +973,14 @@ class GameState(Sound):
             self.current_list = []
             self.gen_col_spacer = 0
             self.gen_row_spacer = 0
-            self.col_counter = 0
+            self.col_counter = -1
             self.is_visited = False
             Sound.btn_click(self)
             self.state = 'start_game'
 
     def credits(self):
         background_image('../src/assets/images/backgrounds/bg_EMPTY.png')
-        text_creator('CREDITS', 'slateblue3', S_W // 2 - 80, 40, 40, None, None, True)
+        text_creator('CREDITS', 'slateblue3', S_W // 2 - 60, 40, 40, None, None, True)
         text_creator('version: 1.0.0-beta', 'cornsilk', S_W - 130, 20, 20)
 
         text_creator('Free images:', 'brown', 110, 100, 35)

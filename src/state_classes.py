@@ -124,6 +124,7 @@ class LevelStatistic(Sound):
             scaled_amulet = scale_image(amulet_img, 100, 100)
             SCREEN.blit(scaled_amulet, [SCREEN_WIDTH // 2 - 50, 270])
         elif self.player_data.is_player_kill_boss:  # THE BOSS WAS KILLED AND PLAYER WIN GAME
+            self.player_data.energy_power = 0
             text_creator("***BIANKA YOU WIN*** ", 'red', 200, 230, 55, None, None, True)
             image = pygame.image.load(f'../src/assets/images/frames/down_left.png')
             SCREEN.blit(image, [300, 300])
@@ -200,6 +201,7 @@ class Epilogue(Sound):
         self.state = ''
         self.player_data = player_data
         self.ranking_list = ranking_list
+        text_creator('Press Space to continue...', 'cornsilk', SCREEN_WIDTH - 240, SCREEN_HEIGHT - 12)
 
     @staticmethod
     def event(self):

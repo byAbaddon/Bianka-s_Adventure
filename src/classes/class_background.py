@@ -53,7 +53,8 @@ class Background:
                 self.distance_mt += self.speed / 10
 
     def draw_label(self):
-        text_creator(f'BG_distance: {int(self.distance_mt)}', 'white', 290, 5)
+        pass
+        # text_creator(f'BG_distance: {int(self.distance_mt)}', 'white', 290, 5)
         # text_creator(f'BG_speed: {self.speed:.2f}', 'white', 290, 20)
 
     def update(self):

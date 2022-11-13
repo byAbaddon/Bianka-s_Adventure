@@ -298,7 +298,7 @@ class Player(pygame.sprite.Sprite, Sound):
                                 'knight_pike', 'knight_axe']:
                         self.energy_power -= 100
                         self.is_player_dead = True
-                        if name == 'crocodile' or name == 'camel':
+                        if name == 'crocodile' or 'camel' or 'boar' or 'tiger' or 'dragon_big_attack':
                             Sound.crocodile_eat_sound(self)
                             self.kill()
                 case 'mushroom':
@@ -469,13 +469,19 @@ class Player(pygame.sprite.Sprite, Sound):
                                         Sound.knight_dead_sound(self)
                                         item.kill()
                                         self.hit_enemy_counter = 0
+                                        if item.group_name not in self.statistics:  # add item to dict if not have key
+                                            self.statistics[item.group_name] = {item.item_name: 1}
+                                        else:
+                                            if item.item_name not in self.statistics[item.group_name]:
+                                                self.statistics[item.group_name][item.item_name] = 0
+                                            self.statistics[item.group_name][item.item_name] += 1
                                     bullet.kill()
                                 else:
                                     Sound.bullet_player_hit_knight_armor(self)  # body soot
 
                     ignore_group_list = ['stone_ball', 'fireball', 'decor', 'signs', 'stones', 'head', 'logs', 'cloud',
                                          'platform', 'bonus']
-                    ignore_items_list = ['stone_ball', 'fireball']
+                    ignore_items_list = ['stone_ball', 'fireball', 'knight_sword', 'knight_pike', 'knight_axe']
                     if item.group_name not in ignore_group_list and item.item_name not in ignore_items_list:
                         if item.group_name not in self.statistics:  # add item to statistics dict if not have key
                             self.statistics[item.group_name] = {item.item_name: 1}
@@ -483,7 +489,7 @@ class Player(pygame.sprite.Sprite, Sound):
                             if item.item_name not in self.statistics[item.group_name]:
                                 self.statistics[item.group_name][item.item_name] = 0
                             self.statistics[item.group_name][item.item_name] += 1
-                    print(self.statistics)
+                    # print(self.statistics)
                     # print(item.item_name, item.group_name)
 
     def check_enemy_bullets_collide(self):
