@@ -456,6 +456,12 @@ class Player(pygame.sprite.Sprite, Sound):
                             self.points += 500
                             bullet.kill()
                             item.kill()
+                            if item.group_name not in self.statistics:  # add item to statistics dict if not have key
+                                self.statistics[item.group_name] = {item.item_name: 1}
+                            else:
+                                if item.item_name not in self.statistics[item.group_name]:
+                                    self.statistics[item.group_name][item.item_name] = 0
+                                self.statistics[item.group_name][item.item_name] += 1
                         Sound.bullet_kill_boar(self)
                     if item.item_name == 'knight_sword' or 'knight_pike' or 'knight_axe':
                         sprite = pygame.sprite.spritecollide(item, bullets_group, True, pygame.sprite.collide_mask)
@@ -481,7 +487,8 @@ class Player(pygame.sprite.Sprite, Sound):
 
                     ignore_group_list = ['stone_ball', 'fireball', 'decor', 'signs', 'stones', 'head', 'logs', 'cloud',
                                          'platform', 'bonus']
-                    ignore_items_list = ['stone_ball', 'fireball', 'knight_sword', 'knight_pike', 'knight_axe']
+                    ignore_items_list = ['boar', 'monkey', 'crocodile', 'camel', 'tiger', 'dragon_big', 'stone_ball',
+                                          'fireball', 'knight_sword', 'knight_pike', 'knight_axe']
                     if item.group_name not in ignore_group_list and item.item_name not in ignore_items_list:
                         if item.group_name not in self.statistics:  # add item to statistics dict if not have key
                             self.statistics[item.group_name] = {item.item_name: 1}
