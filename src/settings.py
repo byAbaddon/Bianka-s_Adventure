@@ -10,7 +10,7 @@ pygame.init()
 # pygame.mixer.init()
 
 # hide mouse from game window
-# pygame.mouse.set_visible(False)
+pygame.mouse.set_visible(False)
 # ========================================================================== display size
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))

@@ -68,7 +68,7 @@ class Enemy(Player, Sound):
                                   'penguin', 'seal', 'snowmen', 'eagle', 'eagle_attack', 'bird', 'camel', 'emu', 'elf',
                                   'medusa', 'medusa_attack', 'tiger', 'stone_ball', 'dragon_big', 'dragon_big_attack',
                                   'lizard', 'bat', 'bat_attack', 'vamp', 'knight_sword', 'knight_pike', 'knight_axe',
-                                  'crocodile']:
+                                  'crocodile', 'static_crab']:
                 self.noise = False
                 return eval(f'Sound.{self.item_name}_sound(self)')
 

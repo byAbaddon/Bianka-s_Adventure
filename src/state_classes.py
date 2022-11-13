@@ -77,22 +77,33 @@ class LevelStatistic(Sound):
         if not self.player_data.is_player_kill_boss and not self.player_data.is_bonus_level:
             text_creator("CONGRATULATIONS", 'red', 200, 230, 55, None, None, True)
             # bonus point
-            text_creator(f'Bonus Points', 'yellow', 336, 320, 30)
-            text_creator(f'{self.bonus_pts}', 'yellow', 372, 350, 36)
-            image = pygame.image.load(f'../src/assets/images/frames/down_left.png')
-            SCREEN.blit(image, [300, 300])
-            image = pygame.image.load(f'../src/assets/images/frames/down_right.png')
-            SCREEN.blit(image, [400, 300])
-            # coin
-            image = pygame.image.load(f'../src/assets/images/items/bonus/coin_medium.png')
-            SCREEN.blit(image, [150, 400])
-            text_creator(f'x {self.player_data.bonus_coins} = {self.player_data.bonus_coins * 1000}', 'yellow', 220,
-                         430, 30)
-            # idol
-            text_creator(f'{self.player_data.bonus_statuette * 3000} = {self.player_data.bonus_statuette} x', 'yellow',
-                         480, 430, 30)
-            image = pygame.image.load(f'../src/assets/images/items/bonus/statuette_medium.png')
-            SCREEN.blit(image, [580, 360])
+            if self.bonus_pts >= 3000:
+                # -------------------------------------------- half body
+                # text_creator("5000", 'yellow', 375, 270, 35)
+                # image = pygame.image.load('../src/assets/images/items/bonus/4.png')
+                # SCREEN.blit(image, [290, 305])
+                # --------------------------------------------- full body
+                text_creator("1 x ", 'yellow', 250, 400, 40)
+                image = pygame.image.load('../src/assets/images/items/bonus/2.png')
+                SCREEN.blit(image, [340, 280])
+                text_creator("5000", 'yellow', 500, 400, 40)
+            else:
+                text_creator(f'Bonus Points', 'yellow', 336, 320, 30)
+                text_creator(f'{self.bonus_pts}', 'yellow', 372, 350, 36)
+                image = pygame.image.load(f'../src/assets/images/frames/down_left.png')
+                SCREEN.blit(image, [300, 300])
+                image = pygame.image.load(f'../src/assets/images/frames/down_right.png')
+                SCREEN.blit(image, [400, 300])
+                # coin
+                image = pygame.image.load('../src/assets/images/items/bonus/coin_medium.png')
+                SCREEN.blit(image, [150, 400])
+                text_creator(f'x {self.player_data.bonus_coins} = {self.player_data.bonus_coins * 1000}', 'yellow', 220,
+                             430, 30)
+                # idol
+                text_creator(f'{self.player_data.bonus_statuette * 3000} = {self.player_data.bonus_statuette} x', 'yellow',
+                             480, 430, 30)
+                image = pygame.image.load(f'../src/assets/images/items/bonus/statuette_medium.png')
+                SCREEN.blit(image, [580, 360])
         elif self.player_data.is_bonus_level:  # BONUS Label info
             self.player_data.energy_power = 0
             # bonus point

@@ -142,6 +142,12 @@ class Sound:
     def sign_finish(self):
         self.play_sound('../src/assets/sounds/sign/finish.wav')
 
+    def sign_perfect(self):
+        self.play_sound('../src/assets/sounds/sign/perfect_level.wav', 1)
+
+    def voice_perfect(self):
+        self.play_sound('../src/assets/sounds/sign/perfect_voice.mp3', 1)
+
     def grab_item(self):
         self.play_sound('../src/assets/sounds/player/grab.wav')
 
@@ -258,6 +264,9 @@ class Sound:
         self.play_sound('../src/assets/sounds/enemies/bee/bee.wav', 1, 2)
 
     def crab_sound(self):
+        self.play_sound('../src/assets/sounds/enemies/crab/crab.wav', 0.2, 2)
+
+    def static_crab_sound(self):
         self.play_sound('../src/assets/sounds/enemies/crab/crab.wav', 0.2, 2)
 
     def medusa_sound(self):

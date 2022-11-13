@@ -294,11 +294,11 @@ class Player(pygame.sprite.Sprite, Sound):
                     if name in ['monkey', 'ghost', 'snowmen', 'emu', 'dragon_big', 'stone_ball']:
                         self.energy_power -= 50
                         sprite.kill()
-                    if name in ['boar', 'monster', 'crocodile', 'camel', 'tiger', 'dragon_big_attack', 'knight_sword',
+                    if name in ['boar', 'crocodile', 'camel', 'tiger', 'dragon_big_attack', 'knight_sword',
                                 'knight_pike', 'knight_axe']:
                         self.energy_power -= 100
                         self.is_player_dead = True
-                        if name == 'crocodile':
+                        if name == 'crocodile' or name == 'camel':
                             Sound.crocodile_eat_sound(self)
                             self.kill()
                 case 'mushroom':
@@ -364,8 +364,8 @@ class Player(pygame.sprite.Sprite, Sound):
                         Sound.player_get_weapon(self)
                         sprite.kill()
             # -------------------------------------------------create statistics
-            ignore_group_list = [ 'ground',  'decor', 'signs', 'stones', 'cactus', 'head', 'logs', 'cloud', 'platforms',
-                                  'trap', 'enemies']
+            ignore_group_list = ['ground',  'decor', 'signs', 'stones', 'cactus', 'head', 'logs', 'cloud', 'platform',
+                                 'trap', 'enemies']
             if sprite.group_name not in ignore_group_list:
                 if sprite.group_name not in self.statistics:  # add item to statistics dict if not have key
                     self.statistics[sprite.group_name] = {name: 1}
@@ -392,14 +392,27 @@ class Player(pygame.sprite.Sprite, Sound):
                 case 'logs' | 'cloud':
                     Sound.bullet_hit(self)
                     bullet.kill()
-                case 'mushroom' | 'crystal' | 'diamond' | 'gnome' | 'star' | 'cactus' | 'plant' | 'shield':
+                case 'mushroom' | 'crystal' | 'diamond' | 'gnome' | 'star' | 'plant' | 'shield':
                     Sound.bullet_hit(self)
                     bullet.kill()
                     item.kill()
                 case 'stones' | 'head':
                     Sound.bullet_ricochet(self)
                     bullet.kill()
+                case 'cactus':
+                    if item.group_name not in self.statistics:  # add item to statistics dict if not have key
+                        self.statistics[item.group_name] = {item.item_name: 1}
+                    else:
+                        if item.item_name not in self.statistics[item.group_name]:
+                            self.statistics[item.group_name][item.item_name] = 0
+                        self.statistics[item.group_name][item.item_name] += 1
+                    self.points += 100
+                    bullet.kill()
+                    item.kill()
                 case 'trap':
+                    if item.group_name not in self.statistics:
+                        self.statistics[item.group_name] = {item.item_name: 1}
+                    self.statistics[item.group_name][item.item_name] += 1
                     Sound.snapping_trap(self)
                     self.points += 100
                     bullet.kill()
@@ -460,10 +473,10 @@ class Player(pygame.sprite.Sprite, Sound):
                                 else:
                                     Sound.bullet_player_hit_knight_armor(self)  # body soot
 
-                    ignore_group_list = ['stone_ball', 'decor', 'signs', 'stones', 'head', 'logs', 'cloud', 'platforms',
-                                         'bonus']
-
-                    if item.group_name not in ignore_group_list:
+                    ignore_group_list = ['stone_ball', 'fireball', 'decor', 'signs', 'stones', 'head', 'logs', 'cloud',
+                                         'platform', 'bonus']
+                    ignore_items_list = ['stone_ball', 'fireball']
+                    if item.group_name not in ignore_group_list and item.item_name not in ignore_items_list:
                         if item.group_name not in self.statistics:  # add item to statistics dict if not have key
                             self.statistics[item.group_name] = {item.item_name: 1}
                         else:

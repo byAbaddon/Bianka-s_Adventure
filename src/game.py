@@ -14,6 +14,7 @@ from classes.class_enemy import Enemy
 from classes.class_cloud import Cloud
 from classes.class_log import Log
 from classes.class_bonus import Bonus
+from classes.class_fall_effect import FallEffect
 from src.score.crud import ranking_manipulator, post
 
 # ================================================================= TEST imported classes
@@ -28,10 +29,13 @@ bullets_group = pygame.sprite.Group()
 item_group = pygame.sprite.Group()
 bonus_group = pygame.sprite.GroupSingle()
 gen_statistics_group = pygame.sprite.GroupSingle()
+fall_effect_group = pygame.sprite.GroupSingle()
+
 
 # add to all_sprite_groups   /items group included enemy/
 all_spite_groups_dict = {'player': player_group, 'knight': knight_group, 'bullets': bullets_group,
-                         'ground': ground_group, 'items': item_group, 'bonus': bonus_group}
+                         'ground': ground_group, 'items': item_group, 'bonus': bonus_group,
+                         'fall_effect': fall_effect_group}
 
 # ======================================================================= initialize  Classes
 
@@ -39,6 +43,7 @@ player = Player(Bullet, all_spite_groups_dict)
 knight = Knight(Bullet, all_spite_groups_dict, player)
 ground = Ground()
 background = Background()
+
 
 # add to group
 player_group.add(player)
@@ -73,10 +78,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 2
+        self.area = 6
         self.level = 2
         self.boss_number = 1
-        self.level_reader_row = 32 # 1
+        self.level_reader_row = 16 # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -89,6 +94,7 @@ class GameState(Sound):
         self.ranking_list = ranking_manipulator()
 
     def start_game(self):
+        self.is_visited = False
         # ------------------------- MAKE PAUSE GAME
         if key_pressed(pygame.K_p):
             Sound.btn_click(self)
@@ -375,7 +381,6 @@ class GameState(Sound):
                     Sound.sign_middle(self)
                     self.background.distance_mt += 1  # prevent ...
                 case 1080:  # Finished level
-                    Sound.sign_finish(self)
                     self.level_reader_row += 1  # read row level from txt
                     self.background.distance_mt = 0  # prevent ...
                     self.is_music_play = False
@@ -475,6 +480,8 @@ class GameState(Sound):
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 # change player friction
                 self.player_data.PLAYER_FRICTION = -0.07
+                if self.level > 1:
+                    fall_effect_group.add(FallEffect('snow'))
                 self.is_start_area = True
 
         # ==========================================    *** BONUS 1 -  Night Sky***
@@ -540,6 +547,8 @@ class GameState(Sound):
                 # resize image and set background
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_5.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
+                if not self.level & 1:  # make rain
+                    fall_effect_group.add(FallEffect('rein', 'aqua'))
                 self.is_start_area = True
 
         # ========================================== START GAME  with Area 1; Level 6 / Sea Two - Clouds
@@ -701,13 +710,14 @@ class GameState(Sound):
         player_group.draw(SCREEN)
         bullets_group.draw(SCREEN)
         bonus_group.draw(SCREEN)
+        fall_effect_group.draw(SCREEN)
         # --------------------------- update sprite group
         ground_group.update()
         player_group.update()
         bullets_group.update()
         item_group.update()
         bonus_group.update()
-
+        fall_effect_group.update()
         # ============== draw current area/level labels
         area_label()
 
@@ -893,6 +903,11 @@ class GameState(Sound):
                 self.player_data.energy_power -= 1
                 self.bonus_pts += 30  # 3000 pts
                 player.points += round(self.player_data.energy_power % 10 + 25.5)
+                if self.bonus_pts >= 3000:
+                    if not self.is_visited:
+                        Sound.voice_perfect(self)
+                        self.is_visited = True
+                    self.player_data.points += 5000
             elif not self.is_add_bonus and player.energy_power == 0 and \
                     (player.bonus_coins or player.bonus_statuette or player.is_player_kill_boss):
                 Sound.grab_coin(self)
@@ -925,22 +940,25 @@ class GameState(Sound):
     def general_statistics(self):
         background_image('../src/assets/images/backgrounds/bg_EMPTY.png')
         text_creator('GENERAL STATISTICS', 'slateblue3', S_W // 2 - 160, 40, 40, None, None, True)
-
+        text_creator('Press RETURN to continue...', 'cornsilk', S_W - 250, S_H - 14)
         if not self.is_visited:
             for key, val in self.player_data.statistics.items():
                 # print(key)
                 for k, v in val.items():
                     self.col_counter += 1
-                    if self.col_counter % 13 == 0:
-                        self.gen_row_spacer += 150
+                    if self.col_counter % 12 == 0:
+                        self.gen_row_spacer += 120
                         self.gen_col_spacer = 0
                     # print({key: {k, v}})
                     self.current_list.append([key, k, v, self.gen_row_spacer, self.gen_col_spacer])
                     self.gen_col_spacer += 40
+
             self.is_visited = True
 
         for key, k, v, row, col in self.current_list:
             if key != 'enemies':
+                if key == 'trap':
+                    k = '1'
                 img = pygame.image.load(f'../src/assets/images/items/{key}/{k}.png')
             else:
                 img = pygame.image.load(f'../src/assets/images/{key}/{k}/1.png')
