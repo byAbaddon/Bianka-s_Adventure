@@ -115,7 +115,7 @@ class Knight(pygame.sprite.Sprite, Sound):
                     self.is_idle = False
                     Sound.bullet_player_hit_knight_face(self)
                     # self.energy_power -= self.player.WEAPONS_DICT[self.player.current_weapon_name]['power']
-                    self.energy_power -= 1
+                    self.energy_power -= 2
                 else:
                     Sound.bullet_player_hit_knight_armor(self)  # body soot
 

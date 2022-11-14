@@ -13,7 +13,9 @@ You control the little girl. You can make him move by pressing (left), (right), 
 Don't fall off the platforms and clouds into the water or lava!
 Don't bump into any enemies, rocks, cacti and more!
 For each enemy killed or item grabbed, you get different points.
-Also you can find various bonuses along the way.
+Also, you can find various bonuses along the way.
+
+## video intro: 'soon'
 
 ## Screenshots
 ![bg_story](https://user-images.githubusercontent.com/51271834/201547805-ab13546c-1f7a-4124-bb5b-020196f78bb4.png)

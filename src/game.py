@@ -66,12 +66,13 @@ class GameState(Sound):
     count_visit = 0
     amulets_counter = 0
     input_text = ''
+    col_counter = 0
     gen_col_spacer = 0
     gen_row_spacer = 0
     is_visited = False
+    is_final_statistics = False
     current_list = []
     ignor_keys_list = []
-    col_counter = 0
 
     def __init__(self, player_data, knight_data, background_data):
         self.state = 'intro'
@@ -110,16 +111,21 @@ class GameState(Sound):
             self.state = 'credits'
         # ------------------top display frame
         table.update()
+        # -----------------------------------------------
+        self.bonus_pts = 0  # reset pts
+        # player.is_boss_level = False  # set player walking border to 1/3 S_W
 
         # =============================================== RESET ALL DATA IF START NEW GAME
         if self.is_start_new_game:  # reset all old data
             self.is_start_new_game = False
             Sound.stop_all_sounds()
-            self.player_data.reset_all_player_data_for_new_game()  # reset all player data
+            table.life_counter = 0
             [all_spite_groups_dict[group].empty() for group in all_spite_groups_dict]
             all_spite_groups_dict['player'].add(player)
             all_spite_groups_dict['knight'].add(knight)
             all_spite_groups_dict['ground'].add(ground)
+            self.player_data.reset_all_player_data_for_new_game()  # reset all player data
+            self.knight_data.reset_knife_data()  # reset all knight data
             self.level = 1
             self.area = 1
             self.boss_number = 1
@@ -133,10 +139,16 @@ class GameState(Sound):
             self.background = None
             self.is_start_area = False
             self.player_data.is_water_level = False
-            table.life_counter = 0
+            self.ranking_list = []
+            self.input_text = ''
+            self.gen_col_spacer = 0
+            self.gen_row_spacer = 0
+            self.is_visited = False
+            self.is_final_statistics = False
+            self.current_list = []
+            self.ignor_keys_list = []
+            self.col_counter = 0
         # -----------------------------------------------
-        self.bonus_pts = 0  # reset pts
-        # player.is_boss_level = False  # set player walking border to 1/3 S_W
 
         # ++++++++++++++++++++++++++++++ developer utils +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         # text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
@@ -341,7 +353,6 @@ class GameState(Sound):
                         group_class.add(new_platform_class)
                     else:
                         if v.split('/')[0] == 'ships':  # -------------------------- change item position
-                            # test move to decoration !!!!!!!!!!
                             new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, 250)
                         elif v.split('/')[0] == 'ground':  # change item position
                             new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H)
@@ -349,7 +360,6 @@ class GameState(Sound):
                             new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H - G_H_S - 152,
                                                          6)
                         elif v == 'bonus/balloon':  # change item position
-                            # test move to decoration !!!!!!!!!!
                             new_item_class = input_class(f'../src/assets/images/items/{v}.png', S_W, S_H // 2 + 15, 0)
                         elif v.split('/')[0] in ['decor', 'wall_decor', 'star', 'lava']:  # change item position
                             y_pos = S_H - G_H_S - 42
@@ -417,7 +427,6 @@ class GameState(Sound):
             time_now = pygame.time.get_ticks()  # 2sec time delay before go to state 'player_dead'
             if time_now - self.start_timer > self.COOLDOWN:
                 self.start_timer = time_now
-                print(3)
                 self.count_visit += 1
                 if self.count_visit == 2:
                     self.player_data.life -= 1
@@ -760,6 +769,7 @@ class GameState(Sound):
                 self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
 
             if self.player_data.is_player_kill_boss:
+                self.is_visited = False
                 self.state = 'level_statistic'
             if self.player_data.is_player_dead:
                 self.state = 'player_dead'
@@ -957,8 +967,13 @@ class GameState(Sound):
 
     def real_time_statistics(self):
         background_image('../src/assets/images/backgrounds/bg_EMPTY.png')
-        text_creator('REAL TIME STATISTICS', 'slateblue3', S_W // 2 - 160, 40, 40, None, None, True)
+        if self.level_reader_row < 44:
+            text_creator('REAL TIME STATISTICS', 'slateblue3', S_W // 2 - 160, 40, 40, None, None, True)
+        else:
+            self.is_final_statistics = True
+            text_creator('GENERAL STATISTICS', 'slateblue3', S_W // 2 - 160, 40, 40, None, None, True)
         text_creator('Press RETURN to continue...', 'cornsilk', S_W - 250, S_H - 14)
+
         if not self.is_visited:
             sort_by_keys = sorted(self.player_data.statistics.items(), key=lambda keys: keys)
             sort_by_values = {k: sorted(v.items(), key=lambda v: -v[1]) for k, v in sort_by_keys}
@@ -970,7 +985,6 @@ class GameState(Sound):
                     if self.col_counter % 12 == 0:
                         self.gen_row_spacer += 100
                         self.gen_col_spacer = 0
-
                     # print({key: {k, v}})
                     self.current_list.append([key, k, v, self.gen_row_spacer, self.gen_col_spacer])
                     self.gen_col_spacer += 40
@@ -988,7 +1002,7 @@ class GameState(Sound):
             SCREEN.blit(scaled_img, (10 + row, 90 + col))
             text_creator(f' = {v}', 'sienna1', 40 + row, 105 + col, 30)
 
-        if key_pressed(pygame.K_RETURN):
+        if key_pressed(pygame.K_RETURN) and not self.is_final_statistics:
             self.current_list = []
             self.gen_col_spacer = 0
             self.gen_row_spacer = 0
@@ -996,6 +1010,14 @@ class GameState(Sound):
             self.is_visited = False
             Sound.btn_click(self)
             self.state = 'start_game'
+        if key_pressed(pygame.K_RETURN) and self.is_final_statistics:
+            Sound.stop_all_sounds()
+            Sound.score_music(self)
+            if self.ranking_list:
+                if self.player_data.points >= self.ranking_list[9][1]:
+                    self.state = 'write_score'
+                    return
+            self.state = 'score'
 
     def credits(self):
         background_image('../src/assets/images/backgrounds/bg_EMPTY.png')

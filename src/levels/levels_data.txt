@@ -47,7 +47,6 @@
 
 
 
-
 Level 1 Forest
 {0: 'signs/start', 20: 'mushroom/grey',  40: 'mushroom/grey',  60: 'stones/small' ,  80: 'mushroom/grey', 90: 'mushroom/grey', 110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 200: 'mushroom/grey', 230: 'stones/medium', 260: 'stones/medium', 290: 'mushroom/grey',320: 'stones/small', 350: 'stones/medium', 372: 'mushroom/red',  380: 'stones/big', 430: 'stones/small', 460: 'mushroom/grey', 500: 'signs/distance', 560: 'mushroom/grey', 570: 'mushroom/grey', 600: 'stones/medium', 640: 'mushroom/grey', 700 : 'stones/medium', 740  : 'mushroom/purple', 800: 'stones/medium', 840: 'mushroom/grey', 860: 'mushroom/grey', 870: 'mushroom/grey', 900: 'stones/medium', 940: 'bonus/statuette',  960: 'stones/big', 980: 'mushroom/red', 990: 'bonus/coin', 1020: 'signs/goal'}
 {1: 'signs/start', 30: 'stones/medium', 40: 'mushroom/grey', 45: 'mushroom/grey', 55: 'mushroom/grey', 70 : 'stones/medium', 90: 'stones/medium', 110: 'mushroom/orange', 110: 'mushroom/orange', 130: 'stones/small', 150: 'stones/medium', 170: 'enemy_static_hedgehog', 180: 'mushroom/grey', 190: 'mushroom/purple', 195: 'mushroom/red', 200: 'stones/small', 220: 'stones/small', 240: 'stones/medium', 260: 'mushroom/grey', 270:  'mushroom/orange', 280: 'mushroom/grey', 290: 'stones/medium', 300: 'enemy_raven', 320: 'bonus/coin', 350: 'enemy_hedgehog',  360: 'mushroom/grey', 365: 'mushroom/grey', 370: 'mushroom/orange', 380: 'stones/medium',400: 'mushroom/grey', 420: 'enemy_static_hedgehog', 440: 'stones/medium', 450: 'mushroom/grey', 460: 'stones/medium', 470: 'mushroom/grey', 500: 'signs/distance' ,  520: 'enemy_hedgehog',540: 'enemy_hedgehog', 540: 'stones/small', 550: 'mushroom/grey', 560: 'mushroom/red', 570: 'mushroom/grey', 575: 'mushroom/grey', 580: 'stones/medium',600: 'stones/small', 620: 'stones/medium', 630: 'mushroom/red', 640: 'stones/small', 670: 'stones/medium', 680: 'enemy_bee', 690: 'stones/medium',700: 'enemy_bee',  720 : 'mushroom/red', 730  : 'mushroom/grey', 740: 'stones/medium', 760: 'stones/medium', 790: 'stones/small', 800: 'mushroom/grey', 820: 'enemy_static_mole', 840: 'mushroom/grey', 845: 'mushroom/purple', 850: 'mushroom/red', 850: 'mushroom/grey', 860: 'mushroom/grey', 870: 'stones/medium', 890: 'stones/small',900: 'enemy_static_mole', 910: 'stones/medium', 920: 'enemy_monkey', 920: 'bonus/statuette', 930: 'mushroom/grey', 940: 'mushroom/grey', 950: 'enemy_static_mole',960: 'mushroom/grey', 970: 'stones/medium', 980: 'mushroom/grey', 1020: 'signs/goal'}
@@ -304,20 +303,6 @@ OTHER:
 : 'ground/dock' , : 'ground/lava', : 'ships/airship',
 -----------------------------------------------------------------------------------------------------------------------
 
-
-
-
-
-{0: 'signs/start', 30: 'mushroom/grey', 40: 'mushroom/grey', 60 : 'stones/small', 80: 'mushroom/orange',
-110: 'stones/small', 140: 'mushroom/orange', 160: 'stones/medium', 180: 'enemy_static_hedgehog',
-200: 'mushroom/grey', 230: 'stones/big', 250: 'stones/medium', 290: 'mushroom/grey',
-320: 'stones/medium', 350: 'enemy_static_hedgehog', 380: 'stones/medium',
-440: 'mushroom/orange', 460: 'mushroom/grey', 470: 'mushroom/purple',
-500: 'signs/distance',  530: 'enemy_hedgehog',  560: 'mushroom/grey', 570: 'stones/big',
-600: 'stones/medium', 640: 'mushroom/orange', 660: 'stones/small', 680: 'enemy_monkey',
-700 : 'stones/big', 730  : 'mushroom/red', 740: 'stones/big', 760: 'stones/big',
-800: 'stones/medium', 840: 'mushroom/orange', 860: 'stones/small', 870: 'mushroom/grey',
-900: 'stones/medium', 930: bonus/statuette',  960: 'stones/big', 980: 'mushroom/grey', 1020: 'signs/goal'}
 
 
 
