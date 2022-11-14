@@ -9,7 +9,7 @@ class FallEffect(pygame.sprite.Sprite, Sound):
     start_time = pygame.time.get_ticks()
     COOLDOWN = 1000
 
-    def __init__(self, fall_type='snow | rein | confetti', color='white', size=2, speed=4):
+    def __init__(self, fall_type='snow | rein | confetti', color='white', size=2, speed=4, static=False):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load('../src/assets/images/fail_items/empty_pixel_image.png')
         self.rect = self.image.get_rect()
@@ -17,6 +17,7 @@ class FallEffect(pygame.sprite.Sprite, Sound):
         self.color = color
         self.speed = speed
         self.fail_type = fall_type
+        self.static = static
 
     def fail_effect_creator(self):
         time_now = pygame.time.get_ticks()
@@ -32,8 +33,8 @@ class FallEffect(pygame.sprite.Sprite, Sound):
             if i[1] > SCREEN_HEIGHT:  # - GROUND_HEIGHT_SIZE   =   border fall
                 i[0] = randrange(SCREEN_WIDTH)
                 i[1] = randrange(95, TOP_FRAME_SIZE)
-            if key_pressed(pygame.K_RIGHT):
-                i[0] -= 3.33
+            if key_pressed(pygame.K_RIGHT) and not self.static:
+                i[0] -= 2.3
             pygame.draw.circle(SCREEN, self.color, i, self.size)
 
     def rein_creator(self):
@@ -44,7 +45,7 @@ class FallEffect(pygame.sprite.Sprite, Sound):
                 i[0] = randrange(SCREEN_WIDTH)
                 i[1] = randrange(95, TOP_FRAME_SIZE)
             if key_pressed(pygame.K_RIGHT):
-                i[0] -= 3.33
+                i[0] -= 2.3
             pygame.draw.line(SCREEN, self.color, i, (i[0] - 1, i[1]), 4)
 
     def confetti_creator(self):

@@ -23,6 +23,10 @@ class Sound:
     # =================================== areas bg music
     # Bonus Level One
     def bonus_level_one(self):
+        self.play_sound('../src/assets/sounds/game_musics/level_bonus_one_2.mp3', 0.6, -1)
+
+    # -------- Bonus Level One_2
+    def bonus_level_one_2(self):
         self.play_sound('../src/assets/sounds/game_musics/level_bonus_one.mp3', 0.6, -1)
 
     # Bonus Level Two

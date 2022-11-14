@@ -78,10 +78,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 11
-        self.level = 4
+        self.area = 5
+        self.level = 2
         self.boss_number = 1
-        self.level_reader_row = 43  # 1
+        self.level_reader_row = 15  # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -487,13 +487,21 @@ class GameState(Sound):
         # ==========================================    *** BONUS 1 -  Night Sky*** Level 5
         if self.area == 5:
             if not self.is_start_area:
+                pic = ''
                 self.player_data.is_drive_jeep = True
-                # set music
-                Sound.bonus_level_one(self)
+
                 # resize image and set background
-                scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_bonus_1.png', 800, 510)
+                if self.level & 1:
+                    # set music
+                    Sound.bonus_level_one(self)
+                    bg_image = '../src/assets/images/backgrounds/bg_level_bonus_1.png'
+                else:
+                    Sound.bonus_level_one_2(self)
+                    fall_effect_group.add(FallEffect('snow', 'white', 2, 2, True))
+                    bg_image = '../src/assets/images/backgrounds/bg_level_bonus_1_2.png'
+                scaled_img = scale_image(bg_image, 800, 510)
                 self.background = Background(scaled_img, 0, 90, False, player.velocity.x, True)
-                self.player_data.image = pygame.image.load('../src/assets/images/player/jeep/1.png')
+
                 self.player_data.pos.x = S_W // 2
                 self.is_start_area = True
 
@@ -506,21 +514,31 @@ class GameState(Sound):
                     or key_pressed(pygame.K_LEFT) or key_pressed(pygame.K_RIGHT):
                 self.player_data.is_bonus_level = True
                 pic_num = randrange(1, 4)
-
-            if key_pressed(pygame.K_LEFT):
-                self.background.distance_mt = 100
-                self.player_data.image = pygame.image.load(f'../src/assets/images/player/jeep/jeep_sp/{pic_num}.png')
-            elif key_pressed(pygame.K_RIGHT):
-                self.background.distance_mt = 100
-                flipped_pic = pygame.transform.\
-                    flip(pygame.image.load(f'../src/assets/images/player/jeep/jeep_sp/{pic_num}.png'), True, False)
-                self.player_data.image = flipped_pic
-            else:
-                if self.player_data.direction.x == -1:
-                    self.player_data.image = pygame.image.load('../src/assets/images/player/jeep/1.png')
+            if self.level & 1:
+                if key_pressed(pygame.K_LEFT):
+                    self.background.distance_mt = 100
+                    self.player_data.image = pygame.image.load(f'../src/assets/images/player/jeep/jeep_sp/{pic_num}.png')
+                elif key_pressed(pygame.K_RIGHT):
+                    self.background.distance_mt = 100
+                    flipped_pic = pygame.transform.\
+                        flip(pygame.image.load(f'../src/assets/images/player/jeep/jeep_sp/{pic_num}.png'), True, False)
+                    self.player_data.image = flipped_pic
                 else:
-                    self.player_data.image = pygame.image.load('../src/assets/images/player/jeep/2.png')
-
+                    if self.player_data.direction.x == -1:
+                        self.player_data.image = pygame.image.load('../src/assets/images/player/jeep/1.png')
+                    else:
+                        self.player_data.image = pygame.image.load('../src/assets/images/player/jeep/2.png')
+            else:
+                if key_pressed(pygame.K_RIGHT):
+                    self.background.distance_mt = 100
+                    self.player_data.image = pygame.image.load('../src/assets/images/player/sled/1.png')
+                elif key_pressed(pygame.K_LEFT):
+                    self.player_data.image = pygame.image.load('../src/assets/images/player/sled/2.png')
+                else:
+                    if self.player_data.direction.x == 1:
+                        self.player_data.image = pygame.image.load('../src/assets/images/player/sled/1.png')
+                    else:
+                        self.player_data.image = pygame.image.load('../src/assets/images/player/sled/2.png')
             # -----------------  create and add bonus to group
             time_now = pygame.time.get_ticks()
             if time_now - self.start_timer > self.COOLDOWN:
@@ -943,9 +961,12 @@ class GameState(Sound):
         text_creator('Press RETURN to continue...', 'cornsilk', S_W - 250, S_H - 14)
         if not self.is_visited:
 
-            for key, val in self.player_data.statistics.items():
+            sort_by_keys = sorted(self.player_data.statistics.items(), key=lambda keys: keys)
+            sort_by_values = {k: sorted(v.items(), key=lambda v: -v[1]) for k, v in sort_by_keys}
+
+            for key, val in sort_by_values.items():
                 # print(key)
-                for k, v in val.items():
+                for k, v in val:
                     self.col_counter += 1
                     if self.col_counter % 12 == 0:
                         self.gen_row_spacer += 100
