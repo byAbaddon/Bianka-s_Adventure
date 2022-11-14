@@ -10,7 +10,7 @@ class Intro(Sound):
         super().__init__()
         self.state = ''
         background_image('../src/assets/images/backgrounds/bg_intro.png')
-        text_creator('Copyright - 2022', 'slateblue4', 20, SCREEN_HEIGHT - 20, )
+        text_creator('Copyright - 2023', 'slateblue4', 20, SCREEN_HEIGHT - 20, )
         text_creator('By Abaddon', 'slateblue4', SCREEN_WIDTH - 130, SCREEN_HEIGHT - 20, )
         text_creator('Space - start game', 'whitesmoke', SCREEN_WIDTH // 2 - 90, SCREEN_HEIGHT // 2 + 80, 40, None,
                      None, True)

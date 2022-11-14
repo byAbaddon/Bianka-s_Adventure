@@ -70,6 +70,7 @@ class GameState(Sound):
     gen_row_spacer = 0
     is_visited = False
     current_list = []
+    ignor_keys_list = []
     col_counter = 0
 
     def __init__(self, player_data, knight_data, background_data):
@@ -78,10 +79,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 5
-        self.level = 2
+        self.area = 1
+        self.level = 1
         self.boss_number = 1
-        self.level_reader_row = 15  # 1
+        self.level_reader_row = 1  # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -102,12 +103,11 @@ class GameState(Sound):
         # ------------------------- SHOW STATISTICS REAL TIME
         if key_pressed(pygame.K_s):
             Sound.btn_click(self)
-            self.state = 'general_statistics'
+            self.state = 'real_time_statistics'
         # ------------------------- SHOW CREDITS
         if key_pressed(pygame.K_c):
             Sound.btn_click(self)
             self.state = 'credits'
-
         # ------------------top display frame
         table.update()
 
@@ -955,12 +955,11 @@ class GameState(Sound):
             self.state = 'start_game'
             bonus_group.empty()
 
-    def general_statistics(self):
+    def real_time_statistics(self):
         background_image('../src/assets/images/backgrounds/bg_EMPTY.png')
-        text_creator('GENERAL STATISTICS', 'slateblue3', S_W // 2 - 160, 40, 40, None, None, True)
+        text_creator('REAL TIME STATISTICS', 'slateblue3', S_W // 2 - 160, 40, 40, None, None, True)
         text_creator('Press RETURN to continue...', 'cornsilk', S_W - 250, S_H - 14)
         if not self.is_visited:
-
             sort_by_keys = sorted(self.player_data.statistics.items(), key=lambda keys: keys)
             sort_by_values = {k: sorted(v.items(), key=lambda v: -v[1]) for k, v in sort_by_keys}
 
@@ -975,7 +974,6 @@ class GameState(Sound):
                     # print({key: {k, v}})
                     self.current_list.append([key, k, v, self.gen_row_spacer, self.gen_col_spacer])
                     self.gen_col_spacer += 40
-
             self.is_visited = True
 
         for key, k, v, row, col in self.current_list:
@@ -1062,8 +1060,8 @@ class GameState(Sound):
             self.epilogue()
         if self.state == 'write_score':
             self.write_score()
-        if self.state == 'general_statistics':
-            self.general_statistics()
+        if self.state == 'real_time_statistics':
+            self.real_time_statistics()
         if self.state == 'credits':
             self.credits()
 

@@ -39,33 +39,21 @@ class Table(Sound):
         text_creator(f'Score: {self.score}', 'white', 57, 46, 29)
 
     def add_life_by_score_points(self):
-        if 100_000 <= self.player.points < 200_000 and self.life_counter == 0:
+        if 100_000 <= self.player.points < 300_000 and self.life_counter == 0:
             self.player.life += 1
             self.life_counter = 1
             Sound.add_life(self)
-        elif 200_000 <= self.player.points < 300_000 and self.life_counter == 1:
+        elif 300_000 <= self.player.points < 500_000 and self.life_counter == 1:
             self.player.life += 1
             self.life_counter = 2
             Sound.add_life(self)
-        elif 300_000 <= self.player.points < 400_000 and self.life_counter == 2:
+        elif 500_000 <= self.player.points < 800_000 and self.life_counter == 2:
             self.player.life += 1
             self.life_counter = 3
             Sound.add_life(self)
-        elif 400_000 <= self.player.points < 500_000 and self.life_counter == 3:
+        elif 800_000 <= self.player.points < 1_000_000 and self.life_counter == 3:
             self.player.life += 1
             self.life_counter = 4
-            Sound.add_life(self)
-        elif 500_000 <= self.player.points < 600_000 and self.life_counter == 4:
-            self.player.life += 1
-            self.life_counter = 5
-            Sound.add_life(self)
-        elif 600_000 <= self.player.points < 700_000 and self.life_counter == 5:
-            self.player.life += 1
-            self.life_counter = 6
-            Sound.add_life(self)
-        elif 700_000 <= self.player.points < 800_000 and self.life_counter == 6:
-            self.player.life += 1
-            self.life_counter = 7
             Sound.add_life(self)
 
     def draw_lives(self):
