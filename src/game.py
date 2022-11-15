@@ -80,10 +80,10 @@ class GameState(Sound):
         self.is_music_play = False
         self.background = None
         self.is_bg_created = False
-        self.area = 1
-        self.level = 1
+        self.area = 6
+        self.level = 2
         self.boss_number = 1
-        self.level_reader_row = 1  # 1
+        self.level_reader_row = 16  # 1
         self.player_data = player_data
         self.knight_data = knight_data
         self.background_data = background_data
@@ -490,6 +490,7 @@ class GameState(Sound):
                 # change player friction
                 self.player_data.PLAYER_FRICTION = -0.07
                 if self.level > 1:
+                    FallEffect.snow_list = []  # clear snow/rein list
                     fall_effect_group.add(FallEffect('snow'))
                 self.is_start_area = True
 
@@ -574,6 +575,7 @@ class GameState(Sound):
                 scaled_img = scale_image('../src/assets/images/backgrounds/bg_level_5.png', 800, 510)
                 self.background = Background(scaled_img, 0, 90, True, player.velocity.x, True)
                 if not self.level & 1:  # make rain
+                    FallEffect.snow_list = []  # clear snow/rein list
                     fall_effect_group.add(FallEffect('rein', 'aqua'))
                 self.is_start_area = True
 

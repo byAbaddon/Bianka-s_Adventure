@@ -21,8 +21,9 @@ class Item(pygame.sprite.Sprite):
     def movement(self):
         if key_pressed(pygame.K_RIGHT):
             self.rect.x -= BG_SPEED
-        if key_pressed(pygame.K_RIGHT) and key_pressed(pygame.K_a):  # developer hack speed
-            self.rect.x -= BG_SPEED + BG_LOOP_SPEED_INCREASE
+        # uncomment this and same in Background class to running fast screen illusion /ONLY FOR TEST!!!/
+        # if key_pressed(pygame.K_RIGHT) and key_pressed(pygame.K_a):  # developer hack speed
+        #     self.rect.x -= BG_SPEED + BG_LOOP_SPEED_INCREASE
 
     def sprite_frames(self):
         if self.sprite_pic_num > 0:

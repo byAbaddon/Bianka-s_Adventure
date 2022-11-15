@@ -45,7 +45,7 @@ class FallEffect(pygame.sprite.Sprite, Sound):
                 i[0] = randrange(SCREEN_WIDTH)
                 i[1] = randrange(95, TOP_FRAME_SIZE)
             if key_pressed(pygame.K_RIGHT):
-                i[0] -= 2.3
+                i[0] -= 2
             pygame.draw.line(SCREEN, self.color, i, (i[0] - 1, i[1]), 4)
 
     def confetti_creator(self):
