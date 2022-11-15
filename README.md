@@ -16,9 +16,9 @@ For each enemy killed or item grabbed, you get different points.
 Also, you can find various bonuses along the way.
 
 ## video intro:
-(https://www.youtube.com/watch?v=rLiJOdAYEE8)
+https://www.youtube.com/watch?v=rLiJOdAYEE8
 
-## Screenshots
+## Screenshots:
 ![bg_story](https://user-images.githubusercontent.com/51271834/201547805-ab13546c-1f7a-4124-bb5b-020196f78bb4.png)
 ![wood](https://user-images.githubusercontent.com/51271834/202004357-74ec9e4c-05f0-4bd9-aef0-013502effa01.png)
 ![water](https://user-images.githubusercontent.com/51271834/202004376-54daf9c6-c53a-4f8e-ad26-2cd23c8b4f36.png)
