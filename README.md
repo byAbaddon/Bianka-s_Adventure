@@ -15,7 +15,7 @@ Don't bump into any enemies, rocks, cacti and more!
 For each enemy killed or item grabbed, you get different points.
 Also, you can find various bonuses along the way.
 
-## video intro:
+## Video intro:
 https://www.youtube.com/watch?v=rLiJOdAYEE8
 
 ## Screenshots:
