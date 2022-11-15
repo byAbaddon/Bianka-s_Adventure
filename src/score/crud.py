@@ -70,6 +70,3 @@ def ranking_manipulator():
     except:
         print('Requests operation failed')
         return []
-
-
-# ranking_manipulator()

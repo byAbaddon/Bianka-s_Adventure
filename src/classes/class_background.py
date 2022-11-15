@@ -1,5 +1,5 @@
 import pygame
-from src.settings import SCREEN, TOP_FRAME_SIZE, SCREEN_WIDTH, key_pressed, vec, text_creator, CLOCK
+from src.settings import SCREEN, SCREEN_WIDTH, key_pressed
 
 
 class Background:
@@ -45,9 +45,9 @@ class Background:
                 else:
                     self.speed = 0
 
-                # running screen illusion
-                if key_pressed(pygame.K_RIGHT) and key_pressed(pygame.K_a):
-                    self.speed += self.BG_SPEED_INCREASE
+                # uncomment to running fast screen illusion /ONLY FOR TEST!!!/
+                # if key_pressed(pygame.K_RIGHT) and key_pressed(pygame.K_a):
+                #     self.speed += self.BG_SPEED_INCREASE
 
                 self.bg_counter -= self.speed
                 self.distance_mt += self.speed / 10

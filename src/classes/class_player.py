@@ -531,6 +531,7 @@ class Player(pygame.sprite.Sprite, Sound):
             if self.energy_power < 0:
                 self.energy_power = 0  # set low boundary draw energy bar
             self.player_dead_x_pos = self.pos.x
+            self.image = pygame.image.load('../src/assets/images/player/dead/dead.png')  # test
             Sound.player_dead(self)
             # self.kill()
             self.is_player_dead = True

@@ -1,5 +1,3 @@
-import pygame
-
 from src.settings import *
 from src.classes.class_sound import Sound
 
@@ -209,14 +207,6 @@ class Epilogue(Sound):
         if key_pressed(pygame.K_SPACE):
             Sound.btn_click(self)
             self.state = 'real_time_statistics'
-
-            # Sound.stop_all_sounds()
-            # Sound.score_music(self)
-            # if self.ranking_list:
-            #     if self.player_data.points >= self.ranking_list[9][1]:
-            #         self.state = 'write_score'
-            #         return
-            # self.state = 'score'
 
 
 

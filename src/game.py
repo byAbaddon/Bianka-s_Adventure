@@ -496,7 +496,6 @@ class GameState(Sound):
         # ==========================================    *** BONUS 1 -  Night Sky*** Level 5
         if self.area == 5:
             if not self.is_start_area:
-                pic = ''
                 self.player_data.is_drive_jeep = True
 
                 # resize image and set background
@@ -1101,4 +1100,3 @@ while True:
     pygame.display.update()
     CLOCK.tick(FPS)
     exit_game()
-
