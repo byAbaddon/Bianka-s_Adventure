@@ -148,8 +148,11 @@ class GameState(Sound):
             self.current_list = []
             self.ignor_keys_list = []
             self.col_counter = 0
-        # -----------------------------------------------
-
+        # --------------------------------------draw current FPS
+        if int(CLOCK.get_fps()) >= 55:
+            text_creator(f'FPS: {int(CLOCK.get_fps())}', 'dodgerblue1', 250, 20, 22)
+        else:
+            text_creator(f'FPS: {int(CLOCK.get_fps())}', 'brown3', 250, 20, 22)
         # ++++++++++++++++++++++++++++++ developer utils +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         # text_creator(f'FPS {int(CLOCK.get_fps())}', 'white', 10, 5, 25)
         # text_creator(f'Direction: x= {int(player.direction.x)} y= {int(player.direction.y)}', 'white', 90, 15, 22)
