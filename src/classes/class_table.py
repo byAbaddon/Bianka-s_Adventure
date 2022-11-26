@@ -3,7 +3,7 @@ from src.classes.class_sound import Sound
 
 
 class Table(Sound):
-    height_score = 130000
+    height_score = 100
     boss_energy = 200
     energy_power = 100
     area = 0
@@ -24,11 +24,16 @@ class Table(Sound):
         background_image('../src/assets/images/top_frames/4.png', 0, -5, False)
 
     def get_top_score_from_file(self):
-        self.height_score = file_operation('src/score/save_height_score.txt', 'r', 0)
+        self.height_score = int(file_operation('../src/score/save_height_score.txt', 'r', 0))
+        # ckeck is database best score > height_score   ->  height_score = best record form base
+        if self.game_state.ranking_list:
+            if self.game_state.ranking_list[0][1] > self.height_score:
+                self.height_score = self.game_state.ranking_list[0][1]
 
     def write_new_height_score_in_file(self):  # write new score record in file
+        self.get_top_score_from_file()
         if self.score >= self.height_score:
-            file_operation('../src/score/save_height_score.txt', 'w', 0, self.height_score)
+            file_operation('../src/score/save_height_score.txt', 'w', 0, str(self.score))
 
     def draw_top_score(self):
         if self.score >= self.height_score:
@@ -116,7 +121,7 @@ class Table(Sound):
         pygame.draw.rect(SCREEN, 'teal', [246, 52, 60, 24], 1, 2)
 
     def draw_amulet_bar(self):
-        text_creator('Amulets', 'white', 240, 32, 29)
+        text_creator('Amulets', 'white', 240, 36, 29)
         # draw cells
         # SCREEN.fill((70,70,70), [326, 15, 360, 40])
         [pygame.draw.rect(SCREEN, (200, 220, 222), [326 + 40 * x, 15, 40, 40], 1, 1,) for x in range(0, 9)]
@@ -137,6 +142,7 @@ class Table(Sound):
         self.boss_energy = self.knight.energy_power
 
     def update(self):
+        self.write_new_height_score_in_file()
         self.add_life_by_score_points()
         self.create_top_frame()
         self.draw_lives()
@@ -149,6 +155,3 @@ class Table(Sound):
         self.draw_weapon()
         self.draw_amulet_bar()
         self.updated_player_data()
-
-
-
