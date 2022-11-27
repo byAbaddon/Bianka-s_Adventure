@@ -830,6 +830,7 @@ class GameState(Sound):
                 exit()
 
     def write_score(self):
+
         background_image('../src/assets/images/backgrounds/bg_write_score.png')
         text_creator(self.input_text, 'teal', 315, SCREEN_HEIGHT - 110, 32)
         pygame.draw.rect(SCREEN, 'white', pygame.Rect((310, 470, 175, 40)), 2, 2)
@@ -888,15 +889,20 @@ class GameState(Sound):
 
     def funeral_agency(self):
         background_image('../src/assets/images/backgrounds/bg_funeral_agency.png', 0, 0)
-        text_creator('Press RETURN to continue...', 'cornsilk', S_W - 250, S_H - 20)
+        text_creator('Press BACKSPACE to continue...', 'cornsilk', S_W - 280, S_H - 20)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_RETURN:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
                     self.is_start_new_game = True  # for reset old game
                     Sound.stop_all_sounds()
+                    self.ranking_list = ranking_manipulator()
+                    if self.ranking_list:
+                        if self.ranking_list[9][1] <= self.player_data.points:
+                            self.state = 'write_score'
+                            return
                     self.state = 'intro'
 
     def level_statistic(self):
