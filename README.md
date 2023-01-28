@@ -25,6 +25,9 @@ https://www.youtube.com/watch?v=rLiJOdAYEE8
 ![bonus](https://user-images.githubusercontent.com/51271834/202004386-64bc97f8-d0c2-4769-90ba-537de3d42193.png)
 ![bg_epilogue](https://user-images.githubusercontent.com/51271834/201547811-b83e1e2b-7e93-4d39-b944-753bc282b743.png)
 
+### Download
+#### For Linux AppImage that run anywhere
+https://github.com/byAbaddon/PyGame-Bianka-s_Adventure/releases/edit/v1.1.0
 
 ## Prerequisites
 - [Python](https://www.python.org)
